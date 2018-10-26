@@ -6,4 +6,4 @@
 
 use \Magento\Framework\Component\ComponentRegistrar;
 
-ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Magento_ImportRest', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Magento_ImportService', __DIR__);

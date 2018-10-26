@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportRest\Api\Data;
+namespace Magento\ImportService\Api\Data;
 
 use Magento\Framework\Api\ExtensibleDataInterface;
 
@@ -33,14 +33,14 @@ interface ImportEntryInterface extends ExtensibleDataInterface
     /**
      * Get import file content
      *
-     * @return \Magento\ImportRest\Api\Data\FileContentInterface|null
+     * @return \Magento\ImportService\Api\Data\SourceInterface|null
      */
     public function getContent();
 
     /**
      * Set import content
      *
-     * @param \Magento\ImportRest\Api\Data\FileContentInterface $content
+     * @param \Magento\ImportService\Api\Data\SourceInterface $content
      * @return $this
      */
     public function setContent($content);
@@ -48,14 +48,14 @@ interface ImportEntryInterface extends ExtensibleDataInterface
     /**
      * Get import params
      *
-     * @return \Magento\ImportRest\Api\Data\ImportParamsInterface|null
+     * @return \Magento\ImportService\Api\Data\ImportParamsInterface|null
      */
     public function getParams();
 
     /**
      * Set import params
      *
-     * @param \Magento\ImportRest\Api\Data\ImportParamsInterface $params
+     * @param \Magento\ImportService\Api\Data\ImportParamsInterface $params
      * @return $this
      */
     public function setParams($params);

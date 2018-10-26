@@ -4,10 +4,10 @@
  * See COPYING.txt for license details.
  */
 
-namespace Magento\ImportRest\Model;
+namespace Magento\ImportService\Model;
 
 use Magento\Framework\DataObject;
-use Magento\ImportRest\Api\Data\ImportEntryInterface;
+use Magento\ImportService\Api\Data\ImportEntryInterface;
 
 class ImportEntry extends DataObject implements ImportEntryInterface
 {

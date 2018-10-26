@@ -5,14 +5,16 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportRest\Model;
+namespace Magento\ImportService\Model;
+
+use Magento\ImportService\Api\Data\ImportEntryInterface;
 
 /**
  * Class ImportProcessor
  *
- * @package Magento\ImportRest\Model
+ * @package Magento\ImportService\Model
  */
-class ImportProcessor implements \Magento\ImportRest\Api\ImportProcessorInterface
+class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInterface
 {
     /**
      * @var \Magento\ImportExport\Model\ImportFactory
@@ -31,7 +33,7 @@ class ImportProcessor implements \Magento\ImportRest\Api\ImportProcessorInterfac
     /**
      * @inheritdoc
      */
-    public function executeImport($importEntry)
+    public function executeImport(ImportEntryInterface $importEntry)
     {
         try {
             $data = [
@@ -47,10 +49,24 @@ class ImportProcessor implements \Magento\ImportRest\Api\ImportProcessorInterfac
             /** @var \Magento\ImportExport\Model\Import $importModel */
             $importModel = $this->importModelFactory->create($data);
             $importModel->importSource();
+
+            $importData = $this->prepareData($importEntry);
+            $t = 1;
             //$importModel->processImport();
             return true;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * @param \Magento\ImportService\Api\Data\ImportEntryInterface $importEntry
+     */
+    private function prepareData(ImportEntryInterface $importEntry)
+    {
+        $importEncodedContent = $importEntry->getContent();
+        $importContent = base64_decode($importEncodedContent->getBase64EncodedData());
+        $csvContent = str_getcsv($importContent);
+        return;
     }
 }

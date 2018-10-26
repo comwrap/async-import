@@ -5,10 +5,10 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportRest\Model;
+namespace Magento\ImportService\Model;
 
 use Magento\Framework\DataObject;
-use Magento\ImportRest\Api\Data\ImportParamsInterface;
+use Magento\ImportService\Api\Data\ImportParamsInterface;
 
 class ImportParams extends DataObject implements ImportParamsInterface
 {
@@ -27,22 +27,6 @@ class ImportParams extends DataObject implements ImportParamsInterface
     public function setBehavior($behavior)
     {
         return $this->setData(self::BEHAVIOR, $behavior);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getImportFile()
-    {
-        return $this->getData(self::IMPORT_FILE);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setImportFile($importFile)
-    {
-        return $this->setData(self::IMPORT_FILE, $importFile);
     }
 
     /**
@@ -107,54 +91,6 @@ class ImportParams extends DataObject implements ImportParamsInterface
     public function setValidationStrategy($validationStrategy)
     {
         return $this->setData(self::VALIDATION_STRATEGY, $validationStrategy);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSeparator()
-    {
-        return $this->getData(self::SEPARATOR);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setSeparator($separator)
-    {
-        return $this->setData(self::SEPARATOR, $separator);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getEnclosure()
-    {
-        return $this->getData(self::ENCLOSURE);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setEnclosure($enclosure)
-    {
-        return $this->setData(self::ENCLOSURE, $enclosure);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMultipleValueSeparator()
-    {
-        return $this->getData(self::MULTIPLE_VALUE_SEPARATOR);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setMultipleValueSeparator($multipleValueSeparator)
-    {
-        return $this->setData(self::MULTIPLE_VALUE_SEPARATOR, $multipleValueSeparator);
     }
 
     /**

@@ -5,17 +5,13 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportRest\Api\Data;
+namespace Magento\ImportService\Api\Data;
 
 use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface ImportParamsInterface extends ExtensibleDataInterface
 {
     const BEHAVIOR = 'behavior';
-    /**
-     * Import source file.
-     */
-    const IMPORT_FILE = 'import_file';
 
     /**
      * Import image archive.
@@ -38,24 +34,10 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     const VALIDATION_STRATEGY = 'validation_strategy';
 
     /**
-     * Import field separator.
-     */
-    const SEPARATOR = 'separator';
-
-    /**
-     * Import multiple value separator.
-     */
-    const MULTIPLE_VALUE_SEPARATOR = 'multiple_value_separator';
-
-    /**
      * Import empty attribute value constant.
      */
     const EMPTY_ATTRIBUTE_VALUE_CONSTANT = 'empty_attribute_value_constant';
 
-    /**
-     * Allow multiple values wrapping in double quotes for additional attributes.
-     */
-    const ENCLOSURE = 'enclosure';
     /**
      * default delimiter for several values in one cell as default for FIELD_FIELD_MULTIPLE_VALUE_SEPARATOR
      */
@@ -86,18 +68,7 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     public function setBehavior($behavior);
 
     /**
-     * @return string
-     */
-    public function getImportFile();
-
-    /**
-     * @param $importFile
-     * @return string
-     */
-    public function setImportFile($importFile);
-
-    /**
-     * @return string
+     * @return string|null
      */
     public function getImportImageArchive();
 
@@ -108,7 +79,7 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     public function setImportImageArchive($importImageArchive);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getImportImagesFileDir();
 
@@ -119,7 +90,7 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     public function setImportImagesFileDir($importImagesFileDir);
 
     /**
-     * @return integer
+     * @return integer|null
      */
     public function getAllowedErrorCount();
 
@@ -130,7 +101,7 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     public function setAllowedErrorCount($allowedErrorCount);
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getValidationStrategy();
 
@@ -141,40 +112,7 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     public function setValidationStrategy($validationStrategy);
 
     /**
-     * @return string
-     */
-    public function getSeparator();
-
-    /**
-     * @param $separator
-     * @return string
-     */
-    public function setSeparator($separator);
-
-    /**
-     * @return string
-     */
-    public function getEnclosure();
-
-    /**
-     * @param $enclosure
-     * @return string
-     */
-    public function setEnclosure($enclosure);
-
-    /**
-     * @return string
-     */
-    public function getMultipleValueSeparator();
-
-    /**
-     * @param $multipleValueSeparator
-     * @return string
-     */
-    public function setMultipleValueSeparator($multipleValueSeparator);
-
-    /**
-     * @return string
+     * @return string|null
      */
     public function getEmptyAttributeValueConstant();
 

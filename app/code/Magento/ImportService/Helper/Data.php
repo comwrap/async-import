@@ -5,10 +5,10 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportRest\Helper;
+namespace Magento\ImportService\Helper;
 
 /**
- * ImportRest data helper
+ * ImportService data helper
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
