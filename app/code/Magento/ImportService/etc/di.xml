@@ -15,6 +15,17 @@
         <arguments>
             <argument name="sourceFileTypes" xsi:type="array">
                 <item name="csv" xsi:type="string" sortOrder="0">Magento\ImportService\Model\Source\FileType\Csv</item>
+                <item name="xml" xsi:type="string" sortOrder="5">Magento\ImportService\Model\Source\FileType\Xml</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\ImportService\Model\Source\TypePool">
+        <arguments>
+            <argument name="sourceTypes" xsi:type="array">
+                <item name="local_path" xsi:type="string" sortOrder="5">Magento\ImportService\Model\Source\Type\LocalPath</item>
+                <item name="remote_url" xsi:type="string" sortOrder="10">Magento\ImportService\Model\Source\Type\RemoteUrl</item>
+                <item name="base64_encoded_data" xsi:type="string" sortOrder="15">Magento\ImportService\Model\Source\Type\EncodedData</item>
             </argument>
         </arguments>
     </type>

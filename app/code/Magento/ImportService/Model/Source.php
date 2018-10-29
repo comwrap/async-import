@@ -15,19 +15,18 @@ class Source extends DataObject implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getSourceType()
+    public function getType()
     {
-        return $this->getData(self::SOURCE_TYPE);
+        return $this->getData(self::TYPE);
     }
 
     /**
      * @inheritDoc
      */
-    public function setSourceType($sourceType)
+    public function setType($type)
     {
-        return $this->setData(self::SOURCE_TYPE, $sourceType);
+        return $this->setData(self::TYPE, $type);
     }
-
 
     /**
      * @inheritDoc
@@ -45,36 +44,19 @@ class Source extends DataObject implements SourceInterface
         return $this->setData(self::FILE_TYPE, $fileType);
     }
 
-
     /**
      * @inheritDoc
      */
-    public function getBase64EncodedData()
+    public function getImportData()
     {
-        return $this->getData(self::BASE64_ENCODED_DATA);
+        return $this->getData(self::IMPORT_DATA);
     }
 
     /**
      * @inheritDoc
      */
-    public function setBase64EncodedData($data)
+    public function setImportData($importData)
     {
-        return $this->setData(self::BASE64_ENCODED_DATA, $data);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getName()
-    {
-        return $this->getData(self::NAME);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setName($name)
-    {
-        return $this->setData(self::NAME, $name);
+        return $this->setData(self::IMPORT_DATA, $importData);
     }
 }

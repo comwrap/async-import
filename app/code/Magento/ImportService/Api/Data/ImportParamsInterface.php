@@ -39,6 +39,22 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     const EMPTY_ATTRIBUTE_VALUE_CONSTANT = 'empty_attribute_value_constant';
 
     /**
+     * Import multiple value separator.
+     */
+    const MULTIPLE_VALUE_SEPARATOR = 'multiple_value_separator';
+
+    /**
+     * Import field separator.
+     */
+    const CSV_SEPARATOR = 'separator';
+
+    /**
+     * Allow multiple values wrapping in double quotes for additional
+     * attributes.
+     */
+    const CSV_ENCLOSURE = 'enclosure';
+
+    /**
      * default delimiter for several values in one cell as default for FIELD_FIELD_MULTIPLE_VALUE_SEPARATOR
      */
     const DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR = ',';
@@ -121,4 +137,37 @@ interface ImportParamsInterface extends ExtensibleDataInterface
      * @return string
      */
     public function setEmptyAttributeValueConstant($emptyAttributeValueConstant);
+
+    /**
+     * @return string|null
+     */
+    public function getCsvSeparator();
+
+    /**
+     * @param $csvSeparator
+     * @return string
+     */
+    public function setCsvSeparator($csvSeparator);
+
+    /**
+     * @return string|null
+     */
+    public function getCsvEnclosure();
+
+    /**
+     * @param $csvEnclosure
+     * @return string
+     */
+    public function setCsvEnclosure($csvEnclosure);
+
+    /**
+     * @return string|null
+     */
+    public function getMultipleValueSeparator();
+
+    /**
+     * @param $multipleValueSeparator
+     * @return string
+     */
+    public function setMultipleValueSeparator($multipleValueSeparator);
 }

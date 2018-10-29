@@ -31,32 +31,80 @@ class ImportEntry extends DataObject implements ImportEntryInterface
     /**
      * @inheritDoc
      */
-    public function getContent()
+    public function getProfileCode()
     {
-        return $this->getData(self::CONTENT);
+        return $this->getData(self::PROFILE_CODE);
     }
 
     /**
      * @inheritDoc
      */
-    public function setContent($content)
+    public function setProfileCode($profileCode)
     {
-        return $this->setData(self::CONTENT, $content);
+        return $this->setData(self::PROFILE_CODE, $profileCode);
     }
 
     /**
      * @inheritDoc
      */
-    public function getParams()
+    public function getTargetRepository()
     {
-        return $this->getData(self::PARAMS);
+        return $this->getData(self::TARGET_REPOSITORY);
     }
 
     /**
      * @inheritDoc
      */
-    public function setParams($params)
+    public function setTargetRepository($targetRepository)
     {
-        return $this->setData(self::PARAMS, $params);
+        return $this->setData(self::TARGET_REPOSITORY, $targetRepository);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSource()
+    {
+        return $this->getData(self::SOURCE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSource($source)
+    {
+        return $this->setData(self::SOURCE, $source);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getImportParams()
+    {
+        return $this->getData(self::IMPORT_PARAMS);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setImportParams($importParams)
+    {
+        return $this->setData(self::IMPORT_PARAMS, $importParams);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFieldsMapping()
+    {
+        return $this->getData(self::FIELDS_MAPPING);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setFieldsMapping($fieldsMapping)
+    {
+        return $this->setData(self::FIELDS_MAPPING, $fieldsMapping);
     }
 }

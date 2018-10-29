@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Magento\ImportService\Model;
 
 use Magento\ImportService\Api\Data\ImportEntryInterface;
+use Epfremme\Swagger\Factory\SwaggerFactory;
 
 /**
  * Class ImportProcessor
@@ -36,6 +37,10 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
     public function executeImport(ImportEntryInterface $importEntry)
     {
         try {
+
+            $factory = new SwaggerFactory();
+            $swagger = $factory->build('/var/www/html/bulk-api/async-import/var/schema_swagger.json');
+            $swagger->
             $data = [
                 'entity' => 'catalog_product',
                 'behavior' => 'append',

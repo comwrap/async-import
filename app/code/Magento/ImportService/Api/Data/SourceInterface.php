@@ -11,31 +11,31 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface SourceInterface extends ExtensibleDataInterface
 {
-    const SOURCE_TYPE = 'source_type';
+    const TYPE = 'type';
     const FILE_TYPE = 'file_type';
-    const DATA = 'data';
+    const IMPORT_DATA = 'import_data';
 
     /**
      * @TODO Move to di.xml as pool arguments
      */
-    const SOURCE_TYPE_LOCAL = 'local_path';
-    const SOURCE_TYPE_URL = 'remote_url';
-    const SOURCE_TYPE_ENCODED_DATA = 'base64_encoded_data';
+    const TYPE_LOCAL = 'local_path';
+    const TYPE_URL = 'remote_url';
+    const TYPE_ENCODED_DATA = 'base64_encoded_data';
 
     /**
      * Retrieve data source type (local_path, remote_url, base64_encoded_data)
      *
      * @return string
      */
-    public function getSourceType();
+    public function getType();
 
     /**
      * Set data source type
      *
-     * @param string $sourceType
+     * @param string $type
      * @return $this
      */
-    public function setSourceType($sourceType);
+    public function setType($type);
 
     /**
      * Retrieve data format (csv, xml, xls, json, etc.)
@@ -57,13 +57,13 @@ interface SourceInterface extends ExtensibleDataInterface
      *
      * @return string
      */
-    public function getData();
+    public function getImportData();
 
     /**
      * Set file data (http://domain/file.*, /path/to/file.*, base64_encode_data_string)
      *
-     * @param string $data
+     * @param string $importData
      * @return $this
      */
-    public function setData($data);
+    public function setImportData($importData);
 }

@@ -9,9 +9,9 @@ use Magento\Framework\Filesystem\Directory\Write;
 use Magento\ImportExport\Model\Import\AbstractSource;
 
 /**
- * Import data format pool model
+ * Import data source type pool model
  */
-class SourceTypePool
+class TypePool
 {
     /**
      * @var array
@@ -32,10 +32,7 @@ class SourceTypePool
      * Adapter factory. Checks for availability, loads and create instance of
      * import adapter object.
      *
-     * @param string $type Adapter type ('csv', 'xml' etc.)
-     * @param Write $directory
-     * @param string $source
-     * @param mixed $options OPTIONAL Adapter constructor options
+     * @param string $sourceType Adapter type ('csv', 'xml' etc.)
      * @return AbstractSource
      * @throws \Magento\Framework\Exception\LocalizedException
      */
