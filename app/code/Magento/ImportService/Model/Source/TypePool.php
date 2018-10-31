@@ -32,11 +32,12 @@ class TypePool
      * Adapter factory. Checks for availability, loads and create instance of
      * import adapter object.
      *
-     * @param string $sourceType Adapter type ('csv', 'xml' etc.)
-     * @return AbstractSource
+     * @param string $sourceType
+     * @param string $data PAth to file or encoded_data
+     * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function factory($sourceType)
+    public function factory($sourceType, $data)
     {
         if (!is_string($sourceType) || !$sourceType) {
             throw new \Magento\Framework\Exception\LocalizedException(
@@ -57,15 +58,9 @@ class TypePool
             );
         }
 
-        /** @var AbstractSource $adapter */
-        $adapter = new $adapterClass($sourceType);
-
-        if (!$adapter instanceof AbstractSource) {
-            throw new \Magento\Framework\Exception\LocalizedException(
-                __('Adapter must be an instance of \Magento\ImportExport\Model\Import\AbstractSource')
-            );
-        }
-        return $adapter;
+        /** @var string $file Path to file */
+        $file = new $adapterClass($data);
+        return $file;
     }
 
     /**
@@ -74,8 +69,8 @@ class TypePool
      * @param string $sourceType Source type
      * @return AbstractSource
      */
-    public function findAdapterFor($sourceType)
+    public function getFileForType($sourceType, $data)
     {
-        return $this->factory($sourceType);
+        return $this->factory($sourceType, $data);
     }
 }

@@ -29,4 +29,12 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="generateApiClientBasedOnSwagger" xsi:type="object">Magento\ImportService\Console\Command\GenerateInternalApiClient</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

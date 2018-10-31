@@ -46,13 +46,15 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     /**
      * Import field separator.
      */
-    const CSV_SEPARATOR = 'separator';
+    const CSV_SEPARATOR = 'csv_separator';
 
     /**
      * Allow multiple values wrapping in double quotes for additional
      * attributes.
      */
-    const CSV_ENCLOSURE = 'enclosure';
+    const CSV_ENCLOSURE = 'csv_enclosure';
+
+    const CSV_DELIMITER = 'csv_delimeter';
 
     /**
      * default delimiter for several values in one cell as default for FIELD_FIELD_MULTIPLE_VALUE_SEPARATOR
@@ -159,6 +161,17 @@ interface ImportParamsInterface extends ExtensibleDataInterface
      * @return string
      */
     public function setCsvEnclosure($csvEnclosure);
+
+    /**
+     * @return string|null
+     */
+    public function getCsvDelimiter();
+
+    /**
+     * @param $csvDelimiter
+     * @return string
+     */
+    public function setCsvDelimiter($csvDelimiter);
 
     /**
      * @return string|null

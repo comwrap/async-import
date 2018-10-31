@@ -40,14 +40,14 @@ class FileTypePool
      * @return AbstractSource
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function factory($type, $directory, $source, $options = null)
+    public function factory($fileType, $directory, $fileName, $options = null)
     {
-        if (!is_string($type) || !$type) {
+        if (!is_string($fileType) || !$fileType) {
             throw new \Magento\Framework\Exception\LocalizedException(
                 __('The adapter type must be a non-empty string.')
             );
         }
-        $type = strtolower($type);
+        $type = strtolower($fileType);
         if (!isset($this->sourceFileTypes[$type])) {
             throw new \Magento\Framework\Exception\LocalizedException(
                 __('\'%1\' file extension is not supported', $type)
@@ -62,7 +62,7 @@ class FileTypePool
         }
 
         /** @var AbstractSource $adapter */
-        $adapter = new $adapterClass($source, $directory, $options);
+        $adapter = new $adapterClass($fileName, $directory, $options);
 
         if (!$adapter instanceof AbstractSource) {
             throw new \Magento\Framework\Exception\LocalizedException(
@@ -76,12 +76,12 @@ class FileTypePool
      * Create adapter instance for specified source file.
      *
      * @param string $source Source file path.
-     * @param Write $directory
-     * @param mixed $options OPTIONAL Adapter constructor options
+     * @param \Magento\Framework\Filesystem\Directory\Read $directory
+     * @param \Magento\ImportService\Api\Data\ImportParamsInterface $options OPTIONAL Adapter constructor options
      * @return AbstractSource
      */
-    public function findAdapterFor($source, $directory, $options = null)
+    public function findAdapterFor($fileType, $directory, $fileName, $options = null)
     {
-        return $this->factory(pathinfo($source, PATHINFO_EXTENSION), $directory, $source, $options);
+        return $this->factory($fileType, $directory, $fileName, $options);
     }
 }

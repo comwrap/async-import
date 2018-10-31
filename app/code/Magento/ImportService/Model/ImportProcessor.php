@@ -21,14 +21,35 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
      * @var \Magento\ImportExport\Model\ImportFactory
      */
     private $importModelFactory;
+    /**
+     * @var \Magento\ImportService\Model\Source\TypePool
+     */
+    private $typePool;
+    /**
+     * @var \Magento\ImportService\Model\Source\FileTypePool
+     */
+    private $fileTypePool;
+    /**
+     * @var \Magento\Framework\Filesystem\Directory\ReadFactory
+     */
+    private $readFactory;
 
     /**
      * @param \Magento\ImportExport\Model\ImportFactory $importModelFactory
+     * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
+     * @param \Magento\ImportService\Model\Source\TypePool $typePool
+     * @param \Magento\ImportService\Model\Source\FileTypePool $fileTypePool
      */
     public function __construct(
-        \Magento\ImportExport\Model\ImportFactory $importModelFactory
+        \Magento\ImportExport\Model\ImportFactory $importModelFactory,
+        \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory,
+        \Magento\ImportService\Model\Source\TypePool $typePool,
+        \Magento\ImportService\Model\Source\FileTypePool $fileTypePool
     ) {
         $this->importModelFactory = $importModelFactory;
+        $this->typePool = $typePool;
+        $this->fileTypePool = $fileTypePool;
+        $this->readFactory = $readFactory;
     }
 
     /**
@@ -38,9 +59,8 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
     {
         try {
 
-            $factory = new SwaggerFactory();
-            $swagger = $factory->build('/var/www/html/bulk-api/async-import/var/schema_swagger.json');
-            $swagger->
+            //$factory = new SwaggerFactory();
+            //$swagger = $factory->build('/var/www/html/bulk-api/async-import/var/schema_swagger.json');
             $data = [
                 'entity' => 'catalog_product',
                 'behavior' => 'append',
@@ -52,12 +72,15 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
                 'import_images_file_dir' => '',
             ];
             /** @var \Magento\ImportExport\Model\Import $importModel */
-            $importModel = $this->importModelFactory->create($data);
-            $importModel->importSource();
+            //$importModel = $this->importModelFactory->create($data);
+            //$importModel->importSource();
 
-            $importData = $this->prepareData($importEntry);
-            $t = 1;
-            //$importModel->processImport();
+            $source = $this->getSource($importEntry);
+            while ($source->valid()) {
+                $rowData = $source->current();
+                $p = 1;
+                $source->next();
+            }
             return true;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
@@ -66,12 +89,23 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
 
     /**
      * @param \Magento\ImportService\Api\Data\ImportEntryInterface $importEntry
+     * @return \Magento\ImportExport\Model\Import\AbstractSource
      */
-    private function prepareData(ImportEntryInterface $importEntry)
+    private function getSource(ImportEntryInterface $importEntry)
     {
-        $importEncodedContent = $importEntry->getContent();
-        $importContent = base64_decode($importEncodedContent->getBase64EncodedData());
-        $csvContent = str_getcsv($importContent);
-        return;
+        $file = $this->typePool->getFileForType(
+            $importEntry->getSource()->getType(),
+            $importEntry->getSource()->getImportData()
+        );
+        $fileName = (string)$file;
+        $path = pathinfo($fileName, PATHINFO_DIRNAME);
+        $directory = $this->readFactory->create($path);
+        $source = $this->fileTypePool->findAdapterFor(
+            $importEntry->getSource()->getFileType(),
+            $directory,
+            $fileName,
+            $importEntry->getImportParams()
+        );
+        return $source;
     }
 }

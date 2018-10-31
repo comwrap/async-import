@@ -96,14 +96,14 @@ interface ImportEntryInterface extends ExtensibleDataInterface
     /**
      * Get import params
      *
-     * @return \Magento\ImportService\Api\Data\FieldMappingInterface|null
+     * @return \Magento\ImportService\Api\Data\FieldMappingInterface[]|null
      */
     public function getFieldsMapping();
 
     /**
      * Set import params
      *
-     * @param \Magento\ImportService\Api\Data\FieldMappingInterface $fieldsMapping
+     * @param \Magento\ImportService\Api\Data\FieldMappingInterface[] $fieldsMapping
      * @return $this
      */
     public function setFieldsMapping($fieldsMapping);

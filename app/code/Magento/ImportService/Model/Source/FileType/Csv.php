@@ -34,15 +34,13 @@ class Csv extends \Magento\ImportExport\Model\Import\AbstractSource
      *
      * @param string $file
      * @param \Magento\Framework\Filesystem\Directory\Read $directory
-     * @param string $delimiter
-     * @param string $enclosure
+     * @param \Magento\ImportService\Api\Data\ImportParamsInterface $options
      * @throws \LogicException
      */
     public function __construct(
         $file,
         \Magento\Framework\Filesystem\Directory\Read $directory,
-        $delimiter = ',',
-        $enclosure = '"'
+        $options = null
     ) {
         register_shutdown_function([$this, 'destruct']);
         try {
@@ -50,10 +48,15 @@ class Csv extends \Magento\ImportExport\Model\Import\AbstractSource
         } catch (\Magento\Framework\Exception\FileSystemException $e) {
             throw new \LogicException("Unable to open file: '{$file}'");
         }
-        if ($delimiter) {
-            $this->_delimiter = $delimiter;
+
+        $this->_delimiter = ',';
+        $this->_enclosure = '"';
+        if ($options && $options->getCsvDelimiter()) {
+            $this->_delimiter = $options->getCsvDelimiter();
         }
-        $this->_enclosure = $enclosure;
+        if ($options && $options->getCsvEnclosure()) {
+            $this->_enclosure = $options->getCsvEnclosure();
+        }
         parent::__construct($this->_getNextRow());
     }
 
