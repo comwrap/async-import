@@ -79,6 +79,21 @@ interface ImportEntryInterface extends ExtensibleDataInterface
     public function setTargetRepository($targetRepository);
 
     /**
+     * Get entity type
+     *
+     * @return string|null
+     */
+    public function getEntityType();
+
+    /**
+     * Set entity type
+     *
+     * @param string $entityType
+     * @return $this
+     */
+    public function setEntityType($entityType);
+
+    /**
      * Get import params
      *
      * @return \Magento\ImportService\Api\Data\ImportParamsInterface|null

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="config">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="entity" type="entityDeclaration" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="entityType" type="entityTypeDeclaration" minOccurs="0" maxOccurs="unbounded" />
+            </xs:choice>
+        </xs:complexType>
+        <xs:unique name="uniqueEntityName">
+            <xs:annotation>
+                <xs:documentation>
+                    Import entity name must be unique.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="entity"/>
+            <xs:field xpath="@name"/>
+        </xs:unique>
+    </xs:element>
+
+    <xs:complexType name="entityDeclaration">
+        <xs:annotation>
+            <xs:documentation>
+                Import entity declaration.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="apiEndpoint" type="xs:string" use="required"/>
+        <xs:attribute name="apiMethod" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="GET"/>
+                    <xs:enumeration value="PUT"/>
+                    <xs:enumeration value="POST"/>
+                    <xs:enumeration value="DELETE"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="model" type="modelName" use="required" />
+        <xs:attribute name="label" type="xs:string" use="optional" />
+        <xs:attribute name="behavior" type="xs:string" use="required" >
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="add_update"/>
+                    <xs:enumeration value="add"/>
+                    <xs:enumeration value="append"/>
+                    <xs:enumeration value="update"/>
+                    <xs:enumeration value="replace"/>
+                    <xs:enumeration value="delete"/>
+                    <xs:enumeration value="custom"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="entityTypeDeclaration">
+        <xs:annotation>
+            <xs:documentation>
+                Import entity type declaration.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="entity" type="xs:string" use="required" />
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="model" type="modelName" use="required" />
+    </xs:complexType>
+
+    <xs:simpleType name="modelName">
+        <xs:annotation>
+            <xs:documentation>
+                Model name can contain only [A-Za-z_\\].
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z_\\]+" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
