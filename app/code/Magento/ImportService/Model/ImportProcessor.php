@@ -76,9 +76,12 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
             //$importModel->importSource();
 
             $source = $this->getSource($importEntry);
+            $source->rewind();
             while ($source->valid()) {
                 $rowData = $source->current();
-                $p = 1;
+
+
+
                 $source->next();
             }
             return true;

@@ -37,4 +37,14 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\ImportService\Model\ApiClient\CodeGenerator">
+        <arguments>
+            <argument name="schemaToGenerate" xsi:type="array">
+                <item name="Rest" xsi:type="object" sortOrder="5">Magento\ImportService\Model\ApiClient\SchemaInfo\Rest</item>
+                <item name="Async" xsi:type="object" sortOrder="10">Magento\ImportService\Model\ApiClient\SchemaInfo\Async</item>
+                <item name="AsyncBulk" xsi:type="object" sortOrder="15">Magento\ImportService\Model\ApiClient\SchemaInfo\AsyncBulk</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

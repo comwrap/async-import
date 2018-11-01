@@ -34,6 +34,19 @@ use Magento\ImportService\Model\UnreachableFunctions;
 
 class CodeGenerator
 {
+    const NAMESPACE = 'Magento\ApiClientGenerated';
+    const SWAGER_URI = 'rest/all/schema?services=all';
+    const DIR_TO_GENERATED = 'Magento/ApiClientGenerated';
+
+    const PATH_REST_CLIENT = 'Rest';
+    const PATH_ASYNC_CLIENT = 'Async';
+    const PATH_BULK_ASYNC_CLIENT = 'AsyncBulk';
+
+    private $swagerUriToGenerate = [
+        self::PATH_REST_CLIENT => 'rest/all/schema?services=all',
+        self::PATH_ASYNC_CLIENT => 'rest/all/async/schema?services=all',
+        self::PATH_BULK_ASYNC_CLIENT => 'rest/all/async/bulk/schema?services=all',
+    ];
     /**
      * @var File
      */
@@ -46,10 +59,6 @@ class CodeGenerator
      * @var \Magento\Framework\App\Filesystem\DirectoryList
      */
     private $directoryList;
-    /**
-     * @var array
-     */
-    private $schemaToGenerate;
 
     /**
      * CodeGenerator constructor.
@@ -57,34 +66,25 @@ class CodeGenerator
      * @param \Magento\Framework\Filesystem\Driver\File $filesystemDriver
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directoryList
      * @param \Magento\ImportService\Model\UnreachableFunctions $unreachableFunctions
-     * @param \Magento\ImportService\Model\ApiClient\SchemaInfo\SchemaInfoInterface[] $schemaToGenerate
      */
     public function __construct(
         File $filesystemDriver,
         DirectoryList $directoryList,
-        UnreachableFunctions $unreachableFunctions,
-        $schemaToGenerate = []
+        UnreachableFunctions $unreachableFunctions
     ) {
         $this->filesystemDriver = $filesystemDriver;
         $this->unreachableFunctions = $unreachableFunctions;
         $this->directoryList = $directoryList;
-        $this->schemaToGenerate = $schemaToGenerate;
     }
 
     /**
      * Generate a Magento PHP Client API (PSR7 compatible)
      * given a OpenAPI (Swagger) specification
-     *
-     * @param string $schemaName
      */
-    public function generate($schemaName = null)
+    public function generate()
     {
-        /** @var \Magento\ImportService\Model\ApiClient\SchemaInfo\SchemaInfoInterface $schemaInfo */
-        foreach ($this->schemaToGenerate as $schemaInfo) {
-            if (isset($schemaName) && $schemaInfo->getSchemaName() != $schemaName) {
-                continue;
-            }
-            $options = $this->resolveConfiguration($this->getOptions($schemaInfo));
+        foreach ($this->swagerUriToGenerate as $subPath => $schemaPath) {
+            $options = $this->resolveConfiguration($this->getOptions($subPath, $schemaPath));
             $registry = new Registry();
 
             if (array_key_exists('openapi-file', $options)) {
@@ -103,28 +103,22 @@ class CodeGenerator
         }
     }
 
-    /**
-     * @param \Magento\ImportService\Model\ApiClient\SchemaInfo\SchemaInfoInterface $schemaInfo
-     * @return array
-     * @throws \Exception
-     */
-    private function getOptions($schemaInfo)
+    private function getOptions($subPath, $schemaPath)
     {
-        $pathToApiClient = $schemaInfo->getPathToApiClient();
-        $swaggerUrl = $this->unreachableFunctions->getBaseUrl() . $schemaInfo->getSwaggerUri();
-        if (!$this->filesystemDriver->isExists($pathToApiClient)) {
-            $this->filesystemDriver->createDirectory($pathToApiClient);
+        $swagerUrl = $this->unreachableFunctions->getBaseUrl() . $schemaPath;
+        if (!$this->filesystemDriver->isExists($this->getDirForGenerated($subPath))) {
+            $this->filesystemDriver->createDirectory($this->getDirForGenerated($subPath));
         }
-        $schemaContent = file_get_contents($swaggerUrl);
+        $schemaContent = file_get_contents($swagerUrl);
         if (!$schemaContent) {
             throw new \Exception('Swager schema not available');
         }
-        $swaggerFile = $schemaInfo->getPathToSwaggerSchemaFile();
-        file_put_contents($swaggerFile, $schemaContent);
+        $swagerFile = $this->getDirForGenerated($subPath) . DIRECTORY_SEPARATOR . $subPath.'.json';
+        file_put_contents($swagerFile, $schemaContent);
         return [
-            'openapi-file' => $swaggerFile,
-            'namespace' => $schemaInfo->getNamespace(),
-            'directory' => $pathToApiClient,
+            'openapi-file' => $swagerFile,
+            'namespace' => self::NAMESPACE,
+            'directory' => $this->getDirForGenerated($subPath),
         ];
     }
 
@@ -175,5 +169,12 @@ class CodeGenerator
         $options = $optionsResolver->resolve($options);
 
         return new Schema($schema, $options['namespace'], $options['directory'], '');
+    }
+
+    private function getDirForGenerated($subPath)
+    {
+        return $this->directoryList
+                ->getPath(DirectoryList::GENERATED_CODE) . DIRECTORY_SEPARATOR .
+            self::DIR_TO_GENERATED.DIRECTORY_SEPARATOR.$subPath;
     }
 }
