@@ -47,22 +47,6 @@ class ImportEntry extends DataObject implements ImportEntryInterface
     /**
      * @inheritDoc
      */
-    public function getTargetRepository()
-    {
-        return $this->getData(self::TARGET_REPOSITORY);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setTargetRepository($targetRepository)
-    {
-        return $this->setData(self::TARGET_REPOSITORY, $targetRepository);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getSource()
     {
         return $this->getData(self::SOURCE);

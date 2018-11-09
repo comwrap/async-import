@@ -40,7 +40,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
             $attributes = $entityConfig->attributes;
             $name = $attributes->getNamedItem('name')->nodeValue;
             $label = $attributes->getNamedItem('label')->nodeValue;
-            $behaviorModel = $attributes->getNamedItem('behaviorModel')->nodeValue;
+            $behavior = $attributes->getNamedItem('behavior')->nodeValue;
             $apiEndpoint = $attributes->getNamedItem('apiEndpoint')->nodeValue;
             $apiMethod = $attributes->getNamedItem('apiMethod')->nodeValue;
             $model = $attributes->getNamedItem('model')->nodeValue;
@@ -50,7 +50,7 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
             $output['entities'][$name] = [
                 'name' => $name,
                 'label' => $label,
-                'behaviorModel' => $behaviorModel,
+                'behavior' => $behavior,
                 'apiEndpoint' => $apiEndpoint,
                 'apiMethod' => $apiMethod,
                 'model' => $model,

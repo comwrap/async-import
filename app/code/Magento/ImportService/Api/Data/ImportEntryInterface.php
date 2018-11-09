@@ -16,7 +16,6 @@ interface ImportEntryInterface extends ExtensibleDataInterface
     const SOURCE = 'source';
     const IMPORT_PARAMS = 'import_params';
     const FIELDS_MAPPING = 'fields_mapping';
-    const TARGET_REPOSITORY = 'target_repository';
 
     /**
      * Retrieve import ID
@@ -62,36 +61,6 @@ interface ImportEntryInterface extends ExtensibleDataInterface
      * @return $this
      */
     public function setSource($source);
-
-    /**
-     * Get target service
-     *
-     * @return string|null
-     */
-    public function getTargetRepository();
-
-    /**
-     * Set target service
-     *
-     * @param string $targetRepository
-     * @return $this
-     */
-    public function setTargetRepository($targetRepository);
-
-    /**
-     * Get entity type
-     *
-     * @return string|null
-     */
-    public function getEntityType();
-
-    /**
-     * Set entity type
-     *
-     * @param string $entityType
-     * @return $this
-     */
-    public function setEntityType($entityType);
 
     /**
      * Get import params

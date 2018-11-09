@@ -32,6 +32,38 @@ class ImportParams extends DataObject implements ImportParamsInterface
     /**
      * @inheritDoc
      */
+    public function getEntityType()
+    {
+        return $this->getData(self::ENTITY_TYPE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEntityType($entityType)
+    {
+        return $this->setData(self::ENTITY_TYPE, $entityType);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTargetRepository()
+    {
+        return $this->getData(self::TARGET_REPOSITORY);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTargetRepository($targetRepository)
+    {
+        return $this->setData(self::TARGET_REPOSITORY, $targetRepository);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getImportImageArchive()
     {
         return $this->getData(self::IMG_ARCHIVE_FILE);

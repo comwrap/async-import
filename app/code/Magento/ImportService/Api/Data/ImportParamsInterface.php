@@ -11,6 +11,8 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface ImportParamsInterface extends ExtensibleDataInterface
 {
+    const TARGET_REPOSITORY = 'target_repository';
+    const ENTITY_TYPE = 'entity_type';
     const BEHAVIOR = 'behavior';
 
     /**
@@ -73,6 +75,36 @@ interface ImportParamsInterface extends ExtensibleDataInterface
     const MAX_IMPORT_CHUNKS = 4;
     const IMPORT_HISTORY_DIR = 'import_history/';
     const IMPORT_DIR = 'import/';
+
+    /**
+     * Get target service
+     *
+     * @return string|null
+     */
+    public function getTargetRepository();
+
+    /**
+     * Set target service
+     *
+     * @param string $targetRepository
+     * @return $this
+     */
+    public function setTargetRepository($targetRepository);
+
+    /**
+     * Get entity type
+     *
+     * @return string|null
+     */
+    public function getEntityType();
+
+    /**
+     * Set entity type
+     *
+     * @param string $entityType
+     * @return $this
+     */
+    public function setEntityType($entityType);
 
     /**
      * @return string

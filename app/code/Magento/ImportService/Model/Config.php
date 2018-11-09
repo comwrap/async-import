@@ -21,7 +21,7 @@ class Config extends \Magento\Framework\Config\Data implements \Magento\ImportSe
      * @param SerializerInterface|null $serializer
      */
     public function __construct(
-        \Magento\ImportExport\Model\Import\Config\Reader $reader,
+        \Magento\ImportService\Model\Config\Reader $reader,
         \Magento\Framework\Config\CacheInterface $cache,
         $cacheId = 'import_async_config_cache',
         SerializerInterface $serializer = null

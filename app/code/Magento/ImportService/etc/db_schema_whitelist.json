@@ -1,0 +1,13 @@
+{
+    "importservice_profile": {
+        "column": {
+            "id": true,
+            "profile_code": true,
+            "import_params": true,
+            "fields_mapping": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

@@ -23,5 +23,5 @@ interface ImportProcessorInterface
      * @param \Magento\ImportService\Api\Data\ImportEntryInterface $importEntry
      * @return bool
      */
-    public function executeImport(ImportEntryInterface $importEntry);
+    public function processImport(ImportEntryInterface $importEntry);
 }

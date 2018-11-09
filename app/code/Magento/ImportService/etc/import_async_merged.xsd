@@ -12,7 +12,7 @@
                 <xs:restriction base="entityDeclaration">
                     <xs:attribute name="label" type="xs:string" use="required" />
                     <xs:attribute name="model" type="modelName" use="required" />
-                    <xs:attribute name="behaviorModel" type="modelName" use="required" />
+                    <xs:attribute name="behavior" type="xs:string" use="optional" />
                 </xs:restriction>
             </xs:complexContent>
         </xs:complexType>

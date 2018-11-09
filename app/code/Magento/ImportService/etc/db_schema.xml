@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="importservice_profile" resource="default" engine="innodb" comment="ImportService Profile Configurations Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+        <column xsi:type="varchar" name="profile_code" nullable="false" length="255" comment="Profile code"/>
+        <column xsi:type="longtext" name="import_params" nullable="true" comment="Import params"/>
+        <column xsi:type="longtext" name="fields_mapping" nullable="true" comment="Fields Mapping"/>
+        <constraint xsi:type="primary" name="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" name="PROFILE_CODE">
+            <column name="profile_code"/>
+        </constraint>
+    </table>
+</schema>

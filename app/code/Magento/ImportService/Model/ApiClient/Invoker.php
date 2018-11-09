@@ -23,8 +23,8 @@ class Invoker
      * @param \Magento\Framework\HTTP\Client\Curl $curlClient
      */
     public function __construct(
-        Curl $curlClient,
-        RemoteServiceInterface $remoteService
+        Curl $curlClient
+        //RemoteServiceInterface $remoteService
     ) {
         $this->curlClient = $curlClient;
     }
