@@ -7,15 +7,14 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Model;
 
-use Magento\ImportService\Api\Data\ImportEntryInterface;
-use Epfremme\Swagger\Factory\SwaggerFactory;
+use Magento\ImportService\Api\Data\FileEntryInterface;
 
 /**
- * Class ImportProcessor
+ * Class ImportFile
  *
  * @package Magento\ImportService\Model
  */
-class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInterface
+class ImportFile implements \Magento\ImportService\Api\ImportFileInterface
 {
     /**#@-*/
     private $entityAdapter;
@@ -70,15 +69,14 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
         $this->entityFactory = $entityFactory;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function processImport(ImportEntryInterface $importEntry)
-    {
-        try {
+    public function importFile(FileEntryInterface $FileEntry){
 
-            echo "process coming here";
-            exit;
+        echo "import file is here";
+        exit;
+
+
+
+        try {
             $entityAdapter= $this->getEntityAdapter($importEntry);
             $entityAdapter->importData();
 
@@ -120,56 +118,7 @@ class ImportProcessor implements \Magento\ImportService\Api\ImportProcessorInter
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode());
         }
-    }
 
-    /**
-     * @param \Magento\ImportService\Api\Data\ImportEntryInterface $importEntry
-     * @return \Magento\ImportService\Model\Entity\AbstractEntity
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    private function getEntityAdapter(ImportEntryInterface $importEntry)
-    {
-        if (!$this->entityAdapter) {
-            /** @var \Magento\ImportService\Api\Data\ImportParamsInterface $importParams */
-            $importParams = $importEntry->getImportParams();
-            $fieldsMapping = $importEntry->getFieldsMapping();
-
-            $entityType = $importParams->getEntityType();
-            $entities = $this->importServiceConfig->getEntities();
-            if (isset($entities[$entityType])) {
-                try {
-                    $this->entityAdapter = $this->entityFactory->create($entities[$entityType]['model']);
-                } catch (\Exception $e) {
-                    $t=1;
-                    throw new \Magento\Framework\Exception\LocalizedException(
-                        __('Please enter a correct entity model.')
-                    );
-                }
-                if (!$this->entityAdapter instanceof \Magento\ImportService\Model\Entity\AbstractEntity) {
-                    throw new \Magento\Framework\Exception\LocalizedException(
-                        __(
-                            'The entity adapter object must be an instance of %1 or %2.',
-                            \Magento\ImportExport\Model\Import\Entity\AbstractEntity::class,
-                            \Magento\ImportExport\Model\Import\AbstractEntity::class
-                        )
-                    );
-                }
-
-                // check for entity codes integrity
-                if ($entityType != $this->entityAdapter->getEntityTypeCode()) {
-                    throw new \Magento\Framework\Exception\LocalizedException(
-                        __('The input entity code is not equal to entity adapter code.')
-                    );
-                }
-            } else {
-                throw new \Magento\Framework\Exception\LocalizedException(__('Please enter a correct entity.'));
-            }
-            $this->entityAdapter->setParameters($importParams);
-            $this->entityAdapter->setFieldsMapping($fieldsMapping);
-            $source = $this->getSource($importEntry);
-            $this->entityAdapter->setSource($source);
-        }
-        return $this->entityAdapter;
     }
 
     /**

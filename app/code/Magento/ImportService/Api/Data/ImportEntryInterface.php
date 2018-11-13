@@ -11,84 +11,192 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface ImportEntryInterface extends ExtensibleDataInterface
 {
-    const ID = 'id';
-    const PROFILE_CODE = 'profile_code';
-    const SOURCE = 'source';
-    const IMPORT_PARAMS = 'import_params';
-    const FIELDS_MAPPING = 'fields_mapping';
+    const ENTITY_TYPE = 'entity_type';
+    const BEHAVIOR = 'behavior';
 
     /**
-     * Retrieve import ID
-     *
-     * @return int|null
+     * Import image archive.
      */
-    public function getId();
+    const IMG_ARCHIVE_FILE = 'import_image_archive';
 
     /**
-     * Set import ID
-     *
-     * @param int $id
-     * @return $this
+     * Import images file directory.
      */
-    public function setId($id);
+    const IMG_FILE_DIR = 'import_images_file_dir';
 
     /**
-     * Retrieve import Profile code
+     * Allowed errors count field name
+     */
+    const ALLOWED_ERROR_COUNT = 'allowed_error_count';
+
+    /**
+     * Validation startegt field name
+     */
+    const VALIDATION_STRATEGY = 'validation_strategy';
+
+    /**
+     * Import empty attribute value constant.
+     */
+    const EMPTY_ATTRIBUTE_VALUE_CONSTANT = 'empty_attribute_value_constant';
+
+    /**
+     * Import multiple value separator.
+     */
+    const MULTIPLE_VALUE_SEPARATOR = 'multiple_value_separator';
+
+    /**
+     * Import field separator.
+     */
+    const CSV_SEPARATOR = 'csv_separator';
+
+    /**
+     * Allow multiple values wrapping in double quotes for additional
+     * attributes.
+     */
+    const CSV_ENCLOSURE = 'csv_enclosure';
+
+    const CSV_DELIMITER = 'csv_delimeter';
+
+    /**
+     * default delimiter for several values in one cell as default for FIELD_FIELD_MULTIPLE_VALUE_SEPARATOR
+     */
+    const DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR = ',';
+
+    /**
+     * default empty attribute value constant
+     */
+    const DEFAULT_EMPTY_ATTRIBUTE_VALUE_CONSTANT = '__EMPTY__VALUE__';
+
+    /**#@+
+     * Import constants
+     */
+    const DEFAULT_SIZE = 50;
+    const MAX_IMPORT_CHUNKS = 4;
+    const IMPORT_HISTORY_DIR = 'import_history/';
+    const IMPORT_DIR = 'import/';
+
+    /**
+     * Get entity type
      *
      * @return string|null
      */
-    public function getProfileCode();
+    public function getEntityType();
 
     /**
-     * Set import Profile code
+     * Set entity type
      *
-     * @param string $profileCode
+     * @param string $entityType
      * @return $this
      */
-    public function setProfileCode($profileCode);
+    public function setEntityType($entityType);
 
     /**
-     * Get import source
-     *
-     * @return \Magento\ImportService\Api\Data\SourceInterface|null
+     * @return string
      */
-    public function getSource();
+    public function getBehaviour();
 
     /**
-     * Set import source
-     *
-     * @param \Magento\ImportService\Api\Data\SourceInterface $source
-     * @return $this
+     * @param $behavior
+     * @return string
      */
-    public function setSource($source);
+    public function setBehaviour($behavior);
 
     /**
-     * Get import params
-     *
-     * @return \Magento\ImportService\Api\Data\ImportParamsInterface|null
+     * @return string|null
      */
-    public function getImportParams();
+    public function getImportImageArchive();
 
     /**
-     * Set import params
-     *
-     * @param \Magento\ImportService\Api\Data\ImportParamsInterface $importParams
-     * @return $this
+     * @param $importImageArchive
+     * @return string
      */
-    public function setImportParams($importParams);
+    public function setImportImageArchive($importImageArchive);
 
     /**
-     * Get import params
-     *
-     * @return \Magento\ImportService\Api\Data\FieldMappingInterface[]|null
+     * @return string|null
      */
-    public function getFieldsMapping();
+    public function getImportImagesFileDir();
 
     /**
-     * Set import params
-     *
-     * @param \Magento\ImportService\Api\Data\FieldMappingInterface[] $fieldsMapping
-     * @return $this
+     * @param $importImagesFileDir
+     * @return string
      */
-    public function setFieldsMapping($fieldsMapping);
+    public function setImportImagesFileDir($importImagesFileDir);
+
+    /**
+     * @return integer|null
+     */
+    public function getAllowedErrorCount();
+
+    /**
+     * @param $allowedErrorCount
+     * @return integer
+     */
+    public function setAllowedErrorCount($allowedErrorCount);
+
+    /**
+     * @return string|null
+     */
+    public function getValidationStrategy();
+
+    /**
+     * @param $validationStrategy
+     * @return string
+     */
+    public function setValidationStrategy($validationStrategy);
+
+    /**
+     * @return string|null
+     */
+    public function getEmptyAttributeValueConstant();
+
+    /**
+     * @param $emptyAttributeValueConstant
+     * @return string
+     */
+    public function setEmptyAttributeValueConstant($emptyAttributeValueConstant);
+
+    /**
+     * @return string|null
+     */
+    public function getCsvSeparator();
+
+    /**
+     * @param $csvSeparator
+     * @return string
+     */
+    public function setCsvSeparator($csvSeparator);
+
+    /**
+     * @return string|null
+     */
+    public function getCsvEnclosure();
+
+    /**
+     * @param $csvEnclosure
+     * @return string
+     */
+    public function setCsvEnclosure($csvEnclosure);
+
+    /**
+     * @return string|null
+     */
+    public function getCsvDelimiter();
+
+    /**
+     * @param $csvDelimiter
+     * @return string
+     */
+    public function setCsvDelimiter($csvDelimiter);
+
+    /**
+     * @return string|null
+     */
+    public function getMultipleValueSeparator();
+
+    /**
+     * @param $multipleValueSeparator
+     * @return string
+     */
+    public function setMultipleValueSeparator($multipleValueSeparator);
 }

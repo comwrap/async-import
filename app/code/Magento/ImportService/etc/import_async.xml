@@ -6,5 +6,6 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportService:etc/import_async.xsd">
-    <entity name="catalog_product" label="Products" model="Magento\ImportService\Model\Entity\CatalogProduct" apiEndpoint="/V1/products" apiMethod="POST" behavior="add_update"/>
+    <entity name="catalog_product" label="Products" model="Magento\ImportService\Model\Entity\CatalogProduct" apiEndpoint="/V1/products" apiMethod="POST" behavior="add_update">
+    </entity>
 </config>

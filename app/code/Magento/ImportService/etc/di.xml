@@ -7,7 +7,9 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\ImportService\Api\ImportProcessorInterface" type="Magento\ImportService\Model\ImportProcessor" />
+    <preference for="Magento\ImportService\Api\ImportFileInterface" type="Magento\ImportService\Model\ImportFile" />
     <preference for="Magento\ImportService\Api\Data\SourceInterface" type="Magento\ImportService\Model\Source" />
+    <preference for="Magento\ImportService\Api\Data\FileEntryInterface" type="Magento\ImportService\Model\FileEntry" />
     <preference for="Magento\ImportService\Api\Data\ImportEntryInterface" type="Magento\ImportService\Model\ImportEntry" />
     <preference for="Magento\ImportService\Api\Data\ImportParamsInterface" type="Magento\ImportService\Model\ImportParams" />
     <preference for="Magento\ImportService\Model\ConfigInterface" type="Magento\ImportService\Model\Config" />

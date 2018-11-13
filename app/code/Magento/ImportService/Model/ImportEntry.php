@@ -3,6 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+declare(strict_types=1);
 
 namespace Magento\ImportService\Model;
 
@@ -15,80 +16,176 @@ class ImportEntry extends DataObject implements ImportEntryInterface
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getBehaviour()
     {
-        return $this->getData(self::ID);
+        return $this->getData(self::BEHAVIOR);
     }
 
     /**
      * @inheritDoc
      */
-    public function setId($id)
+    public function setBehaviour($behavior)
     {
-        return $this->setData(self::ID, $id);
+        return $this->setData(self::BEHAVIOR, $behavior);
     }
 
     /**
      * @inheritDoc
      */
-    public function getProfileCode()
+    public function getEntityType()
     {
-        return $this->getData(self::PROFILE_CODE);
+        return $this->getData(self::ENTITY_TYPE);
     }
 
     /**
      * @inheritDoc
      */
-    public function setProfileCode($profileCode)
+    public function setEntityType($entityType)
     {
-        return $this->setData(self::PROFILE_CODE, $profileCode);
+        return $this->setData(self::ENTITY_TYPE, $entityType);
     }
 
     /**
      * @inheritDoc
      */
-    public function getSource()
+    public function getImportImageArchive()
     {
-        return $this->getData(self::SOURCE);
+        return $this->getData(self::IMG_ARCHIVE_FILE);
     }
 
     /**
      * @inheritDoc
      */
-    public function setSource($source)
+    public function setImportImageArchive($importImageArchive)
     {
-        return $this->setData(self::SOURCE, $source);
+        return $this->setData(self::IMG_ARCHIVE_FILE, $importImageArchive);
     }
 
     /**
      * @inheritDoc
      */
-    public function getImportParams()
+    public function getImportImagesFileDir()
     {
-        return $this->getData(self::IMPORT_PARAMS);
+        return $this->getData(self::IMG_FILE_DIR);
     }
 
     /**
      * @inheritDoc
      */
-    public function setImportParams($importParams)
+    public function setImportImagesFileDir($importImagesFileDir)
     {
-        return $this->setData(self::IMPORT_PARAMS, $importParams);
+        return $this->setData(self::IMG_FILE_DIR, $importImagesFileDir);
     }
 
     /**
      * @inheritDoc
      */
-    public function getFieldsMapping()
+    public function getAllowedErrorCount()
     {
-        return $this->getData(self::FIELDS_MAPPING);
+        return $this->getData(self::ALLOWED_ERROR_COUNT);
     }
 
     /**
      * @inheritDoc
      */
-    public function setFieldsMapping($fieldsMapping)
+    public function setAllowedErrorCount($allowedErrorCount)
     {
-        return $this->setData(self::FIELDS_MAPPING, $fieldsMapping);
+        return $this->setData(self::ALLOWED_ERROR_COUNT, $allowedErrorCount);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getValidationStrategy()
+    {
+        return $this->getData(self::VALIDATION_STRATEGY);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setValidationStrategy($validationStrategy)
+    {
+        return $this->setData(self::VALIDATION_STRATEGY, $validationStrategy);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEmptyAttributeValueConstant()
+    {
+        return $this->getData(self::EMPTY_ATTRIBUTE_VALUE_CONSTANT);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEmptyAttributeValueConstant($emptyAttributeValueConstant)
+    {
+        return $this->setData(self::EMPTY_ATTRIBUTE_VALUE_CONSTANT, $emptyAttributeValueConstant);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCsvSeparator()
+    {
+        return $this->getData(self::CSV_SEPARATOR);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCsvSeparator($csvSeparator)
+    {
+        return $this->setData(self::CSV_SEPARATOR, $csvSeparator);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCsvEnclosure()
+    {
+        return $this->getData(self::CSV_ENCLOSURE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCsvEnclosure($csvEnclosure)
+    {
+        return $this->setData(self::CSV_ENCLOSURE, $csvEnclosure);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCsvDelimiter()
+    {
+        return $this->getData(self::CSV_DELIMITER);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCsvDelimiter($csvDelimiter)
+    {
+        return $this->setData(self::CSV_DELIMITER, $csvDelimiter);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMultipleValueSeparator()
+    {
+        return $this->getData(self::MULTIPLE_VALUE_SEPARATOR);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setMultipleValueSeparator($multipleValueSeparator)
+    {
+        return $this->setData(self::MULTIPLE_VALUE_SEPARATOR, $multipleValueSeparator);
     }
 }
