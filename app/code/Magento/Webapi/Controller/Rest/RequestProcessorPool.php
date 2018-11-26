@@ -49,7 +49,6 @@ class RequestProcessorPool
              * Condition was created to keep backward compatibility
              */
             if (is_object($processorData)) {
-                echo get_class($processorData)."<br>";
                 if ($processorData->canProcess($request)) {
                     return $processorData;
                 }
