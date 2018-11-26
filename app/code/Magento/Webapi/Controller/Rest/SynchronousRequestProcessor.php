@@ -110,6 +110,8 @@ class SynchronousRequestProcessor implements RequestProcessorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated 100.1.0
      */
     public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
     {

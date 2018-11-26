@@ -75,8 +75,11 @@
     <type name="Magento\Webapi\Controller\Rest\RequestProcessorPool">
         <arguments>
             <argument name="requestProcessors" xsi:type="array">
+                <item name="sync" xsi:type="array">
+                    <item name="processor" xsi:type="string">Magento\Webapi\Controller\Rest\SynchronousRequestProcessor</item>
+                    <item name="validator" xsi:type="object">Magento\Webapi\Controller\Rest\Validator\SynchronousRequestValidator</item>
+                </item>
                 <item name="syncSchema" xsi:type="object" sortOrder="50">Magento\Webapi\Controller\Rest\SchemaRequestProcessor</item>
-                <item name="sync" xsi:type="object" sortOrder="100">Magento\Webapi\Controller\Rest\SynchronousRequestProcessor</item>
             </argument>
         </arguments>
     </type>

@@ -19,13 +19,20 @@ class RequestProcessorPool
     private $requestProcessors;
 
     /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
+    private $objectManager;
+
+    /**
      * Initial dependencies
      *
      * @param RequestProcessorInterface[] $requestProcessors
      */
-    public function __construct($requestProcessors = [])
+    public function __construct($requestProcessors = [],
+                                \Magento\Framework\ObjectManagerInterface $objectManager)
     {
         $this->requestProcessors = $requestProcessors;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -36,10 +43,25 @@ class RequestProcessorPool
      */
     public function getProcessor(\Magento\Framework\Webapi\Rest\Request $request)
     {
-        foreach ($this->requestProcessors as $processor) {
-            if ($processor->canProcess($request)) {
-                return $processor;
+        foreach ($this->requestProcessors as $processorData) {
+
+            /**
+             * Condition was created to keep backward compatibility
+             */
+            if (is_object($processorData)) {
+                echo get_class($processorData)."<br>";
+                if ($processorData->canProcess($request)) {
+                    return $processorData;
+                }
+            } else {
+                if (isset($processorData['processor']) && isset($processorData['validator'])) {
+                    $requestValidator = $processorData['validator'];
+                    if ($requestValidator->canProcess($request)) {
+                        return $this->objectManager->create($processorData['processor']);
+                    }
+                }
             }
+
         }
 
         throw new \Magento\Framework\Webapi\Exception(
