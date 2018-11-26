@@ -59,7 +59,8 @@ class ImportFile implements \Magento\ImportService\Api\ImportFileInterface
         \Magento\ImportService\Model\Source\TypePool $typePool,
         \Magento\ImportService\Model\Source\FileTypePool $fileTypePool,
         \Magento\ImportService\Model\ConfigInterface $importServiceConfig,
-        \Magento\ImportService\Model\Entity\Factory $entityFactory
+        \Magento\ImportService\Model\Entity\Factory $entityFactory,
+        \Magento\ImportService\Controller\Import\FilesProcessorPool $fileProcessorPool
     ) {
         $this->importModelFactory = $importModelFactory;
         $this->typePool = $typePool;
@@ -67,23 +68,19 @@ class ImportFile implements \Magento\ImportService\Api\ImportFileInterface
         $this->readFactory = $readFactory;
         $this->importServiceConfig = $importServiceConfig;
         $this->entityFactory = $entityFactory;
+        $this->fileProcessorPool = $fileProcessorPool;
     }
 
-    public function importFile(FileEntryInterface $FileEntry){
+    public function importFile(FileEntryInterface $fileEntry){
 
+        $processor = $this->fileProcessorPool->getProcessor($fileEntry);
+        echo get_class($processor);
         echo "import file is here";
         exit;
 
 
 
         try {
-            $entityAdapter= $this->getEntityAdapter($importEntry);
-            $entityAdapter->importData();
-
-            //$factory = new SwaggerFactory();
-            //$swagger = $factory->build('/var/www/html/bulk-api/async-import/var/schema_swagger.json');
-
-            return true;
 
             $data = [
                 'entity' => 'catalog_product',
@@ -96,16 +93,18 @@ class ImportFile implements \Magento\ImportService\Api\ImportFileInterface
                 'import_images_file_dir' => '',
             ];
             /** @var \Magento\ImportExport\Model\Import $importModel */
+
             //$importModel = $this->importModelFactory->create($data);
             //$importModel->importSource();
 
             /** @var \Magento\ImportService\Api\Data\ImportParamsInterface $importParams */
-            $importParams = $importEntry->getImportParams();
-            $entityType = $importParams->getEntityType();
-            $behaviour = $importParams->getBehavior();
-            $importServiceConfig = $this->importServiceConfig->getEntities();
+//            $importParams = $importEntry->getImportParams();
+//            $entityType = $importParams->getEntityType();
+//            $behaviour = $importParams->getBehavior();
+//            $importServiceConfig = $this->importServiceConfig->getEntities();
 
-            $source = $this->getSource($importEntry);
+            $fileProcessor = $this->getSource($importEntry);
+
             $source->rewind();
             while ($source->valid()) {
                 $rowData = $source->current();

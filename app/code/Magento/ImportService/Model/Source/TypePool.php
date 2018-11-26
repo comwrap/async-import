@@ -40,20 +40,20 @@ class TypePool
     public function factory($sourceType, $data)
     {
         if (!is_string($sourceType) || !$sourceType) {
-            throw new \Magento\Framework\Exception\LocalizedException(
+            throw new \Magento\ImportService\Exception(
                 __('The adapter type must be a non-empty string.')
             );
         }
         $sourceType = strtolower($sourceType);
         if (!isset($this->sourceTypes[$sourceType])) {
-            throw new \Magento\Framework\Exception\LocalizedException(
+            throw new \Magento\ImportService\Exception(
                 __('\'%1\' source type is not supported', $sourceType)
             );
         }
 
         $adapterClass = $this->sourceTypes[$sourceType];
         if (!class_exists($adapterClass)) {
-            throw new \Magento\Framework\Exception\LocalizedException(
+            throw new \Magento\ImportService\Exception(
                 __('\'%1\' file extension is not supported because of adapter class not exist', $sourceType)
             );
         }
