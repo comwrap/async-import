@@ -76,7 +76,7 @@
         <arguments>
             <argument name="requestProcessors" xsi:type="array">
                 <item name="sync" xsi:type="array">
-                    <item name="processor" xsi:type="string">Magento\Webapi\Controller\Rest\SynchronousRequestProcessor</item>
+                    <item name="processor" xsi:type="object">Magento\Webapi\Controller\Rest\SynchronousRequestProcessor\Proxy</item>
                     <item name="validator" xsi:type="object">Magento\Webapi\Controller\Rest\Validator\SynchronousRequestValidator</item>
                 </item>
                 <item name="syncSchema" xsi:type="object" sortOrder="50">Magento\Webapi\Controller\Rest\SchemaRequestProcessor</item>

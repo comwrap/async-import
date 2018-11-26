@@ -19,20 +19,13 @@ class RequestProcessorPool
     private $requestProcessors;
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    private $objectManager;
-
-    /**
      * Initial dependencies
      *
      * @param RequestProcessorInterface[] $requestProcessors
      */
-    public function __construct($requestProcessors = [],
-                                \Magento\Framework\ObjectManagerInterface $objectManager)
+    public function __construct($requestProcessors = [])
     {
         $this->requestProcessors = $requestProcessors;
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -56,7 +49,7 @@ class RequestProcessorPool
                 if (isset($processorData['processor']) && isset($processorData['validator'])) {
                     $requestValidator = $processorData['validator'];
                     if ($requestValidator->canProcess($request)) {
-                        return $this->objectManager->create($processorData['processor']);
+                        return $processorData['processor'];
                     }
                 }
             }
