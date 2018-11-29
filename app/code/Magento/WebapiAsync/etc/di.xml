@@ -33,6 +33,7 @@
     </virtualType>
     <virtualType name="Magento\WebapiAsync\Controller\Rest\VirtualType\AsynchronousBulkRequestProcessor" type="Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor">
         <arguments>
+            <argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousRequestValidator::BULK_PROCESSOR_PATH</argument>
             <argument name="inputParamsResolver" xsi:type="object">Magento\WebapiAsync\Controller\VirtualType\InputParamsResolver</argument>
         </arguments>
     </virtualType>
