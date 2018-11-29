@@ -25,9 +25,6 @@ use Magento\AsynchronousOperations\Api\Data\AsyncResponseInterface;
  */
 class AsynchronousRequestProcessor implements RequestProcessorInterface
 {
-    const PROCESSOR_PATH = "/^\\/async(\\/V.+)/";
-    const BULK_PROCESSOR_PATH = "/^\\/async\/bulk(\\/V.+)/";
-
     /**
      * @var \Magento\Framework\Webapi\Rest\Response
      */
@@ -75,7 +72,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
         WebApiAsyncConfig $webapiAsyncConfig,
         DataObjectProcessor $dataObjectProcessor,
         AsyncResponseInterfaceFactory $asyncResponse,
-        $processorPath = self::PROCESSOR_PATH
+        $processorPath = \Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousRequestValidator::PROCESSOR_PATH
     ) {
         $this->response = $response;
         $this->inputParamsResolver = $inputParamsResolver;
@@ -153,7 +150,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
      */
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
-        if (preg_match(self::BULK_PROCESSOR_PATH, $request->getPathInfo()) === 1) {
+        if (preg_match(\Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousRequestValidator::BULK_PROCESSOR_PATH, $request->getPathInfo()) === 1) {
             return true;
         }
         return false;

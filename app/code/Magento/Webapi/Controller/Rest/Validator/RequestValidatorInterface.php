@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace Magento\Webapi\Controller\Rest\Validator;
 
 /**
- *  Request processor interface
+ *  Request validator interface
  */
 interface RequestValidatorInterface
 {

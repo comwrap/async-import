@@ -16,12 +16,6 @@ use Magento\Webapi\Controller\Rest\RequestProcessorInterface;
 class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
 {
     /**
-     * Path for accessing Async Rest API schema
-     */
-    const PROCESSOR_PATH = 'async/schema';
-    const BULK_PROCESSOR_PATH = 'async/bulk/schema';
-
-    /**
      * @var \Magento\Webapi\Model\Rest\Swagger\Generator
      */
     private $swaggerGenerator;
@@ -44,7 +38,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     public function __construct(
         Generator $swaggerGenerator,
         RestResponse $response,
-        $processorPath = self::PROCESSOR_PATH
+        $processorPath = \Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousSchemaRequestValidator::BULK_PROCESSOR_PATH
     ) {
         $this->swaggerGenerator = $swaggerGenerator;
         $this->response = $response;
@@ -70,6 +64,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     }
 
     /**
+     *
      * {@inheritdoc}
      */
     public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
@@ -86,7 +81,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
      */
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
-        if (strpos(ltrim($request->getPathInfo(), '/'), self::BULK_PROCESSOR_PATH) === 0) {
+        if (strpos(ltrim($request->getPathInfo(), '/'), \Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousSchemaRequestValidator::BULK_PROCESSOR_PATH) === 0) {
             return true;
         }
         return false;

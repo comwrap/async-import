@@ -53,7 +53,6 @@ class RequestProcessorPool
                     }
                 }
             }
-
         }
 
         throw new \Magento\Framework\Webapi\Exception(

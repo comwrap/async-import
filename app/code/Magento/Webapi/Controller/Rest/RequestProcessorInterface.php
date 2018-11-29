@@ -30,6 +30,8 @@ interface RequestProcessorInterface
      *
      * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return bool
+     * @deprecated
+     * @see \Magento\Webapi\Controller\Rest\Validator\RequestValidatorInterface
      */
     public function canProcess(\Magento\Framework\Webapi\Rest\Request $request);
 }
