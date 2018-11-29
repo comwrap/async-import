@@ -23,11 +23,9 @@ class FilesProcessorPool
      *
      * @param FileProcessorInterface[] $fileProcessors
      */
-    public function __construct($fileProcessors = [],
-                                \Magento\Framework\ObjectManagerInterface $objectManager)
+    public function __construct($fileProcessors = [])
     {
         $this->fileProcessors = $fileProcessors;
-        $this->objectManager = $objectManager;
     }
 
     /**
@@ -38,9 +36,9 @@ class FilesProcessorPool
      */
     public function getProcessor(\Magento\ImportService\Api\Data\FileEntryInterface $fileEntry)
     {
-        foreach ($this->fileProcessors as $key=>$processor) {
-            if ($key === $fileEntry->getSource()->getFileType()){
-                return $this->objectManager->create($processor);
+        foreach ($this->fileProcessors as $key=>$processorInformation) {
+            if ($processorInformation['type'] === $fileEntry->getSource()->getType()){
+                return $processorInformation['processor'];
             }
         }
 

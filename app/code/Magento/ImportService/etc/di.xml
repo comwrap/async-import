@@ -46,7 +46,10 @@
     <type name="Magento\ImportService\Controller\Import\FilesProcessorPool">
         <arguments>
             <argument name="fileProcessors" xsi:type="array">
-                <item name="csv" xsi:type="string" sortOrder="100">Magento\ImportService\Controller\Import\CsvFileProcessor</item>
+                <item name="local_path" xsi:type="array">
+                    <item name="processor" xsi:type="object">Magento\ImportService\Controller\Import\CsvFileProcessor\Proxy</item>
+                    <item name="type" xsi:type="string">local_path</item>
+                </item>
             </argument>
         </arguments>
     </type>
