@@ -15,17 +15,17 @@ class FileEntry extends DataObject implements FileEntryInterface
     /**
      * @inheritDoc
      */
-    public function getId()
+    public function getFileId()
     {
-        return $this->getData(self::ID);
+        return $this->getData(self::FILE_ID);
     }
 
     /**
      * @inheritDoc
      */
-    public function setId($id)
+    public function setFileId($fileId)
     {
-        return $this->setData(self::ID, $id);
+        return $this->setData(self::FILE_ID, $fileId);
     }
 
     /**

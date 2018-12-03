@@ -13,6 +13,7 @@
     <preference for="Magento\ImportService\Api\Data\ImportEntryInterface" type="Magento\ImportService\Model\ImportEntry" />
     <preference for="Magento\ImportService\Api\Data\ImportParamsInterface" type="Magento\ImportService\Model\ImportParams" />
     <preference for="Magento\ImportService\Model\ConfigInterface" type="Magento\ImportService\Model\Config" />
+    <preference for="Magento\ImportService\Api\Data\ImportResponseInterface" type="Magento\ImportService\Model\ImportResponse" />
 
     <type name="Magento\ImportService\Model\Source\FileTypePool">
         <arguments>
@@ -47,7 +48,7 @@
         <arguments>
             <argument name="fileProcessors" xsi:type="array">
                 <item name="local_path" xsi:type="array">
-                    <item name="processor" xsi:type="object">Magento\ImportService\Controller\Import\CsvFileProcessor\Proxy</item>
+                    <item name="processor" xsi:type="object">Magento\ImportService\Controller\Import\LocalPathFileProcessor\Proxy</item>
                     <item name="type" xsi:type="string">local_path</item>
                 </item>
             </argument>

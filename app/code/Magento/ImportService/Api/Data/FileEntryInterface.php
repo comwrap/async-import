@@ -11,24 +11,24 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface FileEntryInterface extends ExtensibleDataInterface
 {
-    const ID = 'id';
+    const FILE_ID = 'file_id';
     const PROFILE_CODE = 'profile_code';
     const SOURCE = 'source';
 
     /**
-     * Retrieve import ID
+     * Retrieve import File ID
      *
      * @return int|null
      */
-    public function getId();
+    public function getFileId();
 
     /**
-     * Set import ID
+     * Set import File ID
      *
      * @param int $id
      * @return $this
      */
-    public function setId($id);
+    public function setFileId($fileId);
 
     /**
      * Retrieve import Profile code

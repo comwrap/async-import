@@ -21,7 +21,7 @@ interface ImportFileInterface
      * Run import.
      *
      * @param \Magento\ImportService\Api\Data\FileEntryInterface $importEntry
-     * @return bool
+     * @return \Magento\ImportService\Api\Data\ImportResponseInterface
      */
     public function importFile(FileEntryInterface $fileEntry);
 }

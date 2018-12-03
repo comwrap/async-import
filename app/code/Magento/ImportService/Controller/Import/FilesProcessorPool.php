@@ -41,9 +41,8 @@ class FilesProcessorPool
                 return $processorInformation['processor'];
             }
         }
-
         throw new \Magento\ImportService\Exception(
-            __('Specified request cannot be processed.')
+            __('Specified Import type "%1" is wrong.', $fileEntry->getSource()->getType())
         );
     }
 }
