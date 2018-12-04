@@ -23,6 +23,7 @@
                     <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher</item>
                 </item>
                 <item name="asyncBulk" xsi:type="array">
+                    <item name="processor" xsi:type="object">asynchronousBulkRequestProcessorProxy</item>
                     <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkRequestMatcher</item>
                 </item>
             </argument>
