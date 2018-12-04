@@ -5,19 +5,19 @@
  */
 declare(strict_types=1);
 
-namespace Magento\Webapi\Controller\Rest\Validator;
+namespace Magento\Webapi\Controller\Rest\Matcher;
 
 /**
- * REST request validator for synchronous requests
+ * REST request matcher for synchronous requests
  */
-class SynchronousRequestValidator implements RequestValidatorInterface
+class SynchronousRequestMatcher implements RequestMatcherInterface
 {
     const PROCESSOR_PATH = "/^\\/V\\d+/";
 
     /**
      * {@inheritdoc}
      */
-    public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
+    public function isMatched(\Magento\Framework\Webapi\Rest\Request $request)
     {
         if (preg_match(self::PROCESSOR_PATH, $request->getPathInfo()) === 1) {
             return true;

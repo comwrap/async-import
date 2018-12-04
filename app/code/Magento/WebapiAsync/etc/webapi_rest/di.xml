@@ -11,20 +11,19 @@
         <arguments>
             <argument name="requestProcessors" xsi:type="array">
                 <item name="asyncSchema" xsi:type="array">
-                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor</item>
-                    <item name="validator" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousSchemaRequestValidator</item>
+                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher</item>
                 </item>
                 <item name="async" xsi:type="array">
-                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor</item>
-                    <item name="validator" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousRequestValidator</item>
+                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher</item>
                 </item>
                 <item name="asyncBulkSchema" xsi:type="array">
-                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor</item>
-                    <item name="validator" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Validator\VirtualType\AsynchronousBulkSchemaRequestValidator</item>
+                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher</item>
                 </item>
                 <item name="asyncBulk" xsi:type="array">
-                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\VirtualType\AsynchronousBulkRequestProcessor</item>
-                    <item name="validator" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Validator\VirtualType\AsynchronousBulkRequestValidator</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkRequestMatcher</item>
                 </item>
             </argument>
         </arguments>

@@ -75,7 +75,7 @@ class ServiceMetadata
      */
     public function afterGetServicesConfig(\Magento\Webapi\Model\ServiceMetadata $subject, array $result)
     {
-        if ($this->asynchronousSchemaRequestProcessor->canProcess($this->request)) {
+        if ($this->asynchronousSchemaRequestProcessor->isValid($this->request)) {
             $synchronousOnlyServiceMethods = $this->getSynchronousOnlyServiceMethods($subject);
             // Replace all results with the async response schema
             foreach ($result as $serviceName => $serviceData) {

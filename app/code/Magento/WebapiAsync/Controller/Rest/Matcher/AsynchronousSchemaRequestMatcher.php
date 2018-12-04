@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-namespace Magento\WebapiAsync\Controller\Rest\Validator;
+namespace Magento\WebapiAsync\Controller\Rest\Matcher;
 
-use Magento\Webapi\Controller\Rest\Validator\RequestValidatorInterface;
+use Magento\Webapi\Controller\Rest\Matcher\RequestMatcherInterface;
 
 /**
  * Responsible for validating Async and Bulk schema requests if swagger have to be delivered
  */
-class AsynchronousSchemaRequestValidator implements RequestValidatorInterface
+class AsynchronousSchemaRequestMatcher implements RequestMatcherInterface
 {
     /**
      * Path for accessing Async Rest API schema
@@ -40,7 +40,7 @@ class AsynchronousSchemaRequestValidator implements RequestValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
+    public function isMatched(\Magento\Framework\Webapi\Rest\Request $request)
     {
         if (strpos(ltrim($request->getPathInfo(), '/'), $this->processorPath) === 0) {
             return true;

@@ -5,12 +5,12 @@
  */
 declare(strict_types=1);
 
-namespace Magento\Webapi\Controller\Rest\Validator;
+namespace Magento\Webapi\Controller\Rest\Matcher;
 
 /**
- *  Request validator interface
+ *  Request matcher interface
  */
-interface RequestValidatorInterface
+interface RequestMatcherInterface
 {
     /**
      * Method should return true for all the request current processor can process.
@@ -20,5 +20,5 @@ interface RequestValidatorInterface
      * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return bool
      */
-    public function canProcess(\Magento\Framework\Webapi\Rest\Request $request);
+    public function isMatched(\Magento\Framework\Webapi\Rest\Request $request);
 }

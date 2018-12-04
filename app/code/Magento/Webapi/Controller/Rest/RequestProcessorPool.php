@@ -26,6 +26,17 @@ class RequestProcessorPool
     public function __construct($requestProcessors = [])
     {
         $this->requestProcessors = $requestProcessors;
+
+        foreach ($this->requestProcessors as $key => $processorData) {
+            if (!is_object($processorData)) {
+                if (!isset($processorData['processor'])) {
+                    throw new \InvalidArgumentException("Instance for Processor '{$key}' is not defined");
+                }
+                if (!isset($processorData['matcher'])) {
+                    throw new \InvalidArgumentException("Matcher for Processor '{$key}' is not defined");
+                }
+            }
+        }
     }
 
     /**
@@ -46,15 +57,14 @@ class RequestProcessorPool
                     return $processorData;
                 }
             } else {
-                if (isset($processorData['processor']) && isset($processorData['validator'])) {
-                    $requestValidator = $processorData['validator'];
-                    if ($requestValidator->canProcess($request)) {
+                if (isset($processorData['processor']) && isset($processorData['matcher'])) {
+                    $requestMatcher = $processorData['matcher'];
+                    if ($requestMatcher->isMatched($request)) {
                         return $processorData['processor'];
                     }
                 }
             }
         }
-
         throw new \Magento\Framework\Webapi\Exception(
             __('Specified request cannot be processed.'),
             0,

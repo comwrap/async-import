@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-namespace Magento\WebapiAsync\Controller\Rest\Validator;
+namespace Magento\WebapiAsync\Controller\Rest\Matcher;
 
-use Magento\Webapi\Controller\Rest\Validator\RequestValidatorInterface;
+use Magento\Webapi\Controller\Rest\Matcher\RequestMatcherInterface;
 
 /**
  * Responsible for validating Async and Bulk request if they can be processed by defined processor
  */
-class AsynchronousRequestValidator implements RequestValidatorInterface
+class AsynchronousRequestMatcher implements RequestMatcherInterface
 {
     const PROCESSOR_PATH = "/^\\/async(\\/V.+)/";
     const BULK_PROCESSOR_PATH = "/^\\/async\/bulk(\\/V.+)/";
@@ -37,7 +37,7 @@ class AsynchronousRequestValidator implements RequestValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
+    public function isMatched(\Magento\Framework\Webapi\Rest\Request $request)
     {
         if ($request->getHttpMethod() === \Magento\Framework\Webapi\Rest\Request::HTTP_METHOD_GET) {
             return false;

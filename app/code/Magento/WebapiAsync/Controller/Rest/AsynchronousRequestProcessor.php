@@ -72,7 +72,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
         WebApiAsyncConfig $webapiAsyncConfig,
         DataObjectProcessor $dataObjectProcessor,
         AsyncResponseInterfaceFactory $asyncResponse,
-        $processorPath = \Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousRequestValidator::PROCESSOR_PATH
+        $processorPath = \Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::PROCESSOR_PATH
     ) {
         $this->response = $response;
         $this->inputParamsResolver = $inputParamsResolver;
@@ -150,7 +150,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
      */
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
-        if (preg_match(\Magento\WebapiAsync\Controller\Rest\Validator\AsynchronousRequestValidator::BULK_PROCESSOR_PATH, $request->getPathInfo()) === 1) {
+        if (preg_match(\Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH, $request->getPathInfo()) === 1) {
             return true;
         }
         return false;
