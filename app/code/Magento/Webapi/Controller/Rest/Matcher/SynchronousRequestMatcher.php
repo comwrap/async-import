@@ -15,7 +15,7 @@ class SynchronousRequestMatcher implements RequestMatcherInterface
     const PROCESSOR_PATH = "/^\\/V\\d+/";
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function isMatched(\Magento\Framework\Webapi\Rest\Request $request)
     {

@@ -16,7 +16,7 @@ class SchemaRequestMatcher implements RequestMatcherInterface
     const PROCESSOR_PATH = 'schema';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function isMatched(\Magento\Framework\Webapi\Rest\Request $request)
     {

@@ -40,7 +40,7 @@ class RequestProcessorPool
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @throws \Magento\Framework\Webapi\Exception
      * return RequestProcessorInterface
