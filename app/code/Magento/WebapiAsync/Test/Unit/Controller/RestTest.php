@@ -83,6 +83,12 @@ class RestTest extends \PHPUnit\Framework\TestCase
     private $asyncSchemaRequestProcessor;
 
     /**
+     * @var  \Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher |
+     *     \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $asynchronousSchemaRequestMatcher;
+
+    /**
      * @var  \Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor |
      *     \PHPUnit_Framework_MockObject_MockObject
      */
@@ -190,7 +196,7 @@ class RestTest extends \PHPUnit\Framework\TestCase
         ];
         $this->requestMock->expects($this->any())
             ->method('getPathInfo')
-            ->willReturn(AsynchronousSchemaRequestProcessor::PROCESSOR_PATH);
+            ->willReturn(AsynchronousSchemaRequestMatcher::PROCESSOR_PATH);
 
         $this->requestMock->expects($this->any())
             ->method('getParams')
@@ -210,7 +216,7 @@ class RestTest extends \PHPUnit\Framework\TestCase
         ];
         $this->requestMock->expects($this->any())
             ->method('getPathInfo')
-            ->willReturn(AsynchronousSchemaRequestProcessor::PROCESSOR_PATH);
+            ->willReturn(AsynchronousSchemaRequestMatcher::PROCESSOR_PATH);
         $this->requestMock->expects($this->any())
             ->method('getParam')
             ->will(
