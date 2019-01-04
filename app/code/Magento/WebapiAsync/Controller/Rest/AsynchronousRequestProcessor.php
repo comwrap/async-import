@@ -17,6 +17,7 @@ use Magento\AsynchronousOperations\Model\ConfigInterface as WebApiAsyncConfig;
 use Magento\Framework\Reflection\DataObjectProcessor;
 use Magento\AsynchronousOperations\Api\Data\AsyncResponseInterfaceFactory;
 use Magento\AsynchronousOperations\Api\Data\AsyncResponseInterface;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher;
 
 /**
  * Responsible for dispatching single and bulk requests.
@@ -72,7 +73,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
         WebApiAsyncConfig $webapiAsyncConfig,
         DataObjectProcessor $dataObjectProcessor,
         AsyncResponseInterfaceFactory $asyncResponse,
-        $processorPath = \Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::PROCESSOR_PATH
+        $processorPath = AsynchronousRequestMatcher::PROCESSOR_PATH
     ) {
         $this->response = $response;
         $this->inputParamsResolver = $inputParamsResolver;
@@ -84,7 +85,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function process(\Magento\Framework\Webapi\Rest\Request $request)
     {
@@ -116,6 +117,8 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
     }
 
     /**
+     * Receive topic name for request
+     *
      * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return string
      */
@@ -130,7 +133,7 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
     {
@@ -145,12 +148,16 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
     }
 
     /**
+     * Check if current request is a BULK request
+     *
      * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return bool
      */
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
-        if (preg_match(\Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH, $request->getPathInfo()) === 1) {
+        if (preg_match(
+            AsynchronousRequestMatcher::BULK_PROCESSOR_PATH,
+            $request->getPathInfo()) === 1) {
             return true;
         }
         return false;

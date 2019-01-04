@@ -35,7 +35,7 @@ class AsynchronousRequestMatcher implements RequestMatcherInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function isMatched(\Magento\Framework\Webapi\Rest\Request $request)
     {
@@ -48,5 +48,4 @@ class AsynchronousRequestMatcher implements RequestMatcherInterface
         }
         return false;
     }
-
 }

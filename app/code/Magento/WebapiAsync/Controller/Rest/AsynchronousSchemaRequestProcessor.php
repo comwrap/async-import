@@ -12,7 +12,12 @@ use Magento\Webapi\Model\Rest\Swagger\Generator;
 use Magento\Framework\Webapi\Rest\Response as RestResponse;
 use Magento\Framework\Webapi\Request;
 use Magento\Webapi\Controller\Rest\RequestProcessorInterface;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher;
 
+/**
+ * Class AsynchronousSchemaRequestProcessor responsible for processing
+ * requests from swagger
+ */
 class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
 {
     /**
@@ -38,7 +43,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     public function __construct(
         Generator $swaggerGenerator,
         RestResponse $response,
-        $processorPath = \Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH
+        $processorPath = AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH
     ) {
         $this->swaggerGenerator = $swaggerGenerator;
         $this->response = $response;
@@ -46,7 +51,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function process(\Magento\Framework\Webapi\Rest\Request $request)
     {
@@ -64,8 +69,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     }
 
     /**
-     *
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function canProcess(\Magento\Framework\Webapi\Rest\Request $request)
     {
@@ -76,12 +80,16 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     }
 
     /**
+     * Check if current request is a BULK request
+     *
      * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return bool
      */
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
-        if (strpos(ltrim($request->getPathInfo(), '/'), \Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH) === 0) {
+        if (strpos(
+            ltrim($request->getPathInfo(), '/'),
+                AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH) === 0) {
             return true;
         }
         return false;

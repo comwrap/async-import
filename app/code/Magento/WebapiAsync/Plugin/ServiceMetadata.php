@@ -10,9 +10,12 @@ namespace Magento\WebapiAsync\Plugin;
 
 use Magento\Webapi\Model\Config\Converter as WebapiConverter;
 use Magento\AsynchronousOperations\Api\Data\AsyncResponseInterface;
-use Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher;
 use Magento\WebapiAsync\Model\ServiceConfig\Converter;
 
+/**
+ * Class ServiceMetadata
+ */
 class ServiceMetadata
 {
     /**
@@ -24,9 +27,9 @@ class ServiceMetadata
      */
     private $serviceConfig;
     /**
-     * @var AsynchronousSchemaRequestProcessor
+     * @var AsynchronousSchemaRequestMatcher
      */
-    private $asynchronousSchemaRequestProcessor;
+    private $asynchronousSchemaRequestMatcher;
     /**
      * @var \Magento\Framework\Webapi\Rest\Request
      */
@@ -51,23 +54,27 @@ class ServiceMetadata
      *
      * @param \Magento\Webapi\Model\Config $webapiConfig
      * @param \Magento\WebapiAsync\Model\ServiceConfig $serviceConfig
-     * @param AsynchronousSchemaRequestProcessor $asynchronousSchemaRequestProcessor
+     * @param \Magento\Framework\Webapi\Rest\Request $request
+     * @param AsynchronousSchemaRequestMatcher $asynchronousSchemaRequestMatcher
+     * @param \Magento\Framework\Reflection\TypeProcessor $typeProcessor
      */
     public function __construct(
         \Magento\Webapi\Model\Config $webapiConfig,
         \Magento\WebapiAsync\Model\ServiceConfig $serviceConfig,
         \Magento\Framework\Webapi\Rest\Request $request,
-        AsynchronousSchemaRequestProcessor $asynchronousSchemaRequestProcessor,
+        AsynchronousSchemaRequestMatcher $asynchronousSchemaRequestMatcher,
         \Magento\Framework\Reflection\TypeProcessor $typeProcessor
     ) {
         $this->webapiConfig = $webapiConfig;
         $this->serviceConfig = $serviceConfig;
         $this->request = $request;
-        $this->asynchronousSchemaRequestProcessor = $asynchronousSchemaRequestProcessor;
+        $this->asynchronousSchemaRequestMatcher = $asynchronousSchemaRequestMatcher;
         $this->typeProcessor = $typeProcessor;
     }
 
     /**
+     * Plugin for getServicesConfig
+     *
      * @param \Magento\Webapi\Model\ServiceMetadata $subject
      * @param array $result
      * @return array
@@ -75,7 +82,7 @@ class ServiceMetadata
      */
     public function afterGetServicesConfig(\Magento\Webapi\Model\ServiceMetadata $subject, array $result)
     {
-        if ($this->asynchronousSchemaRequestProcessor->isValid($this->request)) {
+        if ($this->asynchronousSchemaRequestMatcher->isMatched($this->request)) {
             $synchronousOnlyServiceMethods = $this->getSynchronousOnlyServiceMethods($subject);
             // Replace all results with the async response schema
             foreach ($result as $serviceName => $serviceData) {
@@ -99,8 +106,10 @@ class ServiceMetadata
     }
 
     /**
-     * @param $serviceName
-     * @param $methodName
+     * Check if service method synchronous
+     *
+     * @param string $serviceName
+     * @param string $methodName
      * @param array $synchronousOnlyServiceMethods
      * @return bool
      */
@@ -110,6 +119,8 @@ class ServiceMetadata
     }
 
     /**
+     * Get Service version by name
+     *
      * @param string $serviceName
      * @return array
      */
@@ -183,10 +194,12 @@ class ServiceMetadata
     }
 
     /**
+     * Method appendSynchronousOnlyServiceMethodsWithInterface
+     *
      * @param \Magento\Webapi\Model\ServiceMetadata $serviceMetadata
      * @param array $synchronousOnlyServiceMethods
-     * @param $serviceInterface
-     * @param $serviceMethod
+     * @param string $serviceInterface
+     * @param string $serviceMethod
      */
     private function appendSynchronousOnlyServiceMethodsWithInterface(
         \Magento\Webapi\Model\ServiceMetadata $serviceMetadata,
@@ -205,9 +218,11 @@ class ServiceMetadata
     }
 
     /**
+     * Method removeServiceMethodDefinition
+     *
      * @param array $result
-     * @param $serviceName
-     * @param $methodName
+     * @param string $serviceName
+     * @param string $methodName
      */
     private function removeServiceMethodDefinition(array &$result, $serviceName, $methodName)
     {
@@ -220,9 +235,11 @@ class ServiceMetadata
     }
 
     /**
+     * Method replaceResponseDefinition
+     *
      * @param array $result
-     * @param $serviceName
-     * @param $methodName
+     * @param string $serviceName
+     * @param string $methodName
      */
     private function replaceResponseDefinition(array &$result, $serviceName, $methodName)
     {
@@ -248,6 +265,8 @@ class ServiceMetadata
     }
 
     /**
+     * Get getResponseDefinitionReplacement
+     *
      * @return array
      */
     private function getResponseDefinitionReplacement()
