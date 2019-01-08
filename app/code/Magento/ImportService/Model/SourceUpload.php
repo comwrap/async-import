@@ -23,12 +23,12 @@ class SourceUpload implements SourceUploadInterface
     /**
      * @var SourceProcessorPool
      */
-    protected $sourceProcessorPool;
+    private $sourceProcessorPool;
 
     /**
      * @var SourceUploadResponse
      */
-    protected $responseFactory;
+    private $responseFactory;
 
     /**
      * Import constructor.
@@ -52,7 +52,7 @@ class SourceUpload implements SourceUploadInterface
         try {
             $processor = $this->sourceProcessorPool->getProcessor($source);
             $response = $this->responseFactory->create();
-            $processor->processUpload($source, $response);
+            $response = $processor->processUpload($source, $response);
         } catch (\Exception $e) {
             $response = $this->responseFactory->createFailure($e->getMessage());
         }

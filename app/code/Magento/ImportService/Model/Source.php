@@ -9,12 +9,28 @@ namespace Magento\ImportService\Model;
 
 use Magento\Framework\Model\AbstractModel;
 use Magento\ImportService\Api\Data\SourceInterface;
+use Magento\ImportService\Model\ResourceModel\Source as SourceResource;
 
 /**
  * Class Source
  */
 class Source extends AbstractModel implements SourceInterface
 {
+
+    const CACHE_TAG = 'magento_import_service_source';
+
+    protected function _construct()
+    {
+        $this->_init(SourceResource::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getId()];
+    }
 
     /**
      * @return int
@@ -23,6 +39,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->getData(self::ENTITY_ID);
     }
+
     /**
      * @inheritDoc
      */
@@ -30,6 +47,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->getData(self::SOURCE_TYPE);
     }
+
     /**
      * @inheritDoc
      */
@@ -37,6 +55,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->setData(self::SOURCE_TYPE, $sourceType);
     }
+
     /**
      * @inheritDoc
      */
@@ -44,6 +63,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->getData(self::IMPORT_TYPE);
     }
+
     /**
      * @inheritDoc
      */
@@ -51,6 +71,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->setData(self::IMPORT_TYPE, $importType);
     }
+
     /**
      * @inheritDoc
      */
@@ -58,6 +79,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->getData(self::STATUS);
     }
+
     /**
      * @inheritDoc
      */
@@ -65,6 +87,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->setData(self::STATUS, $status);
     }
+
     /**
      * @inheritDoc
      */
@@ -72,6 +95,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->getData(self::IMPORT_DATA);
     }
+
     /**
      * @inheritDoc
      */
@@ -79,6 +103,7 @@ class Source extends AbstractModel implements SourceInterface
     {
         return $this->setData(self::IMPORT_DATA, $importData);
     }
+
     /**
      * @inheritDoc
      */

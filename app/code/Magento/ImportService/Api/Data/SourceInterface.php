@@ -21,6 +21,10 @@ interface SourceInterface extends ExtensibleDataInterface
     const CREATED_AT = 'created_at';
     const STATUS = 'status';
 
+    const STATUS_UPLOADED = 'uploaded';
+    const STATUS_IN_PROGRESS = 'in_progress';
+    const STATUS_PROCESSED = 'processed';
+
     /**
      * @return int
      */

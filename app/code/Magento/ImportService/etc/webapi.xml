@@ -10,7 +10,13 @@
     <route url="/V1/import/source" method="POST">
         <service class="Magento\ImportService\Api\SourceUploadInterface" method="execute"/>
         <resources>
-            <resource ref="Magento_ImportExport::import" />
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V1/import/start" method="POST">
+        <service class="Magento\ImportService\Api\ImportManagementInterface" method="start"/>
+        <resources>
+            <resource ref="anonymous" />
         </resources>
     </route>
 </routes>

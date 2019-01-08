@@ -8,7 +8,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
     <preference for="Magento\ImportService\Api\SourceUploadInterface" type="Magento\ImportService\Model\SourceUpload" />
+    <preference for="Magento\ImportService\Api\SourceRepositoryInterface" type="Magento\ImportService\Model\SourceRepository"/>
+    <preference for="Magento\ImportService\Api\ImportManagementInterface" type="Magento\ImportServiceBack\Model\ImportManagement"/>
+
+    <preference for="Magento\ImportService\Api\Data\FieldMappingInterface" type="Magento\ImportService\Model\FieldMapping"/>
+    <preference for="Magento\ImportService\Api\Data\ImportEntryInterface" type="Magento\ImportService\Model\ImportEntry"/>
     <preference for="Magento\ImportService\Api\Data\SourceInterface" type="Magento\ImportService\Model\Source" />
+    <preference for="Magento\ImportService\Api\Data\SourceSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="Magento\ImportService\Api\Data\SourceUploadResponseInterface" type="Magento\ImportService\Model\SourceUploadResponse" />
 
     <type name="Magento\ImportService\Model\Import\SourceProcessorPool">
