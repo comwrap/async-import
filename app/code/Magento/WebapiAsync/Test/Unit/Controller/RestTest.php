@@ -254,6 +254,7 @@ class RestTest extends \PHPUnit\Framework\TestCase
             [
                 'swaggerGenerator' => $this->swaggerGeneratorMock,
                 'response'         => $this->responseMock,
+                'processorPath'    => AsynchronousSchemaRequestMatcher::PROCESSOR_PATH
             ]
         );
 
