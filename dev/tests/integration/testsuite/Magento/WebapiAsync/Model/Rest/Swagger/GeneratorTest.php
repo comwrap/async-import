@@ -11,6 +11,8 @@ use Magento\Webapi\Model\Rest\Swagger\Generator;
 use Magento\Webapi\Model\ServiceMetadata;
 use Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor;
 use Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessorMock;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcherMock;
 use Magento\WebapiAsync\Model\AuthorizationMock;
 
 class GeneratorTest extends \PHPUnit\Framework\TestCase
@@ -31,7 +33,8 @@ class GeneratorTest extends \PHPUnit\Framework\TestCase
         $objectManager->configure([
             'preferences' => [
                 Authorization::class => AuthorizationMock::class,
-                AsynchronousSchemaRequestProcessor::class => AsynchronousSchemaRequestProcessorMock::class
+                AsynchronousSchemaRequestProcessor::class => AsynchronousSchemaRequestProcessorMock::class,
+                AsynchronousSchemaRequestMatcher::class => AsynchronousSchemaRequestMatcherMock::class
             ]
         ]);
 

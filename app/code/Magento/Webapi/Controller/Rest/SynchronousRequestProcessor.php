@@ -78,7 +78,7 @@ class SynchronousRequestProcessor implements RequestProcessorInterface
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function process(\Magento\Framework\Webapi\Rest\Request $request)
     {

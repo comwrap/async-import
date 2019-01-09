@@ -12,6 +12,7 @@ use Magento\Authorization\Model\UserContextInterface;
 use Magento\Framework\Exception\AuthorizationException;
 use Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor;
 use Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher;
 
 /**
  * Test Rest controller.
@@ -81,12 +82,6 @@ class RestTest extends \PHPUnit\Framework\TestCase
      *     \PHPUnit_Framework_MockObject_MockObject
      */
     private $asyncSchemaRequestProcessor;
-
-    /**
-     * @var  \Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher |
-     *     \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $asynchronousSchemaRequestMatcher;
 
     /**
      * @var  \Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor |

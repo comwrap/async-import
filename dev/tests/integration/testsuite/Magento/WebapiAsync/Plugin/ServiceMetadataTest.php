@@ -10,6 +10,8 @@ use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Webapi\Model\ServiceMetadata;
 use Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor;
 use Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessorMock;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher;
+use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcherMock;
 
 class ServiceMetadataTest extends \PHPUnit\Framework\TestCase
 {
@@ -23,7 +25,8 @@ class ServiceMetadataTest extends \PHPUnit\Framework\TestCase
         $objectManager = Bootstrap::getObjectManager();
         $objectManager->configure([
             'preferences' => [
-                AsynchronousSchemaRequestProcessor::class => AsynchronousSchemaRequestProcessorMock::class
+                AsynchronousSchemaRequestProcessor::class => AsynchronousSchemaRequestProcessorMock::class,
+                AsynchronousSchemaRequestMatcher::class => AsynchronousSchemaRequestMatcherMock::class
             ]
         ]);
 

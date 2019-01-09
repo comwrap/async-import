@@ -156,8 +156,11 @@ class AsynchronousRequestProcessor implements RequestProcessorInterface
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
         if (preg_match(
+            // @codingStandardsIgnoreStart
             AsynchronousRequestMatcher::BULK_PROCESSOR_PATH,
-            $request->getPathInfo()) === 1) {
+            $request->getPathInfo()) === 1
+            // @codingStandardsIgnoreEnd
+        ) {
             return true;
         }
         return false;

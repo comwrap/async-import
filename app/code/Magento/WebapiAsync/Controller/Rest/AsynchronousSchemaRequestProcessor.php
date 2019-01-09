@@ -15,8 +15,7 @@ use Magento\Webapi\Controller\Rest\RequestProcessorInterface;
 use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher;
 
 /**
- * Class AsynchronousSchemaRequestProcessor responsible for processing
- * requests from swagger
+ * Class AsynchronousSchemaRequestProcessor responsible for processing requests from swagger
  */
 class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
 {
@@ -88,8 +87,11 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     public function isBulk(\Magento\Framework\Webapi\Rest\Request $request)
     {
         if (strpos(
+            // @codingStandardsIgnoreStart
             ltrim($request->getPathInfo(), '/'),
-                AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH) === 0) {
+            AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH) === 0
+            // @codingStandardsIgnoreEnd
+        ) {
             return true;
         }
         return false;
