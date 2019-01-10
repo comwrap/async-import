@@ -20,6 +20,16 @@ use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher
 class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
 {
     /**
+     * Path for accessing Async Rest API schema
+     * @deprecated
+     */
+    const PROCESSOR_PATH = AsynchronousSchemaRequestMatcher::PROCESSOR_PATH;
+    /**
+     * @deprecated
+     */
+    const BULK_PROCESSOR_PATH = AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH;
+
+    /**
      * @var \Magento\Webapi\Model\Rest\Swagger\Generator
      */
     private $swaggerGenerator;
@@ -42,7 +52,7 @@ class AsynchronousSchemaRequestProcessor implements RequestProcessorInterface
     public function __construct(
         Generator $swaggerGenerator,
         RestResponse $response,
-        $processorPath = AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH
+        $processorPath = AsynchronousSchemaRequestMatcher::PROCESSOR_PATH
     ) {
         $this->swaggerGenerator = $swaggerGenerator;
         $this->response = $response;

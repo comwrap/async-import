@@ -27,6 +27,14 @@ use Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher;
 class AsynchronousRequestProcessor implements RequestProcessorInterface
 {
     /**
+     * @deprecated
+     */
+    const PROCESSOR_PATH = AsynchronousRequestMatcher::PROCESSOR_PATH;
+    /**
+     * @deprecated
+     */
+    const BULK_PROCESSOR_PATH = AsynchronousRequestMatcher::BULK_PROCESSOR_PATH;
+    /**
      * @var \Magento\Framework\Webapi\Rest\Response
      */
     private $response;
