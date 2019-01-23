@@ -47,11 +47,11 @@
             <argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher" type="Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher">
-        <arguments>
-            <argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH</argument>
-        </arguments>
-    </virtualType>
+    <!--<virtualType name="Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher" type="Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher">-->
+        <!--<arguments>-->
+            <!--<argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH</argument>-->
+        <!--</arguments>-->
+    <!--</virtualType>-->
     <type name="Magento\Webapi\Controller\Rest">
         <plugin name="webapiContorllerRestAsync" type="Magento\WebapiAsync\Plugin\ControllerRest" />
     </type>
