@@ -12,17 +12,13 @@ namespace Magento\ImportService\Api\Data;
  */
 interface SourceUploadResponseInterface
 {
-    const STATUS_UPLOADED = 'uploaded';
-
-    const STATUS_COMPLETED = 'completed';
-
-    const STATUS_FAILED = 'failed';
-
     const SOURCE_ID = 'source_id';
 
     const STATUS = 'status';
 
     const ERROR = 'error';
+
+    const SOURCE_MODEL = 'source';
 
     /**
      * Get file ID
@@ -46,6 +42,13 @@ interface SourceUploadResponseInterface
     public function getError();
 
     /**
+     * Get source
+     *
+     * @return \Magento\ImportService\Api\Data\SourceInterface
+     */
+    public function getSource();
+
+    /**
      * @param $sourceId
      * @return mixed
      */
@@ -62,4 +65,10 @@ interface SourceUploadResponseInterface
      * @return mixed
      */
     public function setError($error);
+
+    /**
+     * @param \Magento\ImportService\Api\Data\SourceInterface $source
+     * @return mixed
+     */
+    public function setSource(\Magento\ImportService\Api\Data\SourceInterface $source);
 }

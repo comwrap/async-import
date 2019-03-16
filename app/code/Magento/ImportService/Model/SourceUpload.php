@@ -8,14 +8,11 @@ declare(strict_types=1);
 namespace Magento\ImportService\Model;
 
 use Magento\ImportService\Api\Data\SourceInterface;
-use Magento\ImportService\Model\SourceUploadResponseFactory;
 use Magento\ImportService\Model\Import\SourceProcessorPool;
 use Magento\ImportService\Api\SourceUploadInterface;
 
 /**
- * Class Import
- *
- * @package Magento\ImportService\Model
+ * Class SourceUpload
  */
 class SourceUpload implements SourceUploadInterface
 {
@@ -31,7 +28,6 @@ class SourceUpload implements SourceUploadInterface
     private $responseFactory;
 
     /**
-     * Import constructor.
      * @param SourceUploadResponseFactory $responseFactory
      * @param SourceProcessorPool $sourceProcessorPool
      */

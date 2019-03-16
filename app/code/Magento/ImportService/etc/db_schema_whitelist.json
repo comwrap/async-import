@@ -1,3 +1,15 @@
 {
-
+  "import_service_source": {
+    "column": {
+      "source_id": true,
+      "status": true,
+      "source_type": true,
+      "import_type": true,
+      "import_data": true,
+      "created_at": true
+    },
+    "constraint": {
+      "PRIMARY": true
+    }
+  }
 }

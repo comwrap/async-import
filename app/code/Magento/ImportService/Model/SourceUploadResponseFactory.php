@@ -1,4 +1,10 @@
 <?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+declare(strict_types=1);
+
 namespace Magento\ImportService\Model;
 
 /**
@@ -53,7 +59,7 @@ class SourceUploadResponseFactory
     {
         $response = $this->_objectManager->create($this->_instanceName, []);
         $response->setError($error);
-        $response->setStatus(\Magento\ImportService\Api\Data\SourceUploadResponseInterface::STATUS_FAILED);
+        $response->setStatus(\Magento\ImportService\Api\Data\SourceInterface::STATUS_FAILED);
         return $response;
     }
 }

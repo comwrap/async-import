@@ -7,15 +7,17 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Model;
 
-use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\AbstractExtensibleModel;
+use Magento\ImportService\Api\Data\SourceExtensionInterface;
 use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\Model\ResourceModel\Source as SourceResource;
 
 /**
  * Class Source
  */
-class Source extends AbstractModel implements SourceInterface
+class Source extends AbstractExtensibleModel implements SourceInterface
 {
+    const CACHE_TAG = 'magento_import_service_source';
 
     const CACHE_TAG = 'magento_import_service_source';
 
@@ -33,7 +35,25 @@ class Source extends AbstractModel implements SourceInterface
     }
 
     /**
-     * @return int
+     * Source constructor
+     */
+    protected function _construct()
+    {
+        $this->_init(SourceResource::class);
+    }
+
+    /**
+     * Get unique page cache identities
+     *
+     * @return array
+     */
+    public function getIdentities()
+    {
+        return [self::CACHE_TAG . '_' . $this->getId()];
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getSourceId()
     {
@@ -110,5 +130,21 @@ class Source extends AbstractModel implements SourceInterface
     public function getCreatedAt()
     {
         return $this->getData(self::CREATED_AT);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExtensionAttributes(SourceExtensionInterface $extensionAttributes)
+    {
+        return $this->_setExtensionAttributes($extensionAttributes);
     }
 }

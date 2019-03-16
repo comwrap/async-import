@@ -4,6 +4,7 @@
  * See COPYING.txt for license details.
  */
 declare(strict_types=1);
+
 namespace Magento\ImportService\Model\ResourceModel\Source;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
@@ -15,6 +16,9 @@ use Magento\ImportService\Model\Source;
  */
 class Collection extends AbstractCollection
 {
+    /**
+     * Source collection constructor
+     */
     protected function _construct()
     {
         $this->_init(Source::class, SourceResourceModel::class);

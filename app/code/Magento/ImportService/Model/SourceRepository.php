@@ -26,29 +26,30 @@ use Magento\ImportService\Model\ResourceModel\Source\CollectionFactory as Source
 class SourceRepository implements SourceRepositoryInterface
 {
     /**
-     * @var \Magento\ImportService\Model\SourceFactory
+     * @var SourceFactory
      */
     private $sourceFactory;
+
     /**
-     * @var \Magento\ImportService\Model\ResourceModel\Source
+     * @var SourceResourceModel
      */
     private $sourceResourceModel;
+
     /**
-     * @var \Magento\ImportService\Model\ResourceModel\Source\CollectionFactory
+     * @var SourceCollectionFactory
      */
     private $sourceCollectionFactory;
+
     /**
-     * @var \Magento\ImportService\Api\Data\SourceSearchResultsInterfaceFactory
+     * @var SearchResultsInterfaceFactory
      */
     private $searchResultsFactory;
 
     /**
-     * Init dependencies.
-     *
-     * @param \Magento\ImportService\Model\SourceFactory $sourceFactory
-     * @param \Magento\ImportService\Model\ResourceModel\Source $sourceResourceModel
-     * @param \Magento\ImportService\Model\ResourceModel\Source\CollectionFactory $sourceCollectionFactory
-     * @param \Magento\ImportService\Api\Data\SourceSearchResultsInterfaceFactory $searchResultsFactory
+     * @param SourceFactory $sourceFactory
+     * @param SourceResourceModel $sourceResourceModel
+     * @param SourceCollectionFactory $sourceCollectionFactory
+     * @param SearchResultsInterfaceFactory $searchResultsFactory
      */
     public function __construct(
         SourceFactory $sourceFactory,
@@ -56,14 +57,15 @@ class SourceRepository implements SourceRepositoryInterface
         SourceCollectionFactory $sourceCollectionFactory,
         SearchResultsInterfaceFactory $searchResultsFactory
     ) {
-        $this->sourceFactory = $sourceFactory;
-        $this->sourceResourceModel = $sourceResourceModel;
-        $this->sourceCollectionFactory = $sourceCollectionFactory;
+        $this->sourceFactory        = $sourceFactory;
+        $this->sourceResourceModel  = $sourceResourceModel;
+        $this->sourceCollectionFactory    = $sourceCollectionFactory;
         $this->searchResultsFactory = $searchResultsFactory;
     }
 
     /**
      * @inheritdoc
+     *
      * @throws CouldNotSaveException
      */
     public function save(SourceInterface $source)
@@ -73,11 +75,13 @@ class SourceRepository implements SourceRepositoryInterface
         } catch (\Exception $e) {
             throw new CouldNotSaveException(__($e->getMessage()));
         }
+
         return $source;
     }
 
     /**
      * @inheritdoc
+     *
      * @throws NoSuchEntityException
      */
     public function getById($id)
@@ -87,11 +91,13 @@ class SourceRepository implements SourceRepositoryInterface
         if (!$source->getId()) {
             throw new NoSuchEntityException(__('Source with id "%1" does not exist.', $id));
         }
+
         return $source;
     }
 
     /**
      * @inheritdoc
+     *
      * @throws CouldNotDeleteException
      */
     public function delete(SourceInterface $source)
@@ -102,11 +108,13 @@ class SourceRepository implements SourceRepositoryInterface
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__($exception->getMessage()));
         }
+
         return true;
     }
 
     /**
      * @inheritdoc
+     *
      * @throws CouldNotDeleteException
      * @throws NoSuchEntityException
      */
@@ -123,7 +131,6 @@ class SourceRepository implements SourceRepositoryInterface
         /** @var SearchResultsInterface $searchResults */
         $searchResults = $this->searchResultsFactory->create();
         $searchResults->setSearchCriteria($criteria);
-        /** @var \Magento\ImportService\Model\ResourceModel\Source\Collection $sourceCollection */
         $sourceCollection = $this->sourceCollectionFactory->create();
         foreach ($criteria->getFilterGroups() as $filterGroup) {
             $fields = [];
@@ -155,6 +162,7 @@ class SourceRepository implements SourceRepositoryInterface
             $sources[] = $sourceModel;
         }
         $searchResults->setItems($sources);
+
         return $searchResults;
     }
 }

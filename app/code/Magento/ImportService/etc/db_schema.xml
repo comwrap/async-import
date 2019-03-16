@@ -14,7 +14,7 @@
         <column xsi:type="varchar" name="import_type" length="255" comment="Type of the import"/>
         <column xsi:type="varchar" name="import_data" length="255" comment="Import data"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" comment="Created at" default="CURRENT_TIMESTAMP"/>
-        <constraint xsi:type="primary" name="PRIMARY">
+        <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="source_id"/>
         </constraint>
     </table>

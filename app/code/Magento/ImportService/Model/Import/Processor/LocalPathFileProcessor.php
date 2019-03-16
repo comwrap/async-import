@@ -11,13 +11,8 @@ use Magento\Framework\Filesystem\Io\File;
 use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\Api\Data\SourceUploadResponseInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Filesystem;
-use Magento\Framework\Filesystem\Directory\WriteInterface;
-use Magento\ImportService\Api\SourceRepositoryInterface;
-use Magento\ImportService\Exception as ImportServiceException;
-use Magento\ImportService\Model\Import\SaveSource;
+use Magento\ImportService\Model\Import\SourceTypePool;
 
 /**
  * CSV files processor for asynchronous import
@@ -25,37 +20,40 @@ use Magento\ImportService\Model\Import\SaveSource;
 class LocalPathFileProcessor implements SourceProcessorInterface
 {
     /**
+     * Import Type
+     */
+    const IMPORT_TYPE = 'local_path';
+
+    /**
+     * @var PersistentSourceProcessor
+     */
+    private $persistantUploader;
+
+    /**
      * @var File
      */
     private $fileSystemIo;
+
     /**
      * @var Filesystem
      */
     private $fileSystem;
-    /**
-     * @var WriteInterface
-     */
-    private $directoryWrite;
-    /**
-     * @var \Magento\ImportService\Api\SourceRepositoryInterface
-     */
-    private $sourceRepository;
 
     /**
-     * LocalPathFileProcessor constructor.
+     * LocalPathFileProcessor constructor
      *
+     * @param PersistentSourceProcessor $persistantUploader
      * @param File $fileSystemIo
      * @param Filesystem $fileSystem
-     * @param \Magento\ImportService\Api\SourceRepositoryInterface $sourceRepository
      */
     public function __construct(
+        PersistentSourceProcessor $persistantUploader,
         File $fileSystemIo,
-        Filesystem $fileSystem,
-        SourceRepositoryInterface $sourceRepository
+        Filesystem $fileSystem
     ) {
+        $this->persistantUploader = $persistantUploader;
         $this->fileSystemIo = $fileSystemIo;
         $this->fileSystem = $fileSystem;
-        $this->sourceRepository = $sourceRepository;
     }
 
     /**
@@ -63,51 +61,19 @@ class LocalPathFileProcessor implements SourceProcessorInterface
      */
     public function processUpload(SourceInterface $source, SourceUploadResponseInterface $response)
     {
-        try {
-            $source->setImportData($this->saveFile($source));
-            $source->setStatus(SourceInterface::STATUS_UPLOADED);
-            $source = $this->sourceRepository->save($source);
-        } catch (CouldNotSaveException $e) {
-            $this->removeFile($source->getImportData());
-            throw new ImportServiceException(__($e->getMessage()));
-        }
+        /** @var \Magento\Framework\Filesystem\Directory\Write $write */
+        $write = $this->fileSystem->getDirectoryWrite(DirectoryList::ROOT);
 
-        $response->setStatus(SourceUploadResponseInterface::STATUS_UPLOADED);
-        $response->setSourceId($source->getSourceId());
-        return $response;
-    }
+        /** create absolute path */
+        $absoluteSourcePath = $write->getAbsolutePath($source->getImportData());
 
-    /**
-     * @param SourceInterface $source
-     * @return string
-     * @throws FileSystemException
-     */
-    private function saveFile(SourceInterface $source)
-    {
-        $filePath = $this->getDirectoryWrite()->getRelativePath($source->getImportData());
-        $newFile = self::IMPORT_SOURCE_FILE_PATH . '/' . uniqid() . '_' . time() . '.' . $source->getSourceType();
-        $this->directoryWrite->copyFile($filePath, $newFile);
-        return $this->getDirectoryWrite()->getAbsolutePath($newFile);
-    }
+        /** read content from system */
+        $content = $this->fileSystemIo->read($absoluteSourcePath);
 
-    /**
-     * @param string $filename
-     * @throws FileSystemException
-     */
-    private function removeFile($filename)
-    {
-        $this->getDirectoryWrite()->delete($filename);
-    }
+        /** Set downloaded data */
+        $source->setImportData($content);
 
-    /**
-     * @return WriteInterface
-     * @throws FileSystemException
-     */
-    private function getDirectoryWrite()
-    {
-        if (!$this->directoryWrite) {
-            $this->directoryWrite = $this->fileSystem->getDirectoryWrite(DirectoryList::ROOT);
-        }
-        return $this->directoryWrite;
+        /** process source and get response details */
+        return $this->persistantUploader->processUpload($source, $response);
     }
 }

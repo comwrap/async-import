@@ -20,6 +20,9 @@ interface SourceInterface extends ExtensibleDataInterface
     const IMPORT_DATA = 'import_data';
     const CREATED_AT = 'created_at';
     const STATUS = 'status';
+    const STATUS_UPLOADED = 'uploaded';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_FAILED = 'failed';
 
     const STATUS_UPLOADED = 'uploaded';
     const STATUS_IN_PROGRESS = 'in_progress';
@@ -92,4 +95,19 @@ interface SourceInterface extends ExtensibleDataInterface
      * @return string
      */
     public function getCreatedAt();
+
+    /**
+     * Retrieve existing extension attributes object or create a new one.
+     *
+     * @return \Magento\ImportService\Api\Data\SourceExtensionInterface|null
+     */
+    public function getExtensionAttributes();
+
+    /**
+     * Set an extension attributes object.
+     *
+     * @param \Magento\ImportService\Api\Data\SourceExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(\Magento\ImportService\Api\Data\SourceExtensionInterface $extensionAttributes);
 }
