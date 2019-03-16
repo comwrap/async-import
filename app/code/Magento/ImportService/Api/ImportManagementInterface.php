@@ -12,7 +12,7 @@ use Magento\ImportService\Api\Data\ImportEntryInterface;
 /**
  * Class ImportProcessor
  *
- * @package Magento\ImportServiceBack\Model
+ * @package Magento\ImportService\Model
  */
 interface ImportManagementInterface
 {

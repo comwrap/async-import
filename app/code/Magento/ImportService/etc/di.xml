@@ -9,7 +9,7 @@
 
     <preference for="Magento\ImportService\Api\SourceUploadInterface" type="Magento\ImportService\Model\SourceUpload" />
     <preference for="Magento\ImportService\Api\SourceRepositoryInterface" type="Magento\ImportService\Model\SourceRepository"/>
-    <preference for="Magento\ImportService\Api\ImportManagementInterface" type="Magento\ImportServiceBack\Model\ImportManagement"/>
+    <preference for="Magento\ImportService\Api\ImportManagementInterface" type="Magento\ImportService\Model\ImportManagement"/>
 
     <preference for="Magento\ImportService\Api\Data\FieldMappingInterface" type="Magento\ImportService\Model\FieldMapping"/>
     <preference for="Magento\ImportService\Api\Data\ImportEntryInterface" type="Magento\ImportService\Model\ImportEntry"/>

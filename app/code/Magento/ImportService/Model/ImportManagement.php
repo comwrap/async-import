@@ -5,16 +5,16 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportServiceBack\Model;
+namespace Magento\ImportService\Model;
 
-use Magento\ImportServiceBack\Api\Data\ImportEntryInterface;
+use Magento\ImportService\Api\Data\ImportEntryInterface;
 use Epfremme\Swagger\Factory\SwaggerFactory;
 use Dflydev\DotAccessData\Data as DotAccess;
 
 /**
  * Class ImportProcessor
  *
- * @package Magento\ImportServiceBack\Model
+ * @package Magento\ImportService\Model
  */
 class ImportManagement implements \Magento\ImportService\Api\ImportManagementInterface
 {
@@ -26,11 +26,11 @@ class ImportManagement implements \Magento\ImportService\Api\ImportManagementInt
      */
     private $importModelFactory;
     /**
-     * @var \Magento\ImportServiceBack\Model\Source\TypePool
+     * @var \Magento\ImportService\Model\Source\TypePool
      */
     private $typePool;
     /**
-     * @var \Magento\ImportServiceBack\Model\Source\FileTypePool
+     * @var \Magento\ImportService\Model\Source\FileTypePool
      */
     private $fileTypePool;
     /**
@@ -38,31 +38,31 @@ class ImportManagement implements \Magento\ImportService\Api\ImportManagementInt
      */
     private $readFactory;
     /**
-     * @var \Magento\ImportServiceBack\Model\ConfigInterface
+     * @var \Magento\ImportService\Model\ConfigInterface
      */
     private $importServiceConfig;
     /**
-     * @var \Magento\ImportServiceBack\Model\Entity\Factory
+     * @var \Magento\ImportService\Model\Entity\Factory
      */
     private $entityFactory;
 
     /**
      * @param \Magento\ImportExport\Model\ImportFactory $importModelFactory
      * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
-     * @param \Magento\ImportServiceBack\Model\Source\TypePool $typePool
-     * @param \Magento\ImportServiceBack\Model\Source\FileTypePool $fileTypePool
-     * @param \Magento\ImportServiceBack\Model\ConfigInterface $importServiceConfig
-     * @param \Magento\ImportServiceBack\Model\Entity\Factory $entityFactory
-     * @internal param \Magento\ImportServiceBack\Model\ConfigInterface
+     * @param \Magento\ImportService\Model\Source\TypePool $typePool
+     * @param \Magento\ImportService\Model\Source\FileTypePool $fileTypePool
+     * @param \Magento\ImportService\Model\ConfigInterface $importServiceConfig
+     * @param \Magento\ImportService\Model\Entity\Factory $entityFactory
+     * @internal param \Magento\ImportService\Model\ConfigInterface
      *     $importService
      */
     public function __construct(
         \Magento\ImportExport\Model\ImportFactory $importModelFactory,
         \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory,
-        \Magento\ImportServiceBack\Model\Source\TypePool $typePool,
-        \Magento\ImportServiceBack\Model\Source\FileTypePool $fileTypePool,
-        \Magento\ImportServiceBack\Model\ConfigInterface $importServiceConfig,
-        \Magento\ImportServiceBack\Model\Entity\Factory $entityFactory
+        \Magento\ImportService\Model\Source\TypePool $typePool,
+        \Magento\ImportService\Model\Source\FileTypePool $fileTypePool,
+        \Magento\ImportService\Model\ConfigInterface $importServiceConfig,
+        \Magento\ImportService\Model\Entity\Factory $entityFactory
     ) {
         $this->importModelFactory = $importModelFactory;
         $this->typePool = $typePool;
@@ -158,7 +158,7 @@ EOT;
             //$importModel = $this->importModelFactory->create($data);
             //$importModel->importSource();
 
-            /** @var \Magento\ImportServiceBack\Api\Data\ImportParamsInterface $importParams */
+            /** @var \Magento\ImportService\Api\Data\ImportParamsInterface $importParams */
             $importParams = $importEntry->getImportParams();
             $entityType = $importParams->getEntityType();
             $behaviour = $importParams->getBehavior();
@@ -179,14 +179,14 @@ EOT;
     }
 
     /**
-     * @param \Magento\ImportServiceBack\Api\Data\ImportEntryInterface $importEntry
-     * @return \Magento\ImportServiceBack\Model\Entity\AbstractEntity
+     * @param \Magento\ImportService\Api\Data\ImportEntryInterface $importEntry
+     * @return \Magento\ImportService\Model\Entity\AbstractEntity
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     private function getEntityAdapter(ImportEntryInterface $importEntry)
     {
         if (!$this->entityAdapter) {
-            /** @var \Magento\ImportServiceBack\Api\Data\ImportParamsInterface $importParams */
+            /** @var \Magento\ImportService\Api\Data\ImportParamsInterface $importParams */
             $importParams = $importEntry->getImportParams();
             $fieldsMapping = $importEntry->getFieldsMapping();
 
@@ -201,7 +201,7 @@ EOT;
                         __('Please enter a correct entity model.')
                     );
                 }
-                if (!$this->entityAdapter instanceof \Magento\ImportServiceBack\Model\Entity\AbstractEntity) {
+                if (!$this->entityAdapter instanceof \Magento\ImportService\Model\Entity\AbstractEntity) {
                     throw new \Magento\Framework\Exception\LocalizedException(
                         __(
                             'The entity adapter object must be an instance of %1 or %2.',
@@ -229,7 +229,7 @@ EOT;
     }
 
     /**
-     * @param \Magento\ImportServiceBack\Api\Data\ImportEntryInterface $importEntry
+     * @param \Magento\ImportService\Api\Data\ImportEntryInterface $importEntry
      * @return \Magento\ImportExport\Model\Import\AbstractSource
      */
     private function getSource(ImportEntryInterface $importEntry)
