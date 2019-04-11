@@ -7,6 +7,7 @@
       "source_type": true,
       "import_type": true,
       "import_data": true,
+      "format": true,
       "created_at": true
     },
     "constraint": {

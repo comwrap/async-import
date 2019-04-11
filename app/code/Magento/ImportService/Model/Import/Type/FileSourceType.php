@@ -126,6 +126,9 @@ class FileSourceType implements SourceTypeInterface
         /** save processed source with status */
         $source = $this->sourceRepository->save($source);
 
+        /** load to build the object */
+        $source = $this->sourceRepository->getByUuid($source->getUuid());
+
         return $source;
     }
 }

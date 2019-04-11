@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Magento\ImportService\Api\Data;
 
 use Magento\Framework\Api\ExtensibleDataInterface;
+use Magento\ImportService\Api\Data\SourceFormatInterface;
 
 /**
  * Interface SourceInterface
@@ -19,6 +20,7 @@ interface SourceInterface extends ExtensibleDataInterface
     const SOURCE_TYPE = 'source_type';
     const IMPORT_TYPE = 'import_type';
     const IMPORT_DATA = 'import_data';
+    const FORMAT = 'format';
     const CREATED_AT = 'created_at';
     const STATUS = 'status';
     const STATUS_UPLOADED = 'uploaded';
@@ -26,9 +28,11 @@ interface SourceInterface extends ExtensibleDataInterface
     const STATUS_FAILED = 'failed';
 
     /**
-     * @return string
+     * Retrieve source uuid
+     *
+     * @return string|null
      */
-    public function getUuid();
+    public function getUuid(): ?string;
 
     /**
      * Set data source uuid
@@ -36,14 +40,14 @@ interface SourceInterface extends ExtensibleDataInterface
      * @param string $uuid
      * @return $this
      */
-    public function setUuid($uuid);
+    public function setUuid(string $uuid): SourceInterface;
 
     /**
      * Retrieve data source type
      *
      * @return string
      */
-    public function getSourceType();
+    public function getSourceType(): string;
 
     /**
      * Set data source type
@@ -51,14 +55,14 @@ interface SourceInterface extends ExtensibleDataInterface
      * @param string $sourceType
      * @return $this
      */
-    public function setSourceType($sourceType);
+    public function setSourceType(string $sourceType): SourceInterface;
 
     /**
      * Retrieve Import type
      *
      * @return string
      */
-    public function getImportType();
+    public function getImportType(): string;
 
     /**
      * Set Import type
@@ -66,25 +70,25 @@ interface SourceInterface extends ExtensibleDataInterface
      * @param string $importType
      * @return $this
      */
-    public function setImportType($importType);
+    public function setImportType(string $importType): SourceInterface;
 
     /**
      * @return string
      */
-    public function getStatus();
+    public function getStatus(): string;
 
     /**
      * @param string $status
      * @return $this
      */
-    public function setStatus($status);
+    public function setStatus(string $status): SourceInterface;
 
     /**
      * Retrieve Import data
      *
      * @return string
      */
-    public function getImportData();
+    public function getImportData(): string;
 
     /**
      * Set Import data
@@ -92,21 +96,37 @@ interface SourceInterface extends ExtensibleDataInterface
      * @param string $importData
      * @return $this
      */
-    public function setImportData($importData);
+    public function setImportData(string $importData): SourceInterface;
+
+    /**
+     * Retrieve Source Format
+     *
+     * @return \Magento\ImportService\Api\Data\SourceFormatInterface|null
+     */
+    public function getFormat(): ?SourceFormatInterface;
+
+    /**
+     * Set Source Format
+     *
+     * @param \Magento\ImportService\Api\Data\SourceFormatInterface $format
+     * @return $this
+     */
+    public function setFormat(SourceFormatInterface $format): SourceInterface;
 
     /**
      * Retrieve Import data
      *
      * @return string
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): string;
 
     /**
      * Set Import date
      *
+     * @param string $date
      * @return string
      */
-    public function setCreatedAt($date);
+    public function setCreatedAt(string $date): SourceInterface;
 
     /**
      * Retrieve existing extension attributes object or create a new one.

@@ -11,6 +11,12 @@
                 type="Magento\ImportService\Model\SourceUpload" />
     <preference for="Magento\ImportService\Api\Data\SourceInterface"
                 type="Magento\ImportService\Model\Source" />
+    <preference for="Magento\ImportService\Api\Data\SourceFormatInterface"
+                type="Magento\ImportService\Model\SourceFormat" />
+    <preference for="Magento\ImportService\Api\Data\SourceFormatMappingInterface"
+                type="Magento\ImportService\Model\SourceFormatMapping" />
+    <preference for="Magento\ImportService\Api\Data\SourceFormatMappingValueInterface"
+                type="Magento\ImportService\Model\SourceFormatMappingValue" />
     <preference for="Magento\ImportService\Api\Data\SourceUploadResponseInterface"
                 type="Magento\ImportService\Model\SourceUploadResponse" />
     <preference for="Magento\ImportService\Api\SourceRepositoryInterface"
@@ -30,6 +36,7 @@
             <argument name="allowedMimeTypes" xsi:type="array">
                 <item name="plain" xsi:type="string">text/plain</item>
                 <item name="csv" xsi:type="string">text/csv</item>
+                <item name="octet-stream" xsi:type="string">application/octet-stream</item>
             </argument>
         </arguments>
     </virtualType>

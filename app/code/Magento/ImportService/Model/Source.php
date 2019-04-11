@@ -7,10 +7,16 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Model;
 
+use Magento\Framework\Api\AttributeValueFactory;
+use Magento\Framework\Api\ExtensionAttributesFactory;
 use Magento\Framework\Model\AbstractExtensibleModel;
 use Magento\ImportService\Api\Data\SourceExtensionInterface;
 use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\Model\ResourceModel\Source as SourceResource;
+use Magento\ImportService\Api\Data\SourceFormatInterface;
+use Magento\ImportService\Model\SourceFormatFactory as FormatFactory;
+use Magento\ImportService\Model\SourceFormatMappingFactory as MappingFactory;
+use Magento\ImportService\Model\SourceFormatMappingValueFactory as MappingValueFactory;
 
 /**
  * Class Source
@@ -35,6 +41,57 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     }
 
     /**
+     * Source format factory
+     *
+     * @var FormatFactory
+     */
+    private $formatFactory;
+
+    /**
+     * Source format mapping factory
+     *
+     * @var MappingFactory
+     */
+    private $mappingFactory;
+
+    /**
+     * Source format mapping value factory
+     *
+     * @var MappingValueFactory
+     */
+    private $mappingValueFactory;
+
+    /**
+     * @param \Magento\Framework\Model\Context $context
+     * @param \Magento\Framework\Registry $registry
+     * @param ExtensionAttributesFactory $extensionFactory
+     * @param AttributeValueFactory $customAttributeFactory
+     * @param FormatFactory $formatFactory
+     * @param MappingFactory $mappingFactory
+     * @param MappingValueFactory $mappingValueFactory
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
+     * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
+     * @param array $data
+     */
+    public function __construct(
+        \Magento\Framework\Model\Context $context,
+        \Magento\Framework\Registry $registry,
+        ExtensionAttributesFactory $extensionFactory,
+        AttributeValueFactory $customAttributeFactory,
+        FormatFactory $formatFactory,
+        MappingFactory $mappingFactory,
+        MappingValueFactory $mappingValueFactory,
+        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        array $data = []
+    ) {
+        $this->formatFactory = $formatFactory;
+        $this->mappingFactory = $mappingFactory;
+        $this->mappingValueFactory = $mappingValueFactory;
+        parent::__construct($context, $registry, $extensionFactory, $customAttributeFactory, $resource, $resourceCollection, $data);
+    }
+
+    /**
      * Source constructor
      */
     protected function _construct()
@@ -55,7 +112,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getUuid()
+    public function getUuid(): ?string
     {
         return $this->getData(self::UUID);
     }
@@ -63,7 +120,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function setUuid($uuid)
+    public function setUuid(string $uuid): SourceInterface
     {
         return $this->setData(self::UUID, $uuid);
     }
@@ -71,7 +128,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getSourceType()
+    public function getSourceType(): string
     {
         return $this->getData(self::SOURCE_TYPE);
     }
@@ -79,7 +136,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function setSourceType($sourceType)
+    public function setSourceType(string $sourceType): SourceInterface
     {
         return $this->setData(self::SOURCE_TYPE, $sourceType);
     }
@@ -87,7 +144,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getImportType()
+    public function getImportType(): string
     {
         return $this->getData(self::IMPORT_TYPE);
     }
@@ -95,7 +152,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function setImportType($importType)
+    public function setImportType(string $importType): SourceInterface
     {
         return $this->setData(self::IMPORT_TYPE, $importType);
     }
@@ -103,7 +160,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->getData(self::STATUS);
     }
@@ -111,7 +168,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function setStatus($status)
+    public function setStatus(string $status): SourceInterface
     {
         return $this->setData(self::STATUS, $status);
     }
@@ -119,7 +176,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getImportData()
+    public function getImportData(): string
     {
         return $this->getData(self::IMPORT_DATA);
     }
@@ -127,7 +184,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function setImportData($importData)
+    public function setImportData(string $importData): SourceInterface
     {
         return $this->setData(self::IMPORT_DATA, $importData);
     }
@@ -135,7 +192,23 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function getCreatedAt()
+    public function getFormat(): ?SourceFormatInterface
+    {
+        return $this->getData(self::FORMAT);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setFormat(SourceFormatInterface $format): SourceInterface
+    {
+        return $this->setData(self::FORMAT, $format);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCreatedAt(): string
     {
         return $this->getData(self::CREATED_AT);
     }
@@ -143,7 +216,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     /**
      * @inheritDoc
      */
-    public function setCreatedAt($date)
+    public function setCreatedAt(string $date): SourceInterface
     {
         return $this->setData(self::CREATED_AT, $date);
     }
@@ -162,5 +235,88 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     public function setExtensionAttributes(SourceExtensionInterface $extensionAttributes)
     {
         return $this->_setExtensionAttributes($extensionAttributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterLoad()
+    {
+        $formatJson = $this->getData('format');
+
+        if(isset($formatJson)) {
+            /** get format json string and decode */
+            $formatJson = json_decode($formatJson, true);
+
+            /** check for format mapping field, decode json string and convert into object */
+            if(isset($formatJson['mapping'])) {
+                $formatMapping = [];
+                foreach($formatJson['mapping'] as $mappingJson) {
+                    $mappingJson = json_decode($mappingJson, true);
+                    /** check for format mapping value field, decode json string and convert into object */
+                	if(isset($mappingJson['values_mapping'])) {
+                		$valuesMapping = [];
+                		foreach($mappingJson['values_mapping'] as $valuesJson) {
+                			$valuesJson = json_decode($valuesJson, true);
+                    		$valuesMapping[] = $this->mappingValueFactory->create()->setData($valuesJson);
+                		}
+                		$mappingJson['values_mapping'] = $valuesMapping;
+                	}
+                    $formatMapping[] = $this->mappingFactory->create()->setData($mappingJson);
+                }
+                $formatJson['mapping'] = $formatMapping;
+            }
+
+            /** set decoded json string and object to formatted source */
+            $format = $this->formatFactory->create()->setData($formatJson);
+            $this->setFormat($format);
+        }
+
+        parent::afterLoad();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeSave()
+    {
+        /** get format object */
+        $format = $this->getFormat();
+
+
+        if(!isset($format)) {
+            $data = [
+                SourceFormatInterface::CSV_SEPARATOR => SourceFormatInterface::DEFAULT_CSV_SEPARATOR,
+                SourceFormatInterface::CSV_ENCLOSURE => SourceFormatInterface::DEFAULT_CSV_ENCLOSURE,
+                SourceFormatInterface::CSV_DELIMITER => SourceFormatInterface::DEFAULT_CSV_DELIMITER,
+                SourceFormatInterface::MULTIPLE_VALUE_SEPARATOR => SourceFormatInterface::DEFAULT_MULTIPLE_VALUE_SEPARATOR
+            ];
+            /** create format object and set default values */
+            $format = $this->formatFactory->create()->setData($data);
+        }
+
+        /** get list of mapping and convert it into json and set to format */
+        $formatMapping = $format->getMapping();
+
+        /** check for mapping exist or not*/
+        if(isset($formatMapping)) {
+            foreach($formatMapping as &$mapping) {
+                $valuesMapping = $mapping->getValuesMapping();
+                /** check for mapping exist or not and convert it into json */
+                if(isset($valuesMapping)) {
+                    foreach($valuesMapping as &$values) {
+                        $values = $values->toJson();
+                    }
+                    $mapping->setValuesMapping($valuesMapping);
+                }
+                $mapping = $mapping->toJson();
+            }
+            $format->setMapping($formatMapping);
+        }
+
+        /** set format json string to format field */
+        $this->setData('format', $format->toJson());
+
+        parent::beforeSave();
     }
 }
