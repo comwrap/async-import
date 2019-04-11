@@ -22,4 +22,9 @@ interface ImportManagementInterface
      * @return mixed
      */
     public function start($importEntry);
+
+    /**
+     * @return mixed
+     */
+    public function startPoC();
 }

@@ -24,10 +24,6 @@ interface SourceInterface extends ExtensibleDataInterface
     const STATUS_COMPLETED = 'completed';
     const STATUS_FAILED = 'failed';
 
-    const STATUS_UPLOADED = 'uploaded';
-    const STATUS_IN_PROGRESS = 'in_progress';
-    const STATUS_PROCESSED = 'processed';
-
     /**
      * @return int
      */

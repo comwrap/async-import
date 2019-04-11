@@ -31,8 +31,7 @@ class SchemaLocator implements \Magento\Framework\Config\SchemaLocatorInterface
     public function __construct(\Magento\Framework\Module\Dir\Reader $moduleReader)
     {
         $etcDir = $moduleReader->getModuleDir(Dir::MODULE_ETC_DIR, 'Magento_ImportService');
-        $this->_schema = $etcDir . '/import_async_merged.xsd';
-        $this->_perFileSchema = $etcDir . '/import_async.xsd';
+        $this->_schema = $etcDir . '/import_service.xsd';
     }
 
     /**

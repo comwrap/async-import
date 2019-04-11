@@ -11,40 +11,74 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface FieldMappingInterface extends ExtensibleDataInterface
 {
-    const SOURCE_ATTRIBUTE = 'source_attribute';
-    const DESTINATION_ATTRIBUTE = 'destination_attribute';
+    const SOURCE_CODE_PREFIX = 'source';
+    const TARGET_CODE_PREFIX = 'target';
+
+    const CODE = 'code';
+    const SOURCE_PATH = 'source_path';
+    const TARGET_PATH = 'target_path';
     const PROCESSING_RULES = 'processing_rules';
-    const VALUES_MAPPING = 'values_mapping';
 
     /**
-     * Retrieve source attribute_code/column
+     * Retrieve field code
+     * sku_tmp
      *
      * @return string
      */
-    public function getSourceAttribute();
+    public function getCode();
 
     /**
-     * Set source attribute_code/column
+     * Set field code
      *
-     * @param string $sourceAttribute
+     * @param string $code
      * @return $this
      */
-    public function setSourceAttribute($sourceAttribute);
+    public function setCode($code);
 
     /**
-     * Retrieve destination attribute code
+     * Retrieve source field code
      *
      * @return string
      */
-    public function getDestinationAttribute();
+    public function getSourceCode();
 
     /**
-     * Set destination attribute code
+     * Retrieve target field code
      *
-     * @param string $destinationAttribute
+     * @return string
+     */
+    public function getTargetCode();
+
+    /** product.sku
+     * Retrieve Source path to the value
+     *
+     * @return string
+     */
+    public function getSourcePath();
+
+    /**
+     * Set Source path to the value
+     *
+     * @param string $sourcePath
      * @return $this
      */
-    public function setDestinationAttribute($destinationAttribute);
+    public function setSourcePath($sourcePath);
+
+    /**
+     * product.sku_custom|null
+     * Retrieve Target path to the value
+     *
+     * @return string|null
+     */
+    public function getTargetPath();
+
+    /**
+     * Set Target path to the value
+     *
+     * @param string|null $targetPath
+     * @return $this
+     */
+    public function setTargetPath($targetPath);
 
     /**
      * Retrieve rules for processing attribute value, e.g. strtolower, trim

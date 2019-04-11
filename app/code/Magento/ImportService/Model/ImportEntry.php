@@ -31,17 +31,17 @@ class ImportEntry extends AbstractExtensibleModel implements ImportEntryInterfac
     /**
      * @inheritDoc
      */
-    public function getProfileCode()
+    public function getProfile()
     {
-        return $this->getData(self::PROFILE_CODE);
+        return $this->getData(self::PROFILE);
     }
 
     /**
      * @inheritDoc
      */
-    public function setProfileCode($profileCode)
+    public function setProfile($profile)
     {
-        return $this->setData(self::PROFILE_CODE, $profileCode);
+        return $this->setData(self::PROFILE, $profile);
     }
 
     /**
@@ -59,5 +59,4 @@ class ImportEntry extends AbstractExtensibleModel implements ImportEntryInterfac
     {
         return $this->setData(self::SOURCE_ID, $sourceId);
     }
-
 }

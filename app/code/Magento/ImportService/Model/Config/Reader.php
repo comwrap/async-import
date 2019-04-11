@@ -14,9 +14,9 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/config/entity' => 'name',
-        '/config/entityType' => ['entity', 'name'],
-        '/config/relatedIndexer' => ['entity', 'name'],
+        '/routes/route' => ['url', 'method'],
+        '/routes/route/resources/resource' => 'ref',
+        '/routes/route/data' => 'name',
     ];
 
     /**
@@ -34,7 +34,7 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
         \Magento\ImportService\Model\Config\Converter $converter,
         \Magento\ImportService\Model\Config\SchemaLocator $schemaLocator,
         \Magento\Framework\Config\ValidationStateInterface $validationState,
-        $fileName = 'import_async.xml',
+        $fileName = 'import_service.xml',
         $idAttributes = [],
         $domDocumentClass = \Magento\Framework\Config\Dom::class,
         $defaultScope = 'global'

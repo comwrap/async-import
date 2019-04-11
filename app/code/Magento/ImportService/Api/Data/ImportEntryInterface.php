@@ -12,7 +12,7 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 interface ImportEntryInterface extends ExtensibleDataInterface
 {
     const ID = 'id';
-    const PROFILE_CODE = 'profile_code';
+    const PROFILE = 'profile';
     const SOURCE_ID = 'source_id';
 
     /**
@@ -31,19 +31,19 @@ interface ImportEntryInterface extends ExtensibleDataInterface
     public function setId($id);
 
     /**
-     * Retrieve import Profile code
+     * Retrieve import Format
      *
-     * @return string|null
+     * @return \Magento\ImportService\Api\Data\FormatInterface|null
      */
-    public function getProfileCode();
+    public function getProfile();
 
     /**
-     * Set import Profile code
+     * Set import Format
      *
-     * @param string $profileCode
+     * @param \Magento\ImportService\Api\Data\FormatInterface $profile
      * @return $this
      */
-    public function setProfileCode($profileCode);
+    public function setProfile($profile);
 
     /**
      * Get import sourceId
@@ -59,5 +59,4 @@ interface ImportEntryInterface extends ExtensibleDataInterface
      * @return $this
      */
     public function setSourceId($sourceId);
-
 }

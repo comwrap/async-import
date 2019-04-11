@@ -27,7 +27,7 @@ class Config extends Data implements ConfigInterface
     public function __construct(
         Reader $reader,
         CacheInterface $cache,
-        $cacheId = 'import_async_config_cache',
+        $cacheId = 'import_service_config_cache',
         SerializerInterface $serializer = null
     ) {
         parent::__construct($reader, $cache, $cacheId, $serializer);

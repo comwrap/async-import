@@ -7,9 +7,13 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Model;
 
+use Magento\Framework\HTTP\Adapter\CurlFactory;
+use Magento\Framework\HTTP\Client\Curl;
+use Magento\ImportService\Api\Data\FieldMappingInterface;
 use Magento\ImportService\Api\Data\ImportEntryInterface;
 use Epfremme\Swagger\Factory\SwaggerFactory;
 use Dflydev\DotAccessData\Data as DotAccess;
+use Magento\ImportService\Api\Data\FormatInterface;
 
 /**
  * Class ImportProcessor
@@ -18,58 +22,52 @@ use Dflydev\DotAccessData\Data as DotAccess;
  */
 class ImportManagement implements \Magento\ImportService\Api\ImportManagementInterface
 {
-    /**#@-*/
-    private $entityAdapter;
-
-    /**
-     * @var \Magento\ImportExport\Model\ImportFactory
-     */
-    private $importModelFactory;
-    /**
-     * @var \Magento\ImportService\Model\Source\TypePool
-     */
-    private $typePool;
-    /**
-     * @var \Magento\ImportService\Model\Source\FileTypePool
-     */
-    private $fileTypePool;
     /**
      * @var \Magento\Framework\Filesystem\Directory\ReadFactory
      */
     private $readFactory;
     /**
-     * @var \Magento\ImportService\Model\ConfigInterface
+     * @var \Magento\Framework\HTTP\ZendClientFactory
      */
-    private $importServiceConfig;
+    private $httpClientFactory;
     /**
-     * @var \Magento\ImportService\Model\Entity\Factory
+     * @var \Magento\Framework\App\DeploymentConfig
      */
-    private $entityFactory;
+    private $deploymentConfig;
+    /**
+     * @var \Magento\Framework\HTTP\Adapter\CurlFactory
+     */
+    private $curlFactory;
+    /**
+     * @var \Magento\ImportService\Model\ProfileInterfaceFactory
+     */
+    private $profileFactory;
+    /**
+     * @var \Magento\ImportService\Model\FieldMappingInterfaceFactory
+     */
+    private $fieldMappingFactory;
 
     /**
-     * @param \Magento\ImportExport\Model\ImportFactory $importModelFactory
+     * ImportManagement constructor.
+     *
+     * @param \Magento\Framework\App\DeploymentConfig $deploymentConfig
      * @param \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory
-     * @param \Magento\ImportService\Model\Source\TypePool $typePool
-     * @param \Magento\ImportService\Model\Source\FileTypePool $fileTypePool
-     * @param \Magento\ImportService\Model\ConfigInterface $importServiceConfig
-     * @param \Magento\ImportService\Model\Entity\Factory $entityFactory
-     * @internal param \Magento\ImportService\Model\ConfigInterface
-     *     $importService
+     * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
      */
     public function __construct(
-        \Magento\ImportExport\Model\ImportFactory $importModelFactory,
+        \Magento\Framework\App\DeploymentConfig $deploymentConfig,
         \Magento\Framework\Filesystem\Directory\ReadFactory $readFactory,
-        \Magento\ImportService\Model\Source\TypePool $typePool,
-        \Magento\ImportService\Model\Source\FileTypePool $fileTypePool,
-        \Magento\ImportService\Model\ConfigInterface $importServiceConfig,
-        \Magento\ImportService\Model\Entity\Factory $entityFactory
+        \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
+        ProfileInterfaceFactory $profileFactory,
+        FieldMappingInterfaceFactory $fieldMappingFactory,
+        CurlFactory $curlFactory
     ) {
-        $this->importModelFactory = $importModelFactory;
-        $this->typePool = $typePool;
-        $this->fileTypePool = $fileTypePool;
         $this->readFactory = $readFactory;
-        $this->importServiceConfig = $importServiceConfig;
-        $this->entityFactory = $entityFactory;
+        $this->httpClientFactory = $httpClientFactory;
+        $this->deploymentConfig = $deploymentConfig;
+        $this->curlFactory = $curlFactory;
+        $this->profileFactory = $profileFactory;
+        $this->fieldMappingFactory = $fieldMappingFactory;
     }
 
     /**
@@ -106,6 +104,72 @@ class ImportManagement implements \Magento\ImportService\Api\ImportManagementInt
         return $entitiesToImport;
     }
 
+    /**
+     * @TODO remove, tmp code
+     * @inheritdoc
+     */
+    public function startPoC()
+    {
+        try {
+            //$source = $importEntry->getSourceId();
+            $mapping = [
+                'sku' => 'product.sku',
+                'name' => 'product.name',
+                'price' => 'product.price',
+                //'attribute_set_code' => 'product.attribute_set_code',
+                'qty' => 'product.extension_attributes.stock_item.qty'
+            ];
+
+            $entitiesToImport = [];
+
+            $csv = $this->getTestCsvArray();
+            foreach ($csv as $row) {
+                $dotAcess = new DotAccess();
+                foreach ($row as $column => $value) {
+                    if (isset($mapping[$column])) {
+                        $dotAcess->set($mapping[$column], $value);
+                    }
+                }
+                $dotAcess->set('product.attribute_set_id', 4);
+                $entitiesToImport[] = $dotAcess->export();
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage(), $e->getCode());
+        }
+
+        $result = [];
+        foreach ($entitiesToImport as $entity) {
+            $result[] = $this->callApiService($entity);
+        }
+
+        return $result;
+    }
+
+    private function getProfile()
+    {
+        /** @var FormatInterface $profile */
+        $profile = $this->profileFactory->create();
+        $profile->setBehaviour('add_update');
+        $profile->setCode('magento.catalog_product.csv_to_api');
+        $profile->setFieldsMapping($this->getFieldsMapping());
+
+        return $profile;
+    }
+
+    private function getFieldsMapping()
+    {
+        $fieldsMapping = [];
+
+        /** @var FieldMappingInterface $field */
+        $field = $this->fieldMappingFactory->create();
+
+        return $fieldsMapping;
+    }
+
+    /**
+     * @TODO remove, tmp code
+     */
     private function getTestCsvArray()
     {
         $csv = array_map('str_getcsv', explode(PHP_EOL, $this->getTestCsvStr()));
@@ -116,6 +180,48 @@ class ImportManagement implements \Magento\ImportService\Api\ImportManagementInt
         return $csv;
     }
 
+    /**
+     * @TODO remove, tmp code
+     */
+    private function callApiService($body)
+    {
+        $config = $this->deploymentConfig->getConfigData('import_service');
+        $magentoApiConfig = $config['magento'];
+        $url = $magentoApiConfig['url'] .
+            '/V1/products';
+        $body = json_encode($body);
+
+        $curlObject = $this->curlFactory->create();
+        $curlObject->setConfig(
+            [
+                'timeout' => 18000
+            ]
+        );
+
+        $headers = [
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'cache-control: no-cache',
+            "Authorization: Bearer {$magentoApiConfig['token']}"
+        ];
+
+        $curlObject->write(
+            \Zend_Http_Client::POST,
+            $url,
+            CURL_HTTP_VERSION_NONE,
+            $headers,
+            $body
+        );
+        $curlObject->addOption(CURLOPT_FOLLOWLOCATION, true);
+        $response = $curlObject->read();
+        $curlObject->close();
+
+        return $response;
+    }
+
+    /**
+     * @TODO remove, tmp code
+     */
     private function getTestCsvStr()
     {
         $str = <<<EOT
