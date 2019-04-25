@@ -33,29 +33,37 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      */
     public function convert($source)
     {
-        $output = ['entities' => []];
+        return [];
+        $output = ['imports' => []];
         /** @var \DOMNodeList $entities */
-        $entities = $source->getElementsByTagName('entity');
-        /** @var \DOMNode $entityConfig */
-        foreach ($entities as $entityConfig) {
-            $attributes = $entityConfig->attributes;
-            $name = $attributes->getNamedItem('name')->nodeValue;
-            $label = $attributes->getNamedItem('label')->nodeValue;
-            $behavior = $attributes->getNamedItem('behavior')->nodeValue;
-            $apiEndpoint = $attributes->getNamedItem('apiEndpoint')->nodeValue;
-            $apiMethod = $attributes->getNamedItem('apiMethod')->nodeValue;
-            $model = $attributes->getNamedItem('model')->nodeValue;
-            if (!$this->moduleManager->isEnabled(Classes::getClassModuleName($model))) {
+        $entities = $source->getElementsByTagName('import');
+        /** @var \DOMElement $import */
+        foreach ($entities as $import) {
+            if ($import->nodeType != XML_ELEMENT_NODE) {
                 continue;
             }
-            $output['entities'][$name] = [
-                'name' => $name,
-                'label' => $label,
-                'behavior' => $behavior,
-                'apiEndpoint' => $apiEndpoint,
-                'apiMethod' => $apiMethod,
-                'model' => $model,
-                'types' => [],
+            $type = $import->attributes->getNamedItem('type')->nodeValue;
+
+            /** @var \DOMElement $service */
+            $mappingProcessor = $import->getElementsByTagName('mappingProcessor')->item(0);
+            $mpSourceClass = $mappingProcessor->attributes->getNamedItem('sourceClass')->nodeValue;
+            $mpTargetClass = $mappingProcessor->attributes->getNamedItem('targetClass')->nodeValue;
+
+            $behaviours = $import->getElementsByTagName('behaviours');
+            /** @var \DOMElement $behaviour */
+            foreach ($behaviours as $behaviour) {
+                $behaviourCode = $behaviour->attributes->getNamedItem('code')->nodeValue;
+
+            }
+
+            if (!$this->isModelEnabled($mpSourceClass) || !$this->isModelEnabled($mpTargetClass)) {
+                continue;
+            }
+            $output['imports'][$type] = [
+                'type' => $type,
+                'behaviors' => $label,
+                'mappingProcessor' => $behavior,
+                'mappingFields' => $apiEndpoint,
             ];
         }
 
@@ -77,5 +85,10 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         }
 
         return $output;
+    }
+
+    private function isModelEnabled($model)
+    {
+        return $this->moduleManager->isEnabled(Classes::getClassModuleName($model));
     }
 }

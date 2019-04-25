@@ -8,53 +8,77 @@
  */
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="routes" type="routesType"/>
+    <xs:element name="imports" type="importsType"/>
 
-    <xs:complexType name="routesType">
+    <xs:complexType name="importsType">
         <xs:sequence>
-            <xs:element name="route" type="routeType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="import" type="importType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="routeType">
+    <xs:complexType name="importType">
         <xs:sequence>
-            <xs:element name="service" type="serviceType"/>
-            <xs:element name="resources" type="resourcesType"/>
+            <xs:element name="behaviours" type="behavioursType"/>
+            <xs:element name="mappingProcessor" type="mappingProcessorType"/>
+            <xs:element name="mappingFields" type="mappingFieldsType" minOccurs="0"/>
             <xs:element name="data" type="dataType" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute name="method" use="required">
+        <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="mappingProcessorType">
+        <xs:attribute name="sourceClass" type="xs:string" use="required"/>
+        <xs:attribute name="targetClass" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="mappingFieldsType" >
+        <xs:sequence>
+            <xs:element name="field" type="mappingFieldType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="mappingFieldType">
+        <xs:sequence>
+            <xs:element name="sourcePath" type="xs:string"/>
+            <xs:element name="targetPath" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
-                    <xs:enumeration value="GET"/>
-                    <xs:enumeration value="PUT"/>
-                    <xs:enumeration value="POST"/>
-                    <xs:enumeration value="DELETE"/>
+                    <xs:pattern value=".+(, ?.+)*"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="url" type="xs:string" use="required"/>
-        <xs:attribute name="secure" type="xs:boolean"/>
     </xs:complexType>
 
-    <xs:complexType name="serviceType">
-        <xs:attribute name="class" type="xs:string" use="required"/>
-        <xs:attribute name="method" type="xs:string" use="required"/>
-    </xs:complexType>
-
-    <xs:complexType name="resourcesType" >
+    <xs:complexType name="behavioursType" >
         <xs:sequence>
-            <xs:element name="resource" type="resourceType" maxOccurs="unbounded"/>
+            <xs:element name="behaviour" type="behaviourType" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="resourceType">
-       <xs:attribute name="ref" use="required">
+    <xs:complexType name="behaviourType">
+        <xs:sequence>
+            <xs:element name="storages" type="storagesType" maxOccurs="unbounded"/>
+        </xs:sequence>
+       <xs:attribute name="code" use="required">
            <xs:simpleType>
                <xs:restriction base="xs:string">
                    <xs:pattern value=".+(, ?.+)*"/>
                </xs:restriction>
            </xs:simpleType>
        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="storagesType">
+        <xs:sequence>
+            <xs:element name="storage" type="storageType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="storageType">
+        <xs:attribute name="class" type="xs:string" use="required"/>
+        <xs:attribute name="method" type="xs:string" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="dataType" >

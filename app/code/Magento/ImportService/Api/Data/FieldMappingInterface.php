@@ -11,48 +11,33 @@ use Magento\Framework\Api\ExtensibleDataInterface;
 
 interface FieldMappingInterface extends ExtensibleDataInterface
 {
-    const SOURCE_CODE_PREFIX = 'source';
-    const TARGET_CODE_PREFIX = 'target';
+    const SOURCE_NAME_PREFIX = 'source';
+    const TARGET_NAME_PREFIX = 'target';
 
-    const CODE = 'code';
+    const NAME = 'name';
     const SOURCE_PATH = 'source_path';
     const TARGET_PATH = 'target_path';
     const PROCESSING_RULES = 'processing_rules';
 
     /**
-     * Retrieve field code
-     * sku_tmp
+     * Retrieve name for internal use
      *
      * @return string
      */
-    public function getCode();
+    public function getName();
 
     /**
-     * Set field code
+     * Set name for internal use
      *
-     * @param string $code
+     * @param string $name
      * @return $this
      */
-    public function setCode($code);
-
-    /**
-     * Retrieve source field code
-     *
-     * @return string
-     */
-    public function getSourceCode();
-
-    /**
-     * Retrieve target field code
-     *
-     * @return string
-     */
-    public function getTargetCode();
+    public function setName($name);
 
     /** product.sku
      * Retrieve Source path to the value
      *
-     * @return string
+     * @return string|null
      */
     public function getSourcePath();
 
@@ -75,7 +60,7 @@ interface FieldMappingInterface extends ExtensibleDataInterface
     /**
      * Set Target path to the value
      *
-     * @param string|null $targetPath
+     * @param string $targetPath
      * @return $this
      */
     public function setTargetPath($targetPath);

@@ -152,12 +152,12 @@ class ImportManagement implements \Magento\ImportService\Api\ImportManagementInt
         $profile = $this->profileFactory->create();
         $profile->setBehaviour('add_update');
         $profile->setCode('magento.catalog_product.csv_to_api');
-        $profile->setFieldsMapping($this->getFieldsMapping());
+        $profile->setFieldMapping($this->getFieldMapping());
 
         return $profile;
     }
 
-    private function getFieldsMapping()
+    private function getFieldMapping()
     {
         $fieldsMapping = [];
 
@@ -294,7 +294,7 @@ EOT;
         if (!$this->entityAdapter) {
             /** @var \Magento\ImportService\Api\Data\ImportParamsInterface $importParams */
             $importParams = $importEntry->getImportParams();
-            $fieldsMapping = $importEntry->getFieldsMapping();
+            $fieldsMapping = $importEntry->getFieldMapping();
 
             $entityType = $importParams->getEntityType();
             $entities = $this->importServiceConfig->getEntities();
@@ -327,7 +327,7 @@ EOT;
                 throw new \Magento\Framework\Exception\LocalizedException(__('Please enter a correct entity.'));
             }
             $this->entityAdapter->setParameters($importParams);
-            $this->entityAdapter->setFieldsMapping($fieldsMapping);
+            $this->entityAdapter->setFieldMapping($fieldsMapping);
             $source = $this->getSource($importEntry);
             $this->entityAdapter->setSource($source);
         }

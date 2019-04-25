@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 declare(strict_types=1);
-namespace Magento\ImportService\Model\Profile;
+namespace Magento\ImportService\Model\Source;
 
 use Magento\Framework\DataObject;
 use Magento\ImportService\Api\Data\FieldMappingInterface;
@@ -14,33 +14,33 @@ class FieldMapping extends DataObject implements FieldMappingInterface
     /**
      * @inheritDoc
      */
-    public function getCode()
+    public function getName()
     {
-        return $this->getData(self::CODE);
+        return $this->getData(self::NAME);
     }
 
     /**
      * @inheritDoc
      */
-    public function setCode($code)
+    public function setName($name)
     {
-        return $this->setData(self::CODE, $code);
+        return $this->setData(self::NAME, $name);
     }
 
     /**
      * @inheritDoc
      */
-    public function getSourceCode()
+    public function getSourceName()
     {
-        return self::SOURCE_CODE_PREFIX.'_'.$this->getData(self::CODE);
+        return self::SOURCE_NAME_PREFIX.'_'.$this->getData(self::NAME);
     }
 
     /**
      * @inheritDoc
      */
-    public function getTargetCode()
+    public function getTargetName()
     {
-        return self::TARGET_CODE_PREFIX.'_'.$this->getData(self::CODE);
+        return self::TARGET_NAME_PREFIX.'_'.$this->getData(self::NAME);
     }
 
     /**

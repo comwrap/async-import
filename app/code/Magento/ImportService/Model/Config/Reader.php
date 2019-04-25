@@ -14,9 +14,9 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
      * @var array
      */
     protected $_idAttributes = [
-        '/routes/route' => ['url', 'method'],
-        '/routes/route/resources/resource' => 'ref',
-        '/routes/route/data' => 'name',
+        '/imports/import' => 'type',
+        '/imports/import/behaviours/behaviour' => 'code',
+        '/imports/import/data' => 'name',
     ];
 
     /**

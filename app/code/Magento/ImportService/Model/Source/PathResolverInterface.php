@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model\Profile;
+namespace Magento\ImportService\Model\Format;
 
 use Magento\Framework\Exception\NotFoundException;
 
