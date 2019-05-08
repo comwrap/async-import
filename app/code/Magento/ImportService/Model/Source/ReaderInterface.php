@@ -11,9 +11,9 @@ use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\ImportServiceException;
 
 /**
- *  Source Parser Interface
+ *  Source Reader Interface
  */
-interface ParserInterface extends \SeekableIterator
+interface ReaderInterface extends \SeekableIterator
 {
     const FILE_PATH = 'file_path';
     const SOURCE = 'source';

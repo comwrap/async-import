@@ -5,9 +5,9 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model\Gateway;
+namespace Magento\ImportService\Model\Storage;
 
-interface GatewayInterface
+interface StorageInterface
 {
 
 }

@@ -30,10 +30,10 @@
             </argument>
         </arguments>
     </type>
-    <type name="Magento\ImportService\Model\Source\ParserPool">
+    <type name="Magento\ImportService\Model\Source\ReaderPool">
         <arguments>
-            <argument name="parsers" xsi:type="array">
-                <item name="csv" xsi:type="object">\Magento\ImportServiceCsv\Model\Parser\CsvFactory</item>
+            <argument name="readers" xsi:type="array">
+                <item name="csv" xsi:type="object">\Magento\ImportServiceCsv\Model\Reader\CsvFactory</item>
             </argument>
         </arguments>
     </type>

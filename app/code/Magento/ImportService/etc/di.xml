@@ -100,4 +100,5 @@
                 type="Magento\ImportService\Model\ImportConfig" />
     <preference for="Magento\ImportService\Api\ImportRestartOperationInterface"
                 type="Magento\ImportService\Model\ImportRestartOperation"/>
+
 </config>

@@ -15,9 +15,9 @@ use Magento\ImportService\Model\Import\Type\SourceTypeInterface;
 class MappingProcessor
 {
     /**
-     * @var \Magento\ImportService\Model\Source\ParserInterface[]
+     * @var \Magento\ImportService\Model\Source\ReaderInterface[]
      */
-    private $parsers;
+    private $readers;
 
     /**
      * @var \Magento\ImportService\Model\Import\SourceTypePool
@@ -28,13 +28,13 @@ class MappingProcessor
      * ParserPool constructor.
      *
      * @param \Magento\ImportService\Model\Import\SourceTypePool $sourceTypePool
-     * @param ParserInterface[] $parsers
+     * @param ReaderInterface[] $readers
      */
     public function __construct(
         SourceTypePool $sourceTypePool,
-        $parsers = []
+        $readers = []
     ) {
-        $this->parsers = $parsers;
+        $this->readers = $readers;
         $this->sourceTypePool = $sourceTypePool;
     }
 

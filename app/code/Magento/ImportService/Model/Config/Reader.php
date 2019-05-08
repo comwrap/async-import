@@ -15,8 +15,8 @@ class Reader extends \Magento\Framework\Config\Reader\Filesystem
      */
     protected $_idAttributes = [
         '/imports/import' => 'type',
-        '/imports/import/behaviours/behaviour' => 'code',
-        '/imports/import/data' => 'name',
+        //'/imports/import/behaviours/behaviour' => 'code',
+        //'/imports/import/data' => 'name',
     ];
 
     /**

@@ -9,9 +9,9 @@ namespace Magento\ImportService\Model\Source;
 
 use Magento\Framework\DataObject;
 use Magento\ImportService\Api\Data\SourceInterface;
-use Magento\ImportService\Model\Source\ParserInterface;
+use Magento\ImportService\Model\Source\ReaderInterface;
 
-abstract class ParserAbstract extends DataObject implements ParserInterface
+abstract class ReaderAbstract extends DataObject implements ReaderInterface
 {
 
     /**
@@ -19,7 +19,7 @@ abstract class ParserAbstract extends DataObject implements ParserInterface
      */
     public function getFilePath()
     {
-        return $this->getData(ParserInterface::FILE_PATH);
+        return $this->getData(ReaderInterface::FILE_PATH);
     }
 
     /**
@@ -27,7 +27,7 @@ abstract class ParserAbstract extends DataObject implements ParserInterface
      */
     public function setFilePath(string $filePath)
     {
-        return $this->setData(ParserInterface::FILE_PATH, $filePath);
+        return $this->setData(ReaderInterface::FILE_PATH, $filePath);
     }
 
     /**
@@ -35,7 +35,7 @@ abstract class ParserAbstract extends DataObject implements ParserInterface
      */
     public function getSource()
     {
-        return $this->getData(ParserInterface::SOURCE);
+        return $this->getData(ReaderInterface::SOURCE);
     }
 
     /**
@@ -43,6 +43,6 @@ abstract class ParserAbstract extends DataObject implements ParserInterface
      */
     public function setSource(SourceInterface $source)
     {
-        return $this->setData(ParserInterface::SOURCE, $source);
+        return $this->setData(ReaderInterface::SOURCE, $source);
     }
 }

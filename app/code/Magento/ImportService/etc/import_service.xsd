@@ -77,6 +77,9 @@
     </xs:complexType>
 
     <xs:complexType name="storageType">
+        <xs:sequence>
+            <xs:element name="data" type="dataType" minOccurs="0"/>
+        </xs:sequence>
         <xs:attribute name="class" type="xs:string" use="required"/>
         <xs:attribute name="method" type="xs:string" use="required"/>
     </xs:complexType>

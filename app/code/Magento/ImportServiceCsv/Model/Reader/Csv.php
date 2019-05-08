@@ -5,21 +5,21 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportServiceCsv\Model\Parser;
+namespace Magento\ImportServiceCsv\Model\Reader;
 
 use Magento\ImportExport\Model\Import\AbstractEntity;
 use Magento\ImportService\Api\Data\SourceInterface;
-use Magento\ImportService\Model\Source\ParserAbstract;
-use Magento\ImportService\Model\Source\ParserInterface;
+use Magento\ImportService\Model\Source\ReaderAbstract;
+use Magento\ImportService\Model\Source\ReaderInterface;
 use Magento\Framework\Stdlib\ArrayManager;
 use Magento\ImportServiceCsv\Model\SourceCsv;
 use Magento\ImportServiceCsv\Model\SourceCsvFactory;
 use Magento\ImportServiceCsv\Model\SourceFormatCsv;
 
 /**
- * CSV Parser Implementation
+ * CSV Reader Implementation
  */
-class Csv extends ParserAbstract implements ParserInterface
+class Csv extends ReaderAbstract implements ReaderInterface
 {
 
     /**
@@ -75,9 +75,14 @@ class Csv extends ParserAbstract implements ParserInterface
      */
     private $filesystem;
     /**
-     * @var \Magento\ImportServiceCsv\Model\Parser\SourceCsvFactory
+     * @var \Magento\ImportServiceCsv\Model\Readerr\SourceCsvFactory
      */
     private $sourceCsvFactory;
+
+    /**
+     * @var \Magento\ImportService\Api\Data\SourceInterface
+     */
+    private $source;
 
     public function __construct(
         \Magento\Framework\Filesystem $filesystem,
@@ -97,7 +102,8 @@ class Csv extends ParserAbstract implements ParserInterface
             throw new \LogicException("Unable to open file: '{$filePath}'");
         }
 
-        //$format = $source->getFormat();//string because SourceInterface laoded instead of CsvSourceInterface
+        $this->source = $source;
+        //$format = $source->getFormat();//string because SourceInterface loaded instead of CsvSourceInterface
         $this->_delimiter = ',';
         $this->_enclosure = '"';
         $colNames = $this->_getNextRow();

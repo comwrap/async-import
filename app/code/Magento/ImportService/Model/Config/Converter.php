@@ -49,11 +49,11 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
             $mpSourceClass = $mappingProcessor->attributes->getNamedItem('sourceClass')->nodeValue;
             $mpTargetClass = $mappingProcessor->attributes->getNamedItem('targetClass')->nodeValue;
 
-            $behaviours = $import->getElementsByTagName('behaviours');
+            $behaviours = $import->getElementsByTagName('behaviours')->item(0);
+            $behavioursEl = $behaviours->getElementsByTagName('behaviour');
             /** @var \DOMElement $behaviour */
-            foreach ($behaviours as $behaviour) {
+            foreach ($behavioursEl as $behaviour) {
                 $behaviourCode = $behaviour->attributes->getNamedItem('code')->nodeValue;
-
             }
 
             if (!$this->isModelEnabled($mpSourceClass) || !$this->isModelEnabled($mpTargetClass)) {

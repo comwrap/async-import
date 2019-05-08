@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model\Format;
+namespace Magento\ImportService\Model\Source;
 
 use Magento\Framework\Exception\NotFoundException;
 

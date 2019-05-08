@@ -12,7 +12,11 @@
         <behaviours>
             <behaviour code="add_update">
                 <storages>
-                    <storage class="MagentoRestApiClient" method="post"/>
+                    <storage class="Magento\ImportService\Model\Storage\MagentoRest" method="post">
+                        <data>
+                            <parameter name="restPath">/rest/V1/products</parameter>
+                        </data>
+                    </storage>
                 </storages>
             </behaviour>
             <behaviour code="delete">
