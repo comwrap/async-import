@@ -10,22 +10,22 @@
     <type name="Magento\Webapi\Controller\Rest\RequestProcessorPool">
         <arguments>
             <argument name="requestProcessors" xsi:type="array">
-                <!--<item name="asyncSchema" xsi:type="array">-->
-                    <!--<item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor\Proxy</item>-->
-                    <!--<item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher</item>-->
-                <!--</item>-->
-                <!--<item name="async" xsi:type="array">-->
-                    <!--<item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor\Proxy</item>-->
-                    <!--<item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher</item>-->
-                <!--</item>-->
-                <!--<item name="asyncBulkSchema" xsi:type="array">-->
-                    <!--<item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor\Proxy</item>-->
-                    <!--<item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher</item>-->
-                <!--</item>-->
-                <!--<item name="asyncBulk" xsi:type="array">-->
-                    <!--<item name="processor" xsi:type="object">asynchronousBulkRequestProcessorProxy</item>-->
-                    <!--<item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkRequestMatcher</item>-->
-                <!--</item>-->
+                <item name="asyncSchema" xsi:type="array">
+                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher</item>
+                </item>
+                <item name="async" xsi:type="array">
+                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher</item>
+                </item>
+                <item name="asyncBulkSchema" xsi:type="array">
+                    <item name="processor" xsi:type="object">Magento\WebapiAsync\Controller\Rest\AsynchronousSchemaRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher</item>
+                </item>
+                <item name="asyncBulk" xsi:type="array">
+                    <item name="processor" xsi:type="object">asynchronousBulkRequestProcessorProxy</item>
+                    <item name="matcher" xsi:type="object">Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkRequestMatcher</item>
+                </item>
             </argument>
         </arguments>
     </type>

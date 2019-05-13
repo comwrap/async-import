@@ -52,18 +52,18 @@ class RequestProcessorPool
             /**
              * Condition was created to keep backward compatibility
              */
-//            if (is_object($processorData)) {
-//                if ($processorData->canProcess($request)) {
-//                    return $processorData;
-//                }
-//            } else {
+            if (is_object($processorData)) {
+                if ($processorData->canProcess($request)) {
+                    return $processorData;
+                }
+            } else {
                 if (isset($processorData['processor']) && isset($processorData['matcher'])) {
                     $requestMatcher = $processorData['matcher'];
                     if ($requestMatcher->isMatched($request)) {
                         return $processorData['processor'];
                     }
                 }
-//            }
+            }
         }
         throw new \Magento\Framework\Webapi\Exception(
             __('Specified request cannot be processed.'),

@@ -79,10 +79,10 @@
                     <item name="processor" xsi:type="object">Magento\Webapi\Controller\Rest\SynchronousRequestProcessor\Proxy</item>
                     <item name="matcher" xsi:type="object">Magento\Webapi\Controller\Rest\Matcher\SynchronousRequestMatcher</item>
                 </item>
-                <!--<item name="syncSchema" xsi:type="array">-->
-                    <!--<item name="processor" xsi:type="object">Magento\Webapi\Controller\Rest\SchemaRequestProcessor\Proxy</item>-->
-                    <!--<item name="matcher" xsi:type="object">Magento\Webapi\Controller\Rest\Matcher\SchemaRequestMatcher</item>-->
-                <!--</item>-->
+                <item name="syncSchema" xsi:type="array">
+                    <item name="processor" xsi:type="object">Magento\Webapi\Controller\Rest\SchemaRequestProcessor\Proxy</item>
+                    <item name="matcher" xsi:type="object">Magento\Webapi\Controller\Rest\Matcher\SchemaRequestMatcher</item>
+                </item>
             </argument>
         </arguments>
     </type>
