@@ -49,19 +49,15 @@ class RequestProcessorPool
     {
         foreach ($this->requestProcessors as $processorData) {
 
-            /**
-             * Condition was created to keep backward compatibility
-             */
-            if (is_object($processorData)) {
+            if (isset($processorData['processor']) && isset($processorData['matcher'])) {
+                $requestMatcher = $processorData['matcher'];
+                if ($requestMatcher->isMatched($request)) {
+                    return $processorData['processor'];
+                }
+            } elseif (is_object($processorData)) {
+                /** Condition was created to keep backward compatibility */
                 if ($processorData->canProcess($request)) {
                     return $processorData;
-                }
-            } else {
-                if (isset($processorData['processor']) && isset($processorData['matcher'])) {
-                    $requestMatcher = $processorData['matcher'];
-                    if ($requestMatcher->isMatched($request)) {
-                        return $processorData['processor'];
-                    }
                 }
             }
         }
