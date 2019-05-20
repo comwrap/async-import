@@ -49,21 +49,17 @@ class RequestProcessorPool
     {
         foreach ($this->requestProcessors as $processorData) {
 
-            /**
-             * Condition was created to keep backward compatibility
-             */
-//            if (is_object($processorData)) {
-//                if ($processorData->canProcess($request)) {
-//                    return $processorData;
-//                }
-//            } else {
-                if (isset($processorData['processor']) && isset($processorData['matcher'])) {
-                    $requestMatcher = $processorData['matcher'];
-                    if ($requestMatcher->isMatched($request)) {
-                        return $processorData['processor'];
-                    }
+            if (isset($processorData['processor']) && isset($processorData['matcher'])) {
+                $requestMatcher = $processorData['matcher'];
+                if ($requestMatcher->isMatched($request)) {
+                    return $processorData['processor'];
                 }
-//            }
+            } elseif (is_object($processorData)) {
+                /** Condition was created to keep backward compatibility */
+                if ($processorData->canProcess($request)) {
+                    return $processorData;
+                }
+            }
         }
         throw new \Magento\Framework\Webapi\Exception(
             __('Specified request cannot be processed.'),

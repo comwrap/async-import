@@ -34,27 +34,27 @@
             <argument name="isBulk" xsi:type="boolean">true</argument>
         </arguments>
     </virtualType>
-    <!--<virtualType name="asynchronousBulkRequestProcessorProxy" type="Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor\Proxy">-->
-        <!--<arguments>-->
-            <!--<argument name="instanceName" xsi:type="string">Magento\WebapiAsync\Controller\Rest\VirtualType\AsynchronousBulkRequestProcessor</argument>-->
-        <!--</arguments>-->
-    <!--</virtualType>-->
-    <!--<virtualType name="Magento\WebapiAsync\Controller\Rest\VirtualType\AsynchronousBulkRequestProcessor" type="Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor">-->
-        <!--<arguments>-->
-            <!--<argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH</argument>-->
-            <!--<argument name="inputParamsResolver" xsi:type="object">Magento\WebapiAsync\Controller\VirtualType\InputParamsResolver</argument>-->
-        <!--</arguments>-->
-    <!--</virtualType>-->
-    <!--<virtualType name="Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkRequestMatcher" type="Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher">-->
-        <!--<arguments>-->
-            <!--<argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH</argument>-->
-        <!--</arguments>-->
-    <!--</virtualType>-->
-    <!--<virtualType name="Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher" type="Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher">-->
-        <!--<arguments>-->
-            <!--<argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH</argument>-->
-        <!--</arguments>-->
-    <!--</virtualType>-->
+    <virtualType name="asynchronousBulkRequestProcessorProxy" type="Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor\Proxy">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Magento\WebapiAsync\Controller\Rest\VirtualType\AsynchronousBulkRequestProcessor</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\WebapiAsync\Controller\Rest\VirtualType\AsynchronousBulkRequestProcessor" type="Magento\WebapiAsync\Controller\Rest\AsynchronousRequestProcessor">
+        <arguments>
+            <argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH</argument>
+            <argument name="inputParamsResolver" xsi:type="object">Magento\WebapiAsync\Controller\VirtualType\InputParamsResolver</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkRequestMatcher" type="Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher">
+        <arguments>
+            <argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousRequestMatcher::BULK_PROCESSOR_PATH</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\WebapiAsync\Controller\Rest\Matcher\VirtualType\AsynchronousBulkSchemaRequestMatcher" type="Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher">
+        <arguments>
+            <argument name="processorPath" xsi:type="const">Magento\WebapiAsync\Controller\Rest\Matcher\AsynchronousSchemaRequestMatcher::BULK_PROCESSOR_PATH</argument>
+        </arguments>
+    </virtualType>
     <type name="Magento\Webapi\Controller\Rest">
         <plugin name="webapiContorllerRestAsync" type="Magento\WebapiAsync\Plugin\ControllerRest" />
     </type>
