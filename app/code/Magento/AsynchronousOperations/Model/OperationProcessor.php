@@ -16,6 +16,7 @@ use Magento\Framework\MessageQueue\MessageValidator;
 use Magento\Framework\MessageQueue\MessageEncoder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\ConsumerConfigurationInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\TemporaryStateExceptionInterface;
@@ -71,6 +72,10 @@ class OperationProcessor
      * @var CommunicationConfig
      */
     private $communicationConfig;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $storeManager;
 
     /**
      * OperationProcessor constructor.
@@ -83,6 +88,7 @@ class OperationProcessor
      * @param LoggerInterface $logger
      * @param \Magento\Framework\Webapi\ServiceOutputProcessor $serviceOutputProcessor
      * @param \Magento\Framework\Communication\ConfigInterface $communicationConfig
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         MessageValidator $messageValidator,
@@ -92,7 +98,8 @@ class OperationProcessor
         OperationManagementInterface $operationManagement,
         ServiceOutputProcessor $serviceOutputProcessor,
         CommunicationConfig $communicationConfig,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        StoreManagerInterface $storeManager
     ) {
         $this->messageValidator = $messageValidator;
         $this->messageEncoder = $messageEncoder;
@@ -102,6 +109,7 @@ class OperationProcessor
         $this->logger = $logger;
         $this->serviceOutputProcessor = $serviceOutputProcessor;
         $this->communicationConfig = $communicationConfig;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -115,6 +123,11 @@ class OperationProcessor
         $operation = $this->messageEncoder->decode(AsyncConfig::SYSTEM_TOPIC_NAME, $encodedMessage);
         $this->messageValidator->validate(AsyncConfig::SYSTEM_TOPIC_NAME, $operation);
 
+        $storeId = $operation->getStoreId();
+        $currentStoreId = $this->storeManager->getStore()->getId();
+        if (isset($storeId) && $storeId !== $currentStoreId) {
+            $this->storeManager->setCurrentStore($storeId);
+        }
         $status = OperationInterface::STATUS_TYPE_COMPLETE;
         $errorCode = null;
         $messages = [];

@@ -47,6 +47,7 @@
                 comment="Code of the error that appeared during operation execution (used to aggregate related failed operations)"/>
         <column xsi:type="varchar" name="result_message" nullable="true" length="255"
                 comment="Operation result message"/>
+        <column xsi:type="int" name="store_id" nullable="true" comment="Store ID"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id"/>
         </constraint>

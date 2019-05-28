@@ -14,6 +14,7 @@ use Magento\Framework\MessageQueue\MessageValidator;
 use Magento\Framework\MessageQueue\MessageEncoder;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\EntityManager\EntityManager;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Create operation for list of bulk operations.
@@ -44,6 +45,10 @@ class OperationRepository
      * @var MessageValidator
      */
     private $messageValidator;
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $storeManager;
 
     /**
      * @param OperationInterfaceFactory $operationFactory
@@ -51,19 +56,22 @@ class OperationRepository
      * @param MessageValidator $messageValidator
      * @param MessageEncoder $messageEncoder
      * @param Json $jsonSerializer
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         OperationInterfaceFactory $operationFactory,
         EntityManager $entityManager,
         MessageValidator $messageValidator,
         MessageEncoder $messageEncoder,
-        Json $jsonSerializer
+        Json $jsonSerializer,
+        StoreManagerInterface $storeManager
     ) {
         $this->operationFactory = $operationFactory;
         $this->jsonSerializer = $jsonSerializer;
         $this->messageEncoder = $messageEncoder;
         $this->messageValidator = $messageValidator;
         $this->entityManager = $entityManager;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -76,7 +84,7 @@ class OperationRepository
     {
         $this->messageValidator->validate($topicName, $entityParams);
         $encodedMessage = $this->messageEncoder->encode($topicName, $entityParams);
-
+        $storeId = $this->storeManager->getStore()->getId();
         $serializedData = [
             'entity_id'        => null,
             'entity_link'      => '',
@@ -88,6 +96,7 @@ class OperationRepository
                 OperationInterface::TOPIC_NAME      => $topicName,
                 OperationInterface::SERIALIZED_DATA => $this->jsonSerializer->serialize($serializedData),
                 OperationInterface::STATUS          => OperationInterface::STATUS_TYPE_OPEN,
+                OperationInterface::STORE_ID        => $storeId
             ],
         ];
 

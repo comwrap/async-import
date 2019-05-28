@@ -23,6 +23,7 @@ interface OperationInterface extends \Magento\Framework\Api\ExtensibleDataInterf
     const STATUS = 'status';
     const RESULT_MESSAGE = 'result_message';
     const ERROR_CODE = 'error_code';
+    const STORE_ID = 'store_id';
     /**#@-*/
 
     /**#@+
@@ -172,4 +173,19 @@ interface OperationInterface extends \Magento\Framework\Api\ExtensibleDataInterf
      * @since 100.2.0
      */
     public function setErrorCode($errorCode);
+
+    /**
+     * Get store id
+     *
+     * @return int|null
+     */
+    public function getStoreId();
+
+    /**
+     * Set store id
+     *
+     * @param int $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId);
 }
