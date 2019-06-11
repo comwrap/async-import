@@ -16,13 +16,27 @@ interface ConfigInterface
      *
      * @return array
      */
-    public function getEntities();
+    public function getImportEntities();
 
     /**
-     * Retrieve import entity types configuration
+     * Retrieve import type configuration
      *
-     * @param string $entity
+     * @param string $type
      * @return array
      */
-    public function getEntityTypes($entity);
+    public function getImportType($type);
+
+    /**
+     * @param string $type
+     * @param null $behaviour
+     * @return mixed
+     */
+    public function getMappingProcessorSource($type, $behaviour = null);
+
+    /**
+     * @param string $type
+     * @param null $behaviour
+     * @return mixed
+     */
+    public function getMappingProcessorTarget($type, $behaviour = null);
 }

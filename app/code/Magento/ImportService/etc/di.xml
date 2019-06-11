@@ -11,10 +11,8 @@
                 type="Magento\ImportService\Model\SourceUpload" /-->
     <preference for="Magento\ImportService\Api\Data\SourceInterface"
                 type="Magento\ImportService\Model\Source" />
-    <!--preference for="Magento\ImportService\Api\Data\SourceFormatInterface"
-                type="Magento\ImportService\Model\Source\AbstractSourceFormat" /-->
-    <preference for="Magento\ImportService\Api\Data\SourceFormatMappingInterface"
-                type="Magento\ImportService\Model\SourceFormatMapping" />
+    <preference for="Magento\ImportService\Model\ConfigInterface"
+                type="Magento\ImportService\Model\Config" />
     <preference for="Magento\ImportService\Api\Data\SourceUploadResponseInterface"
                 type="Magento\ImportService\Model\SourceUploadResponse" />
     <preference for="Magento\ImportService\Api\SourceRepositoryInterface"
@@ -100,5 +98,37 @@
                 type="Magento\ImportService\Model\ImportConfig" />
     <preference for="Magento\ImportService\Api\ImportRestartOperationInterface"
                 type="Magento\ImportService\Model\ImportRestartOperation"/>
+    <preference for="Magento\ImportService\Api\Data\ProcessingRulesRuleInterface"
+                type="Magento\ImportService\Model\Source\ProcessingRulesRule" />
 
+    <type name="Magento\ImportService\Model\Source\RulesProcessorFactory">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="emptyValueReplace" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\EmptyValueReplacer</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+                <item name="trim" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\Trim</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+                <item name="str_replace" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\StrReplace</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+                <item name="addCustomAttribute" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\CustomAttribute</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+                <item name="addExtensionAttributes" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\AddExtensionAttributes</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+                <item name="addProductOption" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\Catalog\Product\Options</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

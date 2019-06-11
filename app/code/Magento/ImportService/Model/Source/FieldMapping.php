@@ -32,7 +32,7 @@ class FieldMapping extends DataObject implements FieldMappingInterface
      */
     public function getSourceName()
     {
-        return self::SOURCE_NAME_PREFIX.'_'.$this->getData(self::NAME);
+        return self::SOURCE_NAME_PREFIX . '_' . $this->getData(self::NAME);
     }
 
     /**
@@ -40,7 +40,7 @@ class FieldMapping extends DataObject implements FieldMappingInterface
      */
     public function getTargetName()
     {
-        return self::TARGET_NAME_PREFIX.'_'.$this->getData(self::NAME);
+        return self::TARGET_NAME_PREFIX . '_' . $this->getData(self::NAME);
     }
 
     /**
@@ -73,6 +73,38 @@ class FieldMapping extends DataObject implements FieldMappingInterface
     public function setTargetPath($targetPath)
     {
         return $this->setData(self::TARGET_PATH, $targetPath);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSourceValue()
+    {
+        return $this->getData(self::SOURCE_VALUE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSourceValue($sourceValue)
+    {
+        return $this->setData(self::SOURCE_VALUE, $sourceValue);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getTargetValue()
+    {
+        return $this->getData(self::TARGET_VALUE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTargetValue($targetValue)
+    {
+        return $this->setData(self::TARGET_VALUE, $targetValue);
     }
 
     /**

@@ -9,6 +9,7 @@ use Magento\ImportService\Model\ConfigInterface;
 use Magento\Framework\Config\Data;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\ImportService\Model\Config\Reader;
+use Magento\ImportService\Model\Config\Converter;
 use Magento\Framework\Config\CacheInterface;
 
 /**
@@ -16,6 +17,8 @@ use Magento\Framework\Config\CacheInterface;
  */
 class Config extends Data implements ConfigInterface
 {
+    const CACHE_ID = 'import_service_config_cache';
+
     /**
      * Constructor
      *
@@ -27,7 +30,7 @@ class Config extends Data implements ConfigInterface
     public function __construct(
         Reader $reader,
         CacheInterface $cache,
-        $cacheId = 'import_service_config_cache',
+        $cacheId = self::CACHE_ID,
         SerializerInterface $serializer = null
     ) {
         parent::__construct($reader, $cache, $cacheId, $serializer);
@@ -38,20 +41,48 @@ class Config extends Data implements ConfigInterface
      *
      * @return array
      */
-    public function getEntities()
+    public function getImportEntities()
     {
-        return $this->get('entities');
+        return $this->get(Converter::KEY_IMPORTS);
     }
 
     /**
-     * Retrieve import entity types configuration
+     * Retrieve import entity type configuration
      *
-     * @param string $entity
+     * @param string $type
      * @return array
      */
-    public function getEntityTypes($entity)
+    public function getImportType($type)
     {
-        $entities = $this->getEntities();
-        return isset($entities[$entity]) ? $entities[$entity]['types'] : [];
+        $importEntities = $this->getImportEntities();
+        return isset($importEntities[$type]) ? $importEntities[$type] : [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMappingProcessorSource($type, $behaviour = null)
+    {
+        $path = implode('/', [
+            Converter::KEY_IMPORTS,
+            $type,
+            Converter::KEY_MAPPING_PROCESSOR,
+            Converter::KEY_MAPPING_PROCESSOR_SOURCE
+        ]);
+        return $this->get($path, null);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMappingProcessorTarget($type, $behaviour = null)
+    {
+        $path = implode('/', [
+            Converter::KEY_IMPORTS,
+            $type,
+            Converter::KEY_MAPPING_PROCESSOR,
+            Converter::KEY_MAPPING_PROCESSOR_TARGET
+        ]);
+        return $this->get($path, null);
     }
 }

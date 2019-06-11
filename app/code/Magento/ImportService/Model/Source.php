@@ -9,12 +9,16 @@ namespace Magento\ImportService\Model;
 
 use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\Api\ExtensionAttributesFactory;
+use Magento\Framework\DataObject;
 use Magento\Framework\Model\AbstractExtensibleModel;
+use Magento\ImportService\Api\Data\FieldMappingInterface;
+use Magento\ImportService\Api\Data\ProcessingRulesRuleInterfaceFactory;
+use Magento\ImportService\Api\Data\ProcessingRulesRuleInterface;
 use Magento\ImportService\Api\Data\SourceExtensionInterface;
 use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\Model\ResourceModel\Source as SourceResource;
-use Magento\ImportService\Api\Data\SourceFormatInterface;
 use Magento\ImportService\Model\Source\FieldMappingFactory;
+use Magento\Store\Model\StoreManager;
 
 /**
  * Class Source
@@ -26,14 +30,22 @@ class Source extends AbstractExtensibleModel implements SourceInterface
      * @var \Magento\ImportService\Model\Source\FieldMapping
      */
     private $fieldMappingFactory;
+    /**
+     * @var \Magento\ImportService\Model\ProcessingRulesRuleInterfaceFactory
+     */
+    private $processingRulesRuleFactory;
 
     /**
+     * Source constructor.
+     *
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
-     * @param ExtensionAttributesFactory $extensionFactory
-     * @param AttributeValueFactory $customAttributeFactory
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
-     * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
+     * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
+     * @param \Magento\Framework\Api\AttributeValueFactory $customAttributeFactory
+     * @param \Magento\ImportService\Model\Source\FieldMappingFactory $fieldMappingFactory
+     * @param \Magento\ImportService\Api\Data\ProcessingRulesRuleInterfaceFactory $processingRulesRuleFactory
+     * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
+     * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
      * @param array $data
      */
     public function __construct(
@@ -42,11 +54,13 @@ class Source extends AbstractExtensibleModel implements SourceInterface
         ExtensionAttributesFactory $extensionFactory,
         AttributeValueFactory $customAttributeFactory,
         FieldMappingFactory $fieldMappingFactory,
+        ProcessingRulesRuleInterfaceFactory $processingRulesRuleFactory,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->fieldMappingFactory = $fieldMappingFactory;
+        $this->processingRulesRuleFactory = $processingRulesRuleFactory;
         parent::__construct($context, $registry, $extensionFactory, $customAttributeFactory, $resource, $resourceCollection, $data);
     }
 
@@ -202,12 +216,8 @@ class Source extends AbstractExtensibleModel implements SourceInterface
     public function afterLoad()
     {
         $mappingJson = $this->getData(self::MAPPING);
-        $mapping = [];
         if (isset($mappingJson)) {
-            $mappingData = json_decode($mappingJson, true);
-            foreach ($mappingData as $fieldMapping) {
-                $mapping[] = $this->fieldMappingFactory->create()->setData($fieldMapping);
-            }
+            $mapping = $this->convertArrayToMapping(json_decode($mappingJson, true));
             $this->setMapping($mapping);
         }
 
@@ -219,16 +229,58 @@ class Source extends AbstractExtensibleModel implements SourceInterface
      */
     public function beforeSave()
     {
-        $mapping = $this->getMapping();
-        $mappingArray = [];
-        if (isset($mapping)) {
-            foreach ($mapping as $fieldMapping) {
-                $mappingArray[] = json_decode($fieldMapping->toJson(), true);
-            }
-        }
+        $mappingArray = $this->convertMappingToArray($this->getMapping());
         $mappingJson = json_encode($mappingArray);
         $this->setData(self::MAPPING, $mappingJson);
 
         parent::beforeSave();
+    }
+
+    /**
+     * @param $mapping
+     * @return FieldMappingInterface[]
+     */
+    private function convertArrayToMapping($mapping)
+    {
+        $mappings = [];
+        foreach ($mapping as $fieldMappingArray) {
+            /** @var FieldMappingInterface $fieldMapping */
+            $fieldMapping = $this->fieldMappingFactory->create()->setData($fieldMappingArray);
+
+            if (isset($fieldMappingArray[FieldMappingInterface::PROCESSING_RULES])) {
+                $processingRulesArray = $fieldMappingArray[FieldMappingInterface::PROCESSING_RULES];
+                $rulesArray = [];
+                foreach ($processingRulesArray as $rule) {
+                    $rulesArray[] = $this->processingRulesRuleFactory->create()->setData($rule);
+                }
+                $fieldMapping->setProcessingRules($rulesArray);
+            }
+            $mappings[] = $fieldMapping;
+        }
+        return $mappings;
+    }
+
+    /**
+     * @param FieldMappingInterface[]
+     * @return array
+     */
+    private function convertMappingToArray($mapping)
+    {
+        $mappingArray = [];
+        /** @var \Magento\ImportService\Model\Source\FieldMapping $fieldMapping */
+        foreach ($mapping as $fieldMapping) {
+            $processingRules = $fieldMapping->getProcessingRules();
+            $fieldMappingArray = $fieldMapping->toArray();
+            if (isset($processingRules)) {
+                $rulesArray = [];
+                /** @var \Magento\ImportService\Model\Source\ProcessingRulesRule $rule */
+                foreach ($processingRules as $rule) {
+                    $rulesArray[] = $rule->toArray();
+                }
+                $fieldMappingArray[FieldMappingInterface::PROCESSING_RULES] = $rulesArray;
+            }
+            $mappingArray[] = $fieldMappingArray;
+        }
+        return $mappingArray;
     }
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\ImportServiceXml\Api\SourceUploadXmlInterface"
+                type="Magento\ImportService\Model\SourceUpload" />
+    <preference for="Magento\ImportServiceXml\Api\Data\SourceXmlInterface" type="Magento\ImportServiceXml\Model\SourceXml"/>
+    <preference for="Magento\ImportServiceXml\Api\Data\SourceFormatXmlInterface"
+                type="Magento\ImportServiceXml\Model\SourceFormatXml" />
+    <virtualType name="Magento\ImportServiceXml\Model\Import\Type\Xml"
+                 type="Magento\ImportService\Model\Import\Type\FileSourceType">
+        <arguments>
+            <argument name="sourceType" xsi:type="string">xml</argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="plain" xsi:type="string">text/plain</item>
+                <item name="xml" xsi:type="string">text/xml</item>
+                <item name="octet-stream" xsi:type="string">application/octet-stream</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\ImportService\Model\Import\SourceTypePool">
+        <arguments>
+            <argument name="sourceTypes" xsi:type="array">
+                <item name="xml" xsi:type="object">Magento\ImportServiceXml\Model\Import\Type\Xml</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportService\Model\Source\ReaderPool">
+        <arguments>
+            <argument name="readers" xsi:type="array">
+                <item name="xml" xsi:type="object">\Magento\ImportServiceXml\Model\Reader\XmlFactory</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportService\Model\Source\RulesProcessorFactory">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="getMagentoTaxClasses" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\ProcessingRules\GetMagentoTaxClasses</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

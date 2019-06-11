@@ -11,6 +11,25 @@ use Magento\Framework\App\Utility\Classes;
 
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
+
+    const KEY_IMPORTS = 'imports';
+    const KEY_IMPORT = 'import';
+    const KEY_IMPORT_TYPE = 'type';
+    const KEY_MAPPING_PROCESSOR = 'mapping_processor';
+    const KEY_MAPPING_PROCESSOR_SOURCE = 'source';
+    const KEY_MAPPING_PROCESSOR_TARGET = 'target';
+
+    const KEY_BEHAVIOURS = 'behaviours';
+    const KEY_STORAGES = 'storages';
+    const KEY_STORAGE = 'storage';
+    const KEY_STORAGE_CLASS = 'class';
+    const KEY_STORAGE_METHOD = 'method';
+    const KEY_STORAGE_NAME = 'name';
+    const KEY_STORAGE_DATA = 'data';
+
+    const KEY_FORCE = 'force';
+    const KEY_VALUE = 'value';
+
     /**
      * @var \Magento\Framework\Module\Manager
      */
@@ -33,10 +52,9 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
      */
     public function convert($source)
     {
-        return [];
-        $output = ['imports' => []];
+        $output = [self::KEY_IMPORTS => []];
         /** @var \DOMNodeList $entities */
-        $entities = $source->getElementsByTagName('import');
+        $entities = $source->getElementsByTagName(self::KEY_IMPORT);
         /** @var \DOMElement $import */
         foreach ($entities as $import) {
             if ($import->nodeType != XML_ELEMENT_NODE) {
@@ -48,43 +66,78 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
             $mappingProcessor = $import->getElementsByTagName('mappingProcessor')->item(0);
             $mpSourceClass = $mappingProcessor->attributes->getNamedItem('sourceClass')->nodeValue;
             $mpTargetClass = $mappingProcessor->attributes->getNamedItem('targetClass')->nodeValue;
-
-            $behaviours = $import->getElementsByTagName('behaviours')->item(0);
-            $behavioursEl = $behaviours->getElementsByTagName('behaviour');
-            /** @var \DOMElement $behaviour */
-            foreach ($behavioursEl as $behaviour) {
-                $behaviourCode = $behaviour->attributes->getNamedItem('code')->nodeValue;
-            }
-
             if (!$this->isModelEnabled($mpSourceClass) || !$this->isModelEnabled($mpTargetClass)) {
                 continue;
             }
-            $output['imports'][$type] = [
-                'type' => $type,
-                'behaviors' => $label,
-                'mappingProcessor' => $behavior,
-                'mappingFields' => $apiEndpoint,
+
+            $behaviours = $import->getElementsByTagName('behaviours')->item(0);
+            $behavioursEl = $behaviours->getElementsByTagName('behaviour');
+            $behavioursArray = [];
+            /** @var \DOMElement $behaviour */
+            foreach ($behavioursEl as $behaviour) {
+                $behaviourCode = $behaviour->attributes->getNamedItem('code')->nodeValue;
+
+                $storages = $import->getElementsByTagName('storages')->item(0);
+                $storagesEl = $storages->getElementsByTagName('storage');
+                $storagesArray = [];
+                /** @var \DOMElement $storage */
+                foreach ($storagesEl as $storage) {
+                    $storageClass = $storage->attributes->getNamedItem('class')->nodeValue;
+                    $storageMethod = $storage->attributes->getNamedItem('method')->nodeValue;
+                    $storageName = $storage->attributes->getNamedItem('method')->nodeValue;
+                    $data = $this->convertMethodParameters($storage->getElementsByTagName('parameter'));
+                    if (!$this->isModelEnabled($storageClass)) {
+                        continue;
+                    }
+
+                    $storagesArray[] = [
+                        self::KEY_STORAGE_NAME => $storageName,
+                        self::KEY_STORAGE_CLASS => $storageClass,
+                        self::KEY_STORAGE_METHOD => $storageMethod,
+                        self::KEY_STORAGE_DATA => $data
+                    ];
+                }
+
+                $behavioursArray[$behaviourCode][self::KEY_STORAGES] = $storagesArray;
+            }
+
+            $output[self::KEY_IMPORTS][$type] = [
+                self::KEY_IMPORT_TYPE => $type,
+                self::KEY_BEHAVIOURS => $behavioursArray,
+                self::KEY_MAPPING_PROCESSOR => [
+                    self::KEY_MAPPING_PROCESSOR_SOURCE => $mpSourceClass,
+                    self::KEY_MAPPING_PROCESSOR_TARGET => $mpTargetClass
+                ],
             ];
         }
-
-        /** @var \DOMNodeList $entityTypes */
-        $entityTypes = $source->getElementsByTagName('entityType');
-        /** @var \DOMNode $entityTypeConfig */
-        foreach ($entityTypes as $entityTypeConfig) {
-            $attributes = $entityTypeConfig->attributes;
-            $name = $attributes->getNamedItem('name')->nodeValue;
-            $model = $attributes->getNamedItem('model')->nodeValue;
-            $entity = $attributes->getNamedItem('entity')->nodeValue;
-
-            if (isset($output['entities'][$entity])) {
-                $output['entities'][$entity]['types'][$name] = [
-                    'name' => $name,
-                    'model' => $model
-                ];
-            }
-        }
-
         return $output;
+    }
+
+    /**
+     * Parses the method parameters into a string array.
+     *
+     * @param \DOMNodeList $parameters
+     * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function convertMethodParameters($parameters)
+    {
+        $data = [];
+        /** @var \DOMElement $parameter */
+        foreach ($parameters as $parameter) {
+            if ($parameter->nodeType != XML_ELEMENT_NODE) {
+                continue;
+            }
+            $name = $parameter->attributes->getNamedItem('name')->nodeValue;
+            $forceNode = $parameter->attributes->getNamedItem('force');
+            $force = $forceNode ? (bool)$forceNode->nodeValue : false;
+            $value = $parameter->nodeValue;
+            $data[$name] = [
+                self::KEY_FORCE => $force,
+                self::KEY_VALUE => ($value === 'null') ? null : $value,
+            ];
+        }
+        return $data;
     }
 
     private function isModelEnabled($model)

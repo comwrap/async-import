@@ -5,34 +5,22 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportServiceCsv\Model\Reader;
+namespace Magento\ImportServiceXml\Model\Reader;
 
 use Magento\ImportExport\Model\Import\AbstractEntity;
 use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\Model\Source\ReaderAbstract;
 use Magento\ImportService\Model\Source\ReaderInterface;
 use Magento\Framework\Stdlib\ArrayManager;
-use Magento\ImportServiceCsv\Model\SourceCsv;
-use Magento\ImportServiceCsv\Model\SourceCsvFactory;
-use Magento\ImportServiceCsv\Model\SourceFormatCsv;
+use Magento\ImportServiceXml\Model\SourceXml;
+use Magento\ImportServiceXml\Model\SourceXmlFactory;
+use Magento\ImportServiceXml\Model\SourceFormatXml;
 
 /**
  * CSV Reader Implementation
  */
-class Csv extends ReaderAbstract implements ReaderInterface
+class Xml extends ReaderAbstract implements ReaderInterface
 {
-
-    /**
-     * @var array
-     */
-    protected $_colNames = [];
-
-    /**
-     * Quantity of columns
-     *
-     * @var int
-     */
-    protected $_colQty;
 
     /**
      * Current row
@@ -60,43 +48,45 @@ class Csv extends ReaderAbstract implements ReaderInterface
     protected $_file;
 
     /**
-     * Delimiter.
-     *
-     * @var string
-     */
-    protected $_delimiter = ',';
-
-    /**
-     * @var string
-     */
-    protected $_enclosure = '';
-    /**
      * @var \Magento\Framework\Filesystem
      */
     private $filesystem;
     /**
-     * @var \Magento\ImportServiceCsv\Model\Readerr\SourceCsvFactory
+     * @var \Magento\ImportServiceXml\Model\Readerr\SourceXmlFactory
      */
-    private $sourceCsvFactory;
+    private $sourceXmlFactory;
 
     /**
      * @var \Magento\ImportService\Api\Data\SourceInterface
      */
     private $source;
 
+    /**
+     * @var \SimpleXMLElement[]
+     */
+    //private $items;
+    /**
+     * @var string
+     */
+    private $itemXpath;
+    /**
+     * @var \SimpleXMLIterator
+     */
+    private $xml;
+
     public function __construct(
         \Magento\Framework\Filesystem $filesystem,
-        SourceCsvFactory $sourceCsvFactory
+        SourceXmlFactory $sourceXmlFactory
     ) {
         register_shutdown_function([$this, 'destruct']);
         $this->filesystem = $filesystem;
-        $this->sourceCsvFactory = $sourceCsvFactory;
+        $this->sourceXmlFactory = $sourceXmlFactory;
     }
 
     public function init(SourceInterface $source, $filePath)
     {
-        /** @var SourceCsv $source */
-        $source = $this->sourceCsvFactory->create()->load($source->getData(SourceInterface::ENTITY_ID));
+        /** @var SourceXml $source */
+        $source = $this->sourceXmlFactory->create()->load($source->getData(SourceInterface::ENTITY_ID));
         try {
             $directory = $this->filesystem->getDirectoryRead('var');
             $this->_file = $directory->openFile($directory->getRelativePath($filePath), 'r');
@@ -104,13 +94,14 @@ class Csv extends ReaderAbstract implements ReaderInterface
             throw new \LogicException("Unable to open file: '{$filePath}'");
         }
 
+        //$this->xml = simplexml_load_string($this->_file->readAll());
+        $this->xml = new \SimpleXMLIterator($this->_file->readAll());
+
         $this->source = $source;
-        $format = $source->getFormat();
-        $this->_delimiter = $format->getCsvDelimiter();
-        $this->_enclosure = $format->getCsvEnclosure();
-        $colNames = $this->_getNextRow();
-        $this->_colNames = $colNames;
-        $this->_colQty = count($colNames);
+        $this->itemXpath = $source->getFormat()->getItemsXpath();
+        $this->_key = 0;
+        $this->next();
+        //$this->items = $this->xml->xpath($this->itemXpath);
     }
 
     /**
@@ -126,49 +117,14 @@ class Csv extends ReaderAbstract implements ReaderInterface
     }
 
     /**
-     * Read next line from CSV-file
-     *
-     * @return array|bool
-     */
-    protected function _getNextRow()
-    {
-        $parsed = $this->_file->readCsv(0, $this->_delimiter, $this->_enclosure);
-        if (is_array($parsed) && count($parsed) != $this->_colQty) {
-            foreach ($parsed as $element) {
-                if (strpos($element, "'") !== false) {
-                    $this->_foundWrongQuoteFlag = true;
-                    break;
-                }
-            }
-        } else {
-            $this->_foundWrongQuoteFlag = false;
-        }
-        return is_array($parsed) ? $parsed : [];
-    }
-
-    /**
      * Rewind the \Iterator to the first element (\Iterator interface)
      *
      * @return void
      */
     public function rewind()
     {
-        $this->_file->seek(0);
-        $this->_getNextRow();
-        // skip first line with the header
-        $this->_key = -1;
-        $this->_row = [];
+        $this->_key = 0;
         $this->next();
-    }
-
-    /**
-     * Column names getter.
-     *
-     * @return array
-     */
-    public function getColNames()
-    {
-        return $this->_colNames;
     }
 
     /**
@@ -180,15 +136,7 @@ class Csv extends ReaderAbstract implements ReaderInterface
      */
     public function current()
     {
-        $row = $this->_row;
-        if (count($row) != $this->_colQty) {
-            if ($this->_foundWrongQuoteFlag) {
-                throw new \InvalidArgumentException(AbstractEntity::ERROR_CODE_WRONG_QUOTES);
-            } else {
-                throw new \InvalidArgumentException(AbstractEntity::ERROR_CODE_COLUMNS_NUMBER);
-            }
-        }
-        return array_combine($this->_colNames, $row);
+        return $this->_row;
     }
 
     /**
@@ -199,12 +147,18 @@ class Csv extends ReaderAbstract implements ReaderInterface
     public function next()
     {
         $this->_key++;
-        $row = $this->_getNextRow();
+        $row = $this->xml->xpath($this->itemXpath . '[' . $this->_key . ']');
         if (false === $row || [] === $row) {
             $this->_row = [];
             $this->_key = -1;
         } else {
-            $this->_row = $row;
+            if(empty($row)){
+                $this->_row = [];
+                $this->_key = -1;
+                return;
+            }
+            $xml = new \SimpleXMLElement($row[0]->asXML());
+            $this->_row = $xml;
         }
     }
 
@@ -244,12 +198,11 @@ class Csv extends ReaderAbstract implements ReaderInterface
             $this->rewind();
         }
         if ($position > 0) {
-            do {
-                $this->next();
-                if ($this->_key == $position) {
-                    return;
-                }
-            } while ($this->_key != -1);
+            $this->_key = $this->_key - 1;
+            $this->next();
+            if ($this->_key != -1) {
+                return;
+            }
         }
         throw new \OutOfBoundsException('Please correct the seek position.');
     }
