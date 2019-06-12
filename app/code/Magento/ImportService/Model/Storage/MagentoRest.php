@@ -7,7 +7,9 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Model\Storage;
 
-class MagentoRest implements StorageInterface
+use Magento\Framework\DataObject;
+
+class MagentoRest extends DataObject implements StorageInterface
 {
 
     /**
@@ -23,12 +25,21 @@ class MagentoRest implements StorageInterface
      */
     private $curlFactory;
 
+    /**
+     * MagentoRest constructor.
+     *
+     * @param \Magento\Framework\App\DeploymentConfig $deploymentConfig
+     * @param \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory
+     * @param \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory
+     * @param array $data
+     */
     public function __construct(
         \Magento\Framework\App\DeploymentConfig $deploymentConfig,
         \Magento\Framework\HTTP\ZendClientFactory $httpClientFactory,
-        \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory
+        \Magento\Framework\HTTP\Adapter\CurlFactory $curlFactory,
+        array $data = []
     ) {
-
+        parent::__construct($data);
         $this->deploymentConfig = $deploymentConfig;
         $this->httpClientFactory = $httpClientFactory;
         $this->curlFactory = $curlFactory;
@@ -44,7 +55,7 @@ class MagentoRest implements StorageInterface
         $config = $this->deploymentConfig->getConfigData('import_service');
         $magentoApiConfig = $config['magento'];
         $url = $magentoApiConfig['url'] .
-            '/V1/products';
+            $this->getData('restPath')['value'];
         $body = $item;
 
         $curlObject = $this->curlFactory->create();
@@ -62,7 +73,7 @@ class MagentoRest implements StorageInterface
         ];
 
         $curlObject->write(
-            \Zend_Http_Client::POST,
+            $this->getData('httpMethod')['value'],
             $url,
             CURL_HTTP_VERSION_NONE,
             $headers,
@@ -70,8 +81,17 @@ class MagentoRest implements StorageInterface
         );
         $curlObject->addOption(CURLOPT_FOLLOWLOCATION, true);
         $response = $curlObject->read();
+        $responseCode = $curlObject->getInfo(CURLINFO_RESPONSE_CODE);
+        if ($responseCode != 200) {
+            throw new \Exception(sprintf($response));
+        }
         $curlObject->close();
 
         return $response;
+    }
+
+    public function post($item, $source)
+    {
+        return $this->execute($item, $source);
     }
 }

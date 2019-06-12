@@ -24,6 +24,7 @@ use Magento\ImportServiceCsv\Model\CsvPathResolver;
 use Magento\ImportServiceCsv\Model\JsonPathResolver;
 use Magento\ImportServiceXml\Model\XmlPathResolver;
 use Magento\ImportService\Model\ConfigInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class ImportStart
@@ -58,6 +59,10 @@ class ImportStart implements ImportStartInterface
      * @var \Magento\ImportService\Model\Source\RulesProcessorFactory
      */
     private $rulesProcessorFactory;
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
     /**
      * ImportStart constructor.
@@ -75,7 +80,8 @@ class ImportStart implements ImportStartInterface
         ImportStartResponseFactory $importStartResponseFactory,
         SourceRepositoryInterface $sourceRepository,
         RulesProcessorFactory $rulesProcessorFactory,
-        ReaderPool $readerPool
+        ReaderPool $readerPool,
+        LoggerInterface $logger
     ) {
         $this->objectManager = $objectManager;
         $this->importConfig = $importConfig;
@@ -83,6 +89,7 @@ class ImportStart implements ImportStartInterface
         $this->sourceRepository = $sourceRepository;
         $this->readerPool = $readerPool;
         $this->rulesProcessorFactory = $rulesProcessorFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -102,7 +109,7 @@ class ImportStart implements ImportStartInterface
             $mappingFrom = $this->processMappingFrom($sourceItem, $source);
             $mappingFrom = $this->applyProcessingRules($sourceItem, $mappingFrom, $source);
             $itemToImport = $this->buildItem($mappingFrom, $source);
-            $result = $this->importToStorage($itemToImport, $source);
+            $result = $this->importToStorage($itemToImport, $source, $type, $importConfig);
         }
 
         $importStartResponse->setError('');
@@ -120,14 +127,17 @@ class ImportStart implements ImportStartInterface
         /** @var XmlPathResolver $pathResolver */
         $pathResolver = $this->objectManager->get($processor);
 
-        $mapping = $source->getMapping();
-        foreach ($mapping as &$fieldMapping) {
+        $mappingSource = $source->getMapping();
+        $mapping = [];
+        foreach ($mappingSource as $fieldMappingSource) {
+            $fieldMapping = clone $fieldMappingSource;
             if ($fieldMapping->getSourcePath() == null || $fieldMapping->getSourcePath() == '') {
                 $value = $sourceItem;
             } else {
                 $value = $pathResolver->get($sourceItem, $fieldMapping->getSourcePath());
             }
             $fieldMapping->setSourceValue($value);
+            $mapping[] = $fieldMapping;
         }
         return $mapping;
     }
@@ -144,6 +154,7 @@ class ImportStart implements ImportStartInterface
         $variables = [
             'custom_attributes' => []
         ];
+        $rulesRecreated = [];
         foreach ($mapping as $fieldMapping) {
             $processingRules = $fieldMapping->getProcessingRules();
             $fieldName = $fieldMapping->getName();
@@ -160,8 +171,14 @@ class ImportStart implements ImportStartInterface
 
                 /** @var \Magento\ImportService\Api\Data\ProcessingRulesRuleInterface $rule */
                 foreach ($fieldMapping->getProcessingRules() as $rule) {
+                    $forceCreate = false;
+                    if (!in_array($rule->getFunction(), $rulesRecreated)) {
+                        $forceCreate = true;
+                        $rulesRecreated[] = $rule->getFunction();
+                    }
+
                     $args = $rule->getArgs();
-                    if(!isset($args)){
+                    if (!isset($args)) {
                         $args = [];
                     }
                     foreach ($args as &$arg) {
@@ -178,7 +195,7 @@ class ImportStart implements ImportStartInterface
                         }
                     }
                     /** @var \Magento\ImportService\Model\ProcessingRules\ProcessingRuleInterface $processor */
-                    $processor = $this->rulesProcessorFactory->create($rule->getFunction());
+                    $processor = $this->rulesProcessorFactory->create($rule->getFunction(), [], $forceCreate);
                     $processor->setSource($source);
                     $processor->setArguments($args);
                     $processor->setValue($value);
@@ -186,6 +203,7 @@ class ImportStart implements ImportStartInterface
                     $value = $processor->execute();//change to call_user_func_array
                 }
             }
+            $variables[$fieldMapping->getName()] = $value;
             $fieldMapping->setTargetValue($value);
         }
         return $mapping;
@@ -216,12 +234,28 @@ class ImportStart implements ImportStartInterface
     /**
      * @param mixed $item
      * @param SourceInterface $source
-     * @return string
+     * @param string $type
+     * @param \Magento\ImportService\Api\Data\ImportConfigInterface $importConfig
+     * @return mixed
      */
-    private function importToStorage($item, $source)
+    private function importToStorage($item, $source, $type, ImportConfigInterface $importConfig)
     {
-        /** @var MagentoRest $storage */
-        $storage = $this->objectManager->get(MagentoRest::class);
-        return $storage->execute($item, $source);
+        $storages = $this->importConfig->getStorages($type, $importConfig->getBehaviour());
+        $result = [];
+        foreach ($storages as $storage) {
+            $constructArguments = [
+                'data' => $storage['data']
+            ];
+            $method = $storage['method'];
+            $storage = $this->objectManager->create($storage['class'], $constructArguments);
+            try {
+                //$arguments = [$item, $source];
+                $result[] = $storage->execute($item, $source);
+                //$result[] = call_user_func_array([$storage, $method], $arguments);
+            } catch (\Exception $e) {
+                $this->logger->error(sprintf("Import Uuid %s failed to save data to storage. %s", $source->getUuid(), $e->getMessage()));
+            }
+        }
+        return $result;
     }
 }

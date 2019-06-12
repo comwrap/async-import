@@ -131,4 +131,29 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\ImportService\Model\Logger\Error">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportService\Model\Logger\Info">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportService\Model\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">ImportServiceLogger</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="error" xsi:type="object">Magento\ImportService\Model\Logger\Error</item>
+                <item name="info" xsi:type="object">Magento\ImportService\Model\Logger\Info</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportService\Model\ImportStart">
+        <arguments>
+            <argument name="logger" xsi:type="object">Magento\ImportService\Model\Logger\Logger</argument>
+        </arguments>
+    </type>
 </config>

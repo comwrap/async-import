@@ -57,6 +57,7 @@
                     <storage name="magento" class="Magento\ImportService\Model\Storage\MagentoRest" method="post">
                         <data>
                             <parameter name="restPath">/V1/products</parameter>
+                            <parameter name="httpMethod">POST</parameter>
                         </data>
                     </storage>
                 </storages>

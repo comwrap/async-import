@@ -39,4 +39,11 @@ interface ConfigInterface
      * @return mixed
      */
     public function getMappingProcessorTarget($type, $behaviour = null);
+
+    /**
+     * @param string $type
+     * @param string $behaviour
+     * @return mixed
+     */
+    public function getStorages($type, $behaviour);
 }

@@ -30,9 +30,7 @@ class AddExtensionAttributes extends ProcessingRuleAbstract
 
         $value = $this->getValue();
         if (isset($value)) {
-            $this->extensionAttributes[] = [
-                $attributeCode => $this->getValue(),
-            ];
+            $this->extensionAttributes[$attributeCode] = $this->getValue();
         }
         return $this->extensionAttributes;
     }

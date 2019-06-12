@@ -5,6 +5,7 @@
  */
 namespace Magento\ImportService\Model;
 
+use Magento\Framework\Exception\NotFoundException;
 use Magento\ImportService\Model\ConfigInterface;
 use Magento\Framework\Config\Data;
 use Magento\Framework\Serialize\SerializerInterface;
@@ -84,5 +85,25 @@ class Config extends Data implements ConfigInterface
             Converter::KEY_MAPPING_PROCESSOR_TARGET
         ]);
         return $this->get($path, null);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getStorages($type, $behaviour)
+    {
+        $path = implode('/', [
+            Converter::KEY_IMPORTS,
+            $type,
+            Converter::KEY_BEHAVIOURS
+        ]);
+        $behaviours = $this->get($path, []);
+        if (empty($behaviours)) {
+            throw new NotFoundException(__('No one behaviour defined for %1 import type', $type));
+        }
+        if (!isset($behaviours[$behaviour])) {
+            throw new NotFoundException(__('Behaviour %1 not defined for import type %2', $behaviour, $type));
+        }
+        return $behaviours[$behaviour][Converter::KEY_STORAGES];
     }
 }

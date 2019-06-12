@@ -51,10 +51,11 @@ class RulesProcessorFactory
     /**
      * @param $ruleName
      * @param array $data
+     * @param boolean $forceCreate
      * @return mixed
      * @throws \Exception
      */
-    public function create($ruleName, array $data = [])
+    public function create($ruleName, array $data = [], $forceCreate = false)
     {
         foreach ($this->rules as $name => $ruleData) {
             if ($ruleName == $name) {
@@ -62,7 +63,7 @@ class RulesProcessorFactory
                     $class = $ruleData['class'];
                     $method = (isset($ruleData['method'])) ? $ruleData['method'] : 'execute';
                     $shared = (boolean)(isset($ruleData['shared'])) ? $ruleData['shared'] : false;
-                    if ($shared) {
+                    if ($shared && $forceCreate === false) {
                         if (!isset($this->sharedInstances[$class])) {
                             $this->sharedInstances[$class] = $this->objectManager->create($class, $data);
                         }
