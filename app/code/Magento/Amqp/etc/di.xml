@@ -72,4 +72,10 @@
             <argument name="instanceName" xsi:type="string">\Magento\Framework\Amqp\Bulk\Exchange</argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Framework\Amqp\Bulk\Exchange">
+        <plugin name="amqpStoreIdFieldForAmqpBulkExchange" type="Magento\Amqp\Plugin\Framework\Amqp\Bulk\Exchange"/>
+    </type>
+    <type name="Magento\AsynchronousOperations\Model\MassConsumerEnvelopeCallback">
+        <plugin name="amqpStoreIdFieldForAsynchronousOperationsMassConsumerEnvelopeCallback" type="Magento\Amqp\Plugin\AsynchronousOperations\MassConsumerEnvelopeCallback"/>
+    </type>
 </config>
