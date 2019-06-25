@@ -71,8 +71,7 @@ class LocalPathFileProcessor implements SourceProcessorInterface
      */
     public function processUpload(SourceInterface $source, SourceUploadResponseInterface $response)
     {
-        /** @var array $errors */
-        $errors = $this->validator->validate($source);
+        $this->validator->validate($source);
 
         /** @var \Magento\Framework\Filesystem\Directory\Write $write */
         $write = $this->fileSystem->getDirectoryWrite(DirectoryList::ROOT);

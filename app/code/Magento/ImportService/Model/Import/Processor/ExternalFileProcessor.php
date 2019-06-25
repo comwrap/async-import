@@ -63,8 +63,7 @@ class ExternalFileProcessor implements SourceProcessorInterface
      */
     public function processUpload(\Magento\ImportService\Api\Data\SourceInterface $source, \Magento\ImportService\Api\Data\SourceUploadResponseInterface $response)
     {
-        /** @var array $errors */
-        $errors = $this->validator->validate($source);
+        $this->validator->validate($source);
 
         /** @var \Magento\Framework\Filesystem\Directory\WriteInterface $writeInterface */
         $writeInterface = $this->fileSystem->getDirectoryWrite(DirectoryList::ROOT);

@@ -8,17 +8,15 @@ declare(strict_types=1);
 namespace Magento\ImportService\Model;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchResultsInterface;
-use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Model\AbstractModel;
 use Magento\ImportService\Api\Data\SourceInterface;
 use Magento\ImportService\Api\SourceRepositoryInterface;
 use Magento\ImportService\Model\ResourceModel\Source as SourceResourceModel;
-use Magento\ImportService\Model\ResourceModel\Source\CollectionFactory as SourceCollectionFactory;
+use Magento\ImportService\Model\Source\Command\SaveInterface;
+use Magento\ImportService\Model\Source\Command\GetInterface;
+use Magento\ImportService\Model\Source\Command\GetListInterface;
+use Magento\ImportService\Model\Source\Command\DeleteByUuidInterface;
 
 /**
  * Class SourceRepository
@@ -26,74 +24,65 @@ use Magento\ImportService\Model\ResourceModel\Source\CollectionFactory as Source
 class SourceRepository implements SourceRepositoryInterface
 {
     /**
-     * @var SourceFactory
-     */
-    private $sourceFactory;
-
-    /**
      * @var SourceResourceModel
      */
     private $sourceResourceModel;
 
     /**
-     * @var SourceCollectionFactory
+     * @var GetListInterface
      */
-    private $sourceCollectionFactory;
+    private $commandGetList;
+
+    /*
+     * @var DeleteByUuidInterface
+     */
+    private $commandDeleteByUuid;
 
     /**
-     * @var SearchResultsInterfaceFactory
+     * @var GetInterface
      */
-    private $searchResultsFactory;
+    private $commandGet;
 
     /**
-     * @param SourceFactory $sourceFactory
+     * @var SaveInterface
+     */
+    private $commandSave;
+
+    /**
      * @param SourceResourceModel $sourceResourceModel
-     * @param SourceCollectionFactory $sourceCollectionFactory
-     * @param SearchResultsInterfaceFactory $searchResultsFactory
+     * @param SaveInterface $commandSave
+     * @param GetListInterface $commandGetList
+     * @param DeleteByUuidInterface $commandDeleteByUuid
+     * @param GetInterface $commandGet
      */
     public function __construct(
-        SourceFactory $sourceFactory,
         SourceResourceModel $sourceResourceModel,
-        SourceCollectionFactory $sourceCollectionFactory,
-        SearchResultsInterfaceFactory $searchResultsFactory
+        SaveInterface $commandSave,
+        GetListInterface $commandGetList,
+        DeleteByUuidInterface $commandDeleteByUuid,
+        GetInterface $commandGet
     ) {
-        $this->sourceFactory        = $sourceFactory;
         $this->sourceResourceModel  = $sourceResourceModel;
-        $this->sourceCollectionFactory    = $sourceCollectionFactory;
-        $this->searchResultsFactory = $searchResultsFactory;
+        $this->commandSave = $commandSave;
+        $this->commandGetList = $commandGetList;
+        $this->commandDeleteByUuid = $commandDeleteByUuid;
+        $this->commandGet = $commandGet;
     }
 
     /**
      * @inheritdoc
-     *
-     * @throws CouldNotSaveException
      */
-    public function save(SourceInterface $source)
+    public function save(SourceInterface $source): SourceInterface
     {
-        try {
-            $this->sourceResourceModel->save($source);
-        } catch (\Exception $e) {
-            throw new CouldNotSaveException(__($e->getMessage()));
-        }
-
-        return $source;
+        return $this->commandSave->execute($source);
     }
 
     /**
      * @inheritdoc
-     *
-     * @throws NoSuchEntityException
      */
-    public function getByUuid($uuid)
+    public function getByUuid(string $uuid): SourceInterface
     {
-        /** @var \Magento\ImportService\Api\Data\SourceInterface $source */
-        $source = $this->sourceFactory->create();
-        $this->sourceResourceModel->load($source, $uuid, $source::UUID);
-        if (!$source->getUuid()) {
-            throw new NoSuchEntityException(__('Source with uuid "%1" does not exist.', $uuid));
-        }
-
-        return $source;
+        return $this->commandGet->execute($uuid);
     }
 
     /**
@@ -104,7 +93,7 @@ class SourceRepository implements SourceRepositoryInterface
     public function delete(SourceInterface $source)
     {
         try {
-            /** @var AbstractModel|SourceInterface $source */
+            /** @var \Magento\Framework\Model\AbstractModel|SourceInterface $source */
             $this->sourceResourceModel->delete($source);
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__($exception->getMessage()));
@@ -115,55 +104,17 @@ class SourceRepository implements SourceRepositoryInterface
 
     /**
      * @inheritdoc
-     *
-     * @throws CouldNotDeleteException
-     * @throws NoSuchEntityException
      */
-    public function deleteByUuid($uuid)
+    public function deleteByUuid(string $uuid): void
     {
-        return $this->delete($this->getByUuid($uuid));
+        $this->commandDeleteByUuid->execute($uuid);
     }
 
     /**
      * @inheritdoc
      */
-    public function getList(SearchCriteriaInterface $criteria)
+    public function getList(SearchCriteriaInterface $searchCriteria = null): SearchResultsInterface
     {
-        /** @var SearchResultsInterface $searchResults */
-        $searchResults = $this->searchResultsFactory->create();
-        $searchResults->setSearchCriteria($criteria);
-        $sourceCollection = $this->sourceCollectionFactory->create();
-        foreach ($criteria->getFilterGroups() as $filterGroup) {
-            $fields = [];
-            $conditions = [];
-            foreach ($filterGroup->getFilters() as $filter) {
-                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
-                $fields[] = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
-            }
-            if ($fields) {
-                $sourceCollection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        $searchResults->setTotalCount($sourceCollection->getSize());
-        $sortOrders = $criteria->getSortOrders();
-        if ($sortOrders) {
-            /** @var SortOrder $sortOrder */
-            foreach ($sortOrders as $sortOrder) {
-                $sourceCollection->addOrder(
-                    $sortOrder->getField(),
-                    ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
-                );
-            }
-        }
-        $sourceCollection->setCurPage($criteria->getCurrentPage());
-        $sourceCollection->setPageSize($criteria->getPageSize());
-        $sources = [];
-        foreach ($sourceCollection as $sourceModel) {
-            $sources[] = $sourceModel;
-        }
-        $searchResults->setItems($sources);
-
-        return $searchResults;
+        return $this->commandGetList->execute($searchCriteria);
     }
 }

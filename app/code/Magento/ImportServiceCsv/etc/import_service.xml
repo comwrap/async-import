@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<imports xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportService:etc/import_service.xsd">
+
+    <import type="catalog_product" storage="magento_rest">
+        <strategies>
+            <strategy code="add_update" defaultMapping="product_csv">
+                <processor name="Magento\ImportService\Model\Rest\Put">
+                    <arguments>
+                        <argument name="method">PUT</argument>
+                        <argument name="endpoint">/async/bulk/V1/products/bySku</argument>
+                    </arguments>
+                </processor>
+            </strategy>
+            <strategy code="delete" defaultMapping="product_csv">
+                <processor name="Magento\ImportService\Model\Rest\Delete">
+                    <arguments>
+                        <argument name="method">DELETE</argument>
+                        <argument name="endpoint">/async/bulk/V1/products/bySku</argument>
+                    </arguments>
+                </processor>
+            </strategy>
+            <strategy code="replace" defaultMapping="product_csv">
+                <execute name="delete" />
+                <execute name="add_update" />
+            </strategy>
+        </strategies>
+    </import>
+</imports>

@@ -32,7 +32,7 @@ class ImportServiceValidator implements ValidatorInterface
      *
      * @param SourceInterface $source
      * @throws ImportServiceException
-     * @return array
+     * @return bool
      */
     public function validate(SourceInterface $source)
     {
@@ -51,6 +51,6 @@ class ImportServiceValidator implements ValidatorInterface
             );
         }
 
-        return $errors;
+        return true;
     }
 }

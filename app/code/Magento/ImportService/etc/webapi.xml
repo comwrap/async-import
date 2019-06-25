@@ -7,8 +7,14 @@
 -->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V1/import/source/:uuid/type/:type" method="GET">
+    <route url="/V1/import/source/:uuid" method="GET">
         <service class="Magento\ImportService\Api\SourceRepositoryInterface" method="getByUuid"/>
+        <resources>
+            <resource ref="Magento_ImportService::import" />
+        </resources>
+    </route>
+    <route url="/V1/import/sources" method="GET">
+        <service class="Magento\ImportService\Api\SourceRepositoryInterface" method="getList"/>
         <resources>
             <resource ref="Magento_ImportService::import" />
         </resources>
@@ -17,6 +23,12 @@
         <service class="Magento\ImportService\Api\PartialSourceUploadInterface" method="execute"/>
         <resources>
             <resource ref="Magento_ImportExport::import" />
+        </resources>
+    </route>
+    <route url="/V1/import/source/:uuid" method="DELETE">
+        <service class="Magento\ImportService\Api\SourceRepositoryInterface" method="deleteByUuid"/>
+        <resources>
+            <resource ref="Magento_ImportService::import" />
         </resources>
     </route>
     <route url="/V1/import/:uuid" method="GET">

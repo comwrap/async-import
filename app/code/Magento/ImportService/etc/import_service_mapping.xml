@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportService:etc/import_service.xsd">
+
+        <mapping name="product_csv_update">
+            <mappingFields>
+                <field name="sku">
+                    <sourcePath>sku</sourcePath>
+                    <targetPath>product.sku</targetPath>
+                </field>
+                <field name="name">
+                    <sourcePath>name</sourcePath>
+                    <targetPath>product.name</targetPath>
+                </field>
+            </mappingFields>
+        </mapping>
+
+        <mapping name="product_csv_add" parent="product_csv_update">
+            <mappingFields>
+                <field name="sku">
+                    <sourcePath>sku</sourcePath>
+                    <targetPath>sku</targetPath>
+                </field>
+            </mappingFields>
+        </mapping>
+
+        <mapping name="product_csv_delete">
+            <mappingFields>
+                <field name="sku">
+                    <sourcePath>sku</sourcePath>
+                    <targetPath>sku</targetPath>
+                </field>
+            </mappingFields>
+        </mapping>
+
+</mappings>

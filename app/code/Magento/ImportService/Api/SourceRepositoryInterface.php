@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Api;
 
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
 use Magento\ImportService\Api\Data\SourceInterface;
 
 /**
@@ -15,28 +17,30 @@ use Magento\ImportService\Api\Data\SourceInterface;
 interface SourceRepositoryInterface
 {
     /**
-     * Saves source
+     * Save source data
      *
      * @param \Magento\ImportService\Api\Data\SourceInterface $source
      * @return \Magento\ImportService\Api\Data\SourceInterface
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
-    public function save(SourceInterface $source);
+    public function save(SourceInterface $source): SourceInterface;
 
     /**
-     * Provides source by UUID
+     * Get source data by given uuid
      *
      * @param string $uuid
      * @return \Magento\ImportService\Api\Data\SourceInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getByUuid($uuid);
+    public function getByUuid(string $uuid): SourceInterface;
 
     /**
-     * Provides sources which match a specific criteria.
+     * Find sources by given search criteria. Search criteria is not required.
      *
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $criteria
+     * @param \Magento\Framework\Api\SearchCriteriaInterface|null $searchCriteria
      * @return \Magento\Framework\Api\SearchResultsInterface
      */
-    public function getList(\Magento\Framework\Api\SearchCriteriaInterface $criteria);
+    public function getList(SearchCriteriaInterface $searchCriteria = null): SearchResultsInterface;
 
     /**
      * Deletes source
@@ -47,10 +51,12 @@ interface SourceRepositoryInterface
     public function delete(\Magento\ImportService\Api\Data\SourceInterface $source);
 
     /**
-     * Deletes source by UUID
+     * Delete the source by uuid. If source is not found, NoSuchEntityException is thrown
      *
      * @param string $uuid
-     * @return bool
+     * @return void
+     * @throws \Magento\Framework\Exception\CouldNotDeleteException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function deleteByUuid($uuid);
+    public function deleteByUuid(string $uuid): void;
 }

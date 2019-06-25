@@ -51,8 +51,7 @@ class Base64EncodedDataProcessor implements SourceProcessorInterface
      */
     public function processUpload(SourceInterface $source, SourceUploadResponseInterface $response)
     {
-        /** @var array $errors */
-        $errors = $this->validator->validate($source);
+        $this->validator->validate($source);
 
         /** @var string $content */
         $content = base64_decode($source->getImportData());

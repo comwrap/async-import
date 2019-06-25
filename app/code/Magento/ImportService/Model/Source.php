@@ -221,7 +221,7 @@ class Source extends AbstractExtensibleModel implements SourceInterface
             $this->setMapping($mapping);
         }
 
-        parent::afterLoad();
+        return $this;
     }
 
     /**
