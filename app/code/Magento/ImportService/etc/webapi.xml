@@ -19,7 +19,7 @@
             <resource ref="Magento_ImportService::import" />
         </resources>
     </route>
-    <route url="/V1/import/type/:type/start/:uuid" method="POST">
+    <route url="/V1/import/start/:uuid" method="POST">
         <service class="Magento\ImportService\Api\ImportStartInterface" method="execute"/>
         <resources>
             <resource ref="Magento_ImportService::import" />

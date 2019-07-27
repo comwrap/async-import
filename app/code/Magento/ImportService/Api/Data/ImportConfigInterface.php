@@ -19,6 +19,7 @@ interface ImportConfigInterface extends ExtensibleDataInterface
     const VALIDATION_STRATEGY = 'validation_strategy';
     const IMPORT_IMAGE_ARCHIVE = 'import_image_archive';
     const IMPORT_IMAGES_FILE_DIR = 'import_images_file_dir';
+    const MAPPING = 'mapping';
 
     /**
      * @return string
@@ -71,6 +72,16 @@ interface ImportConfigInterface extends ExtensibleDataInterface
      * @return void
      */
     public function setImportImagesFileDir(string $importImagesFileDir): void;
+
+    /**
+     * @return ImportConfigMappingInterface
+     */
+    public function getMapping(): ImportConfigMappingInterface;
+
+    /**
+     * @param ImportConfigMappingInterface $mapping
+     */
+    public function setMapping(ImportConfigMappingInterface $mapping): void;
 
     /**
      * @return \Magento\ImportService\Api\Data\ImportConfigExtensionInterface
