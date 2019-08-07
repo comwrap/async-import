@@ -5,10 +5,10 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model;
+namespace Magento\ImportServiceSourceCsv\Model;
 
 use Magento\Framework\Model\AbstractModel;
-use Magento\ImportServiceApi\Api\Data\SourceCsvFormatInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvFormatInterface;
 
 /**
  * Class SourceFormat

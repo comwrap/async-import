@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model;
+namespace Magento\ImportServiceSourceCsv\Model;
 
 use Magento\Framework\Api\AttributeValueFactory;
 use Magento\Framework\Api\ExtensionAttributesFactory;
@@ -15,11 +15,11 @@ use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Magento\Framework\Serialize\SerializerInterface;
-use Magento\ImportServiceApi\Api\Data\SourceCsvExtensionInterface;
-use Magento\ImportServiceApi\Api\Data\SourceCsvFormatInterface;
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvExtensionInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvFormatInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
 use Magento\ImportService\Model\ResourceModel\Source as SourceResource;
-use Magento\ImportService\Model\SourceCsvFormatFactory as FormatFactory;
+use Magento\ImportServiceSourceCsv\Model\SourceCsvFormatFactory as FormatFactory;
 
 /**
  * Class Source
@@ -236,7 +236,7 @@ class SourceCsv extends AbstractExtensibleModel implements SourceCsvInterface
      */
     public function decorate()
     {
-        $formatJson = $this->getData('format');
+        $formatJson = $this->getData(self::FORMAT);
 
         if (isset($formatJson)) {
 
@@ -245,7 +245,7 @@ class SourceCsv extends AbstractExtensibleModel implements SourceCsvInterface
 
             /** set decoded json string and object to formatted source */
             $format = $this->formatFactory->create()->setData($formatJson);
-            $this->setData('format', $format);
+            $this->setData(self::FORMAT, $format);
         }
 
         return $this;
@@ -271,7 +271,7 @@ class SourceCsv extends AbstractExtensibleModel implements SourceCsvInterface
         }
 
         /** set format json string to format field */
-        $this->setData('format', $format->toJson());
+        $this->setData(self::FORMAT, $format->toJson());
 
         parent::beforeSave();
     }

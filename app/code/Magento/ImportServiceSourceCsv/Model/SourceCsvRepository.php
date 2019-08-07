@@ -5,18 +5,17 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model;
+namespace Magento\ImportServiceSourceCsv\Model;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResultsInterface;
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
-use Magento\ImportServiceApi\Api\SourceCsvRepositoryInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
+use Magento\ImportServiceSourceCsvApi\Api\SourceCsvRepositoryInterface;
 use Magento\ImportService\Model\ResourceModel\Source as SourceResourceModel;
 use Magento\ImportService\Model\Source\Command\SaveInterface;
 use Magento\ImportService\Model\Source\Command\GetInterface;
 use Magento\ImportService\Model\Source\Command\GetListInterface;
 use Magento\ImportService\Model\Source\Command\DeleteByUuidInterface;
-use Magento\ImportServiceApi\Api\Data\SourceUploadResponseInterface;
 
 /**
  * Class SourceRepository

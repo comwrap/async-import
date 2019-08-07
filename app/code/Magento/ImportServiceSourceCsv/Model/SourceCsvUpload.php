@@ -5,11 +5,11 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model;
+namespace Magento\ImportServiceSourceCsv\Model;
 
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
 use Magento\ImportServiceApi\Api\Data\SourceUploadResponseInterface;
-use Magento\ImportServiceApi\Api\SourceCsvUploadInterface;
+use Magento\ImportServiceSourceCsvApi\Api\SourceCsvUploadInterface;
 use Magento\ImportService\Model\Import\SourceProcessorPool;
 use Magento\ImportServiceApi\Model\SourceUploadResponseFactory;
 

@@ -5,11 +5,10 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model\Source;
+namespace Magento\ImportServiceSourceCsv\Model\Source;
 
 use Magento\Framework\DataObject;
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
-use Magento\ImportService\Model\Source\ReaderInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
 
 abstract class ReaderAbstract extends DataObject implements ReaderInterface
 {

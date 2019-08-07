@@ -5,14 +5,14 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model;
+namespace Magento\ImportServiceSourceCsv\Model;
 
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
 use Magento\ImportServiceApi\Api\Data\SourceUploadResponseInterface;
-use Magento\ImportServiceApi\Api\SourceCsvRepositoryInterface;
-use Magento\ImportServiceApi\Api\SourceCsvUpdateInterface;
+use Magento\ImportServiceSourceCsvApi\Api\SourceCsvRepositoryInterface;
+use Magento\ImportServiceSourceCsvApi\Api\SourceCsvUpdateInterface;
 use Magento\ImportService\ImportServiceException;
 use Magento\ImportServiceApi\Model\SourceUploadResponseFactory;
 

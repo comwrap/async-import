@@ -5,9 +5,9 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model\Source;
+namespace Magento\ImportServiceSourceCsv\Model\Source;
 
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
 
 /**
  *  Source Reader Interface

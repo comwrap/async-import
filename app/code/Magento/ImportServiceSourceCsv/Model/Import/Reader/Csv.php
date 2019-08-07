@@ -5,14 +5,14 @@
  */
 declare(strict_types=1);
 
-namespace Magento\ImportService\Model\Import\Reader;
+namespace Magento\ImportServiceSourceCsv\Model\Import\Reader;
 
 use Magento\ImportExport\Model\Import\AbstractEntity;
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface;
 use Magento\Framework\Stdlib\ArrayManager;
-use Magento\ImportService\Model\Source\ReaderAbstract;
-use Magento\ImportService\Model\Source\ReaderInterface;
-use Magento\ImportServiceApi\Api\Data\SourceCsvInterfaceFactory as SourceCsvFactory;
+use Magento\ImportServiceSourceCsv\Model\Source\ReaderAbstract;
+use Magento\ImportServiceSourceCsv\Model\Source\ReaderInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterfaceFactory as SourceCsvFactory;
 
 /**
  * CSV Reader Implementation
@@ -80,7 +80,7 @@ class Csv extends ReaderAbstract implements ReaderInterface
     private $sourceCsvFactory;
 
     /**
-     * @var \Magento\ImportServiceApi\Api\Data\SourceCsvInterface
+     * @var \Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvInterface
      */
     private $source;
 
