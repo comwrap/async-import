@@ -223,7 +223,7 @@ class SourceCsv extends AbstractExtensibleModel implements SourceCsvInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function afterLoad()
     {
@@ -232,7 +232,7 @@ class SourceCsv extends AbstractExtensibleModel implements SourceCsvInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return $this
      */
     public function decorate()
     {
@@ -252,7 +252,7 @@ class SourceCsv extends AbstractExtensibleModel implements SourceCsvInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function beforeSave()
     {

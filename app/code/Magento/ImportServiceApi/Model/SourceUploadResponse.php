@@ -44,7 +44,7 @@ class SourceUploadResponse extends AbstractModel implements SourceUploadResponse
 
     /**
      * @param $uuid
-     * @return SourceUploadResponse|mixed
+     * @return SourceUploadResponse
      */
     public function setUuid(string $uuid): SourceUploadResponseInterface
     {
@@ -53,7 +53,7 @@ class SourceUploadResponse extends AbstractModel implements SourceUploadResponse
 
     /**
      * @param $status
-     * @return SourceUploadResponse|mixed
+     * @return SourceUploadResponse
      */
     public function setStatus(string $status): SourceUploadResponseInterface
     {
@@ -62,7 +62,7 @@ class SourceUploadResponse extends AbstractModel implements SourceUploadResponse
 
     /**
      * @param $error
-     * @return SourceUploadResponse|mixed
+     * @return SourceUploadResponse
      */
     public function setError(string $error): SourceUploadResponseInterface
     {

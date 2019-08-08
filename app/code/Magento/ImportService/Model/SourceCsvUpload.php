@@ -12,6 +12,7 @@ use Magento\ImportServiceApi\Api\Data\SourceUploadResponseInterface;
 use Magento\ImportServiceApi\Api\SourceCsvUploadInterface;
 use Magento\ImportService\Model\Import\SourceProcessorPool;
 use Magento\ImportServiceApi\Model\SourceUploadResponseFactory;
+use Magento\ImportService\Model\SourceBuilderFactory;
 
 /**
  * Class SourceCsvUpload
@@ -35,10 +36,12 @@ class SourceCsvUpload implements SourceCsvUploadInterface
      */
     public function __construct(
         SourceUploadResponseFactory $responseFactory,
-        SourceProcessorPool $sourceProcessorPool
+        SourceProcessorPool $sourceProcessorPool,
+        SourceBuilderFactory $sourceBuilderFactory
     ) {
         $this->sourceProcessorPool = $sourceProcessorPool;
         $this->responseFactory = $responseFactory;
+        $this->sourceBuilder = $sourceBuilderFactory;
     }
 
     /**
@@ -52,6 +55,11 @@ class SourceCsvUpload implements SourceCsvUploadInterface
             $source->setSourceType(SourceCsvInterface::CSV_SOURCE_TYPE);
             $processor = $this->sourceProcessorPool->getProcessor($source);
             $response = $this->responseFactory->create();
+
+            $sourceData = $source->toArray();
+            $sourceData["format"] = $source->getFormat()->toArray();
+
+            $source = $this->sourceBuilder->create(['data' => $sourceData]);
             $processor->processUpload($source, $response);
         } catch (\Exception $e) {
             $response = $this->responseFactory->createFailure($e->getMessage());

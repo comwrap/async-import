@@ -21,7 +21,7 @@ interface ReaderInterface extends \SeekableIterator
      * @param SourceCsvInterface $source
      * @param $filePath
      *
-     * @return mixed
+     * @return void
      */
     public function init(SourceCsvInterface $source, $filePath);
 

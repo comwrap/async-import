@@ -16,7 +16,7 @@ interface PathResolverInterface
      *
      * @param string $path
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundException
      */
@@ -25,11 +25,11 @@ interface PathResolverInterface
     /**
      * Set item value by path
      *
-     * @param mixed $item
+     * @param array|string $item
      * @param string $path
-     * @param mixed $value
+     * @param string $value
      *
-     * @return mixed
+     * @return array
      *
      * @throws NotFoundException
      */

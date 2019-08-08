@@ -41,21 +41,21 @@ interface SourceUploadResponseInterface
     /**
      * @param $uuid
      *
-     * @return mixed
+     * @return SourceUploadResponseInterface
      */
     public function setUuid(string $uuid): SourceUploadResponseInterface;
 
     /**
      * @param $status
      *
-     * @return mixed
+     * @return SourceUploadResponseInterface
      */
     public function setStatus(string $status): SourceUploadResponseInterface;
 
     /**
      * @param $error
      *
-     * @return mixed
+     * @return SourceUploadResponseInterface
      */
     public function setError(string $error): SourceUploadResponseInterface;
 
