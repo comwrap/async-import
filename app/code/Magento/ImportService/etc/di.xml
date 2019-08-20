@@ -82,17 +82,17 @@
         </arguments>
     </type>
 
-    <type name="Magento\ImportService\Model\Import\ImportProcessorTopicsPool">
-        <arguments>
-            <argument name="importTopics" xsi:type="array">
-                <item name="advanced_pricing" xsi:type="array">
-                    <item name="add_update" xsi:type="array">
-                        <item name="topic" xsi:type="string">async.magento.catalog.api.tierpricestorageinterface.update.post</item>
-                    </item>
-                </item>
-            </argument>
-        </arguments>
-    </type>
+    <!--<type name="Magento\ImportService\Model\Import\ImportProcessorTopicsPool">-->
+        <!--<arguments>-->
+            <!--<argument name="importTopics" xsi:type="array">-->
+                <!--<item name="advanced_pricing" xsi:type="array">-->
+                    <!--<item name="add_update" xsi:type="array">-->
+                        <!--<item name="topic" xsi:type="string">async.magento.catalog.api.tierpricestorageinterface.update.post</item>-->
+                    <!--</item>-->
+                <!--</item>-->
+            <!--</argument>-->
+        <!--</arguments>-->
+    <!--</type>-->
 
 
     <type name="Magento\ImportService\Model\Import\SourceProcessorPool">

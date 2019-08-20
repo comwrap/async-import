@@ -10,8 +10,7 @@ namespace Magento\ImportService\Model\Import\Exchange;
 use Magento\ImportServiceApi\Api\SourceBuilderInterface;
 use Magento\ImportServiceApi\Api\Data\ImportConfigInterface;
 use Magento\ImportServiceApi\Model\ImportStartResponse;
-use Magento\ImportService\Model\Import\ImportProcessorTopicsPool;
-use Magento\AsynchronousOperations\Model\MassSchedule;
+use Magento\ImportService\Model\Import\ImportProcessorsPool;
 
 /**
  * Class Start
@@ -25,16 +24,16 @@ class AmqpProcessor implements ExchangeProcessorInterface
     private $massSchedule;
 
     /**
-     * @var ImportProcessorTopicsPool
+     * @var ImportProcessorsPool
      */
-    private $importProcessorTopicsPool;
+    private $importProcessorsPool;
 
     public function __construct(
-        ImportProcessorTopicsPool $importProcessorTopicsPool,
+        ImportProcessorsPool $importProcessorsPool,
         MassSchedule $massSchedule
     )
     {
-        $this->importProcessorTopicsPool = $importProcessorTopicsPool;
+        $this->importProcessorsPool = $importProcessorsPool;
         $this->massSchedule = $massSchedule;
     }
 
@@ -50,31 +49,18 @@ class AmqpProcessor implements ExchangeProcessorInterface
     public function process(
         array $mappingItemsList,
         ImportConfigInterface $importConfig,
-        SourceBuilderInterface $source,
         ImportStartResponse $importResponse
     ): ImportStartResponse{
 
-        $topic = $this->importProcessorTopicsPool->getTopic($importConfig);
+        $processor = $this->importProcessorsPool->getProcessor($importConfig);
+        $processor->process($mappingItemsList, $importResponse);
 
-        $requestItems = [];
-        $requestItems['prices'] = [];
-        foreach ($mappingItemsList as $importLine) {
-            $requestItem = [];
-            foreach ($importLine as $element){
-                $requestItem[$element->getTargetPath()] = $element->getSourceValue();
-            }
-            $requestItems['prices'][] = $requestItem;
-        }
-
-//        var_dump($requestItems);
-//        exit;
-
-        $this->massSchedule->publishMass(
-            $topic,
-            $requestItems,
-            null,
-            0
-        );
+//        $this->massSchedule->publishMass(
+//            $topic,
+//            $requestItems,
+//            null,
+//            0
+//        );
 
         /**
          * @TODO implement import to storage. Dummy class for now

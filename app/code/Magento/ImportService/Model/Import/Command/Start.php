@@ -100,7 +100,7 @@ class Start implements StartInterface
         }
 
         $exchangeProcessor = $this->exchangeRepository->getExchangeProcessor();
-        $importResponse = $exchangeProcessor->process($mappingItemsList, $importConfig, $source, $importResponse);
+        $importResponse = $exchangeProcessor->process($mappingItemsList, $importConfig, $importResponse);
         return $importResponse;
 
     }

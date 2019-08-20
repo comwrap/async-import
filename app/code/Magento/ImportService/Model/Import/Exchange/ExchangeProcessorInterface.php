@@ -25,6 +25,6 @@ interface ExchangeProcessorInterface
      *
      * @return ImportStartResponseFactory
      */
-    public function process(array $mappingItemsList, ImportConfigInterface $importConfig, SourceBuilderInterface $source, ImportStartResponse $importResponse): ImportStartResponse;
+    public function process(array $mappingItemsList, ImportConfigInterface $importConfig, ImportStartResponse $importResponse): ImportStartResponse;
 
 }

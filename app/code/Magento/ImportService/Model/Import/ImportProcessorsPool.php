@@ -9,25 +9,26 @@ namespace Magento\ImportService\Model\Import;
 
 use Magento\ImportService\ImportServiceException;
 use Magento\ImportServiceApi\Api\Data\ImportConfigInterface;
+use Magento\ImportService\Model\Import\Processors\ImportProcessorInterface;
 
 /**
  *  Imports Processor Pool
  */
-class ImportProcessorTopicsPool implements ImportProcessorTopicsPoolInterface
+class ImportProcessorsPool implements ImportProcessorsPoolInterface
 {
     /**
      * @var array
      */
-    private $importTopics;
+    private $importProcessors;
 
     /**
      * Initial dependencies
      *
-     * @param array $importTopics
+     * @param array $importProcessors
      */
-    public function __construct(array $importTopics = [])
+    public function __construct(array $importProcessors = [])
     {
-        $this->importTopics = $importTopics;
+        $this->importProcessors = $importProcessors;
     }
 
     /**
@@ -37,14 +38,14 @@ class ImportProcessorTopicsPool implements ImportProcessorTopicsPoolInterface
 
      * @throws ImportServiceException
      */
-    public function getTopic(ImportConfigInterface $importConfig): string
+    public function getProcessor(ImportConfigInterface $importConfig): ImportProcessorInterface
     {
 
-        foreach ($this->importTopics as $key => $processorInformation) {
+        foreach ($this->importProcessors as $key => $processorInformation) {
             if ($key == $importConfig->getImportType()){
-                foreach ($processorInformation as $strategyKey => $topics){
+                foreach ($processorInformation as $strategyKey => $processor){
                     if ($strategyKey == $importConfig->getImportStrategy()){
-                        return $topics['topic'];
+                        return $processor['processor'];
                     }
                 }
             }
