@@ -14,7 +14,6 @@ use Magento\ImportServiceApi\Api\SourceBuilderInterface;
  */
 interface ProcessingRuleInterface
 {
-    const SOURCE = 'source';
     const ARGUMENTS = 'arguments';
     const VALUE = 'value';
 
@@ -24,17 +23,6 @@ interface ProcessingRuleInterface
      * @return mixed|null
      */
     public function execute();
-
-    /**
-     * @param SourceBuilderInterface $source
-     * @return ProcessingRuleInterface
-     */
-    public function setSource(SourceBuilderInterface $source);
-
-    /**
-     * @return SourceInterface
-     */
-    public function getSource();
 
     /**
      * @param array $arguments

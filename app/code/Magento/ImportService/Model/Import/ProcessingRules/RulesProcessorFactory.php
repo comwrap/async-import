@@ -1,5 +1,5 @@
 <?php
-namespace Magento\ImportService\Model\Source;
+namespace Magento\ImportService\Model\Import\ProcessingRules;
 
 use Magento\ImportService\Model\Source;
 
@@ -57,6 +57,7 @@ class RulesProcessorFactory
      */
     public function create($ruleName, array $data = [], $forceCreate = false)
     {
+
         foreach ($this->rules as $name => $ruleData) {
             if ($ruleName == $name) {
                 if (is_array($ruleData)) {

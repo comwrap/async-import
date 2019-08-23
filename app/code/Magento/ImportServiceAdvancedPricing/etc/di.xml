@@ -20,4 +20,15 @@
         </arguments>
     </type>
 
+    <type name="Magento\ImportService\Model\Import\ProcessingRules\RulesProcessorFactory">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="convertStoreNameToId" xsi:type="array">
+                    <item name="class" xsi:type="string" >Magento\ImportService\Model\Import\ProcessingRules\ConvertStoreNameToId</item>
+                    <item name="shared" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
 </config>

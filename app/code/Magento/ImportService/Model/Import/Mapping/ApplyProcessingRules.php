@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace Magento\ImportService\Model\Import\Mapping;
 
-use Magento\ImportService\Model\Import\RulesProcessorFactory;
+use Magento\ImportService\Model\Import\ProcessingRules\RulesProcessorFactory;
 
 /**
  *  Source Processor Pool
@@ -15,16 +15,32 @@ use Magento\ImportService\Model\Import\RulesProcessorFactory;
 class ApplyProcessingRules
 {
 
-    public function __construct(
+    /**
+     * @var RulesProcessorFactory
+     */
+    private $rulesProcessorFactory;
 
+    /**
+     * ApplyProcessingRules constructor.
+     *
+     * @param RulesProcessorFactory $rulesProcessorFactory
+     */
+    public function __construct(
+        RulesProcessorFactory $rulesProcessorFactory
     ) {
+        $this->rulesProcessorFactory = $rulesProcessorFactory;
     }
 
+    /**
+     * @param $mapping
+     * @return mixed
+     */
     public function execute($mapping)
     {
         $variables = [
             'custom_attributes' => []
         ];
+
         $rulesRecreated = [];
         foreach ($mapping as $fieldMapping) {
             $processingRules = $fieldMapping->getProcessingRules();
@@ -38,6 +54,7 @@ class ApplyProcessingRules
                 usort($processingRules, function ($a, $b) {
                     return (int)$a->getSort() - $b->getSort();
                 });
+
                 $fieldMapping->setProcessingRules($processingRules);
 
                 /** @var \Magento\ImportServiceApi\Api\Data\ImportProcessingRuleInterface $rule */
@@ -66,8 +83,6 @@ class ApplyProcessingRules
                     }
                     /** @var \Magento\ImportService\Model\Import\ProcessingRules\ProcessingRuleInterface $processor */
                     $processor = $this->rulesProcessorFactory->create($rule->getFunction(), [], $forceCreate);
-                    // @TODO - why we need source?
-                    $processor->setSource(null);
                     $processor->setArguments($args);
                     $processor->setValue($value);
                     $value = $processor->execute();//change to call_user_func_array
@@ -78,6 +93,5 @@ class ApplyProcessingRules
         }
         return $mapping;
     }
-
 
 }

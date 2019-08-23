@@ -11,21 +11,6 @@ use Magento\ImportServiceApi\Api\SourceBuilderInterface;
 
 abstract class ProcessingRuleAbstract extends DataObject implements ProcessingRuleInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public function setSource(SourceBuilderInterface $source)
-    {
-        return $this->setData(self::SOURCE, $source);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSource()
-    {
-        return $this->getData(self::SOURCE);
-    }
 
     /**
      * @inheritDoc

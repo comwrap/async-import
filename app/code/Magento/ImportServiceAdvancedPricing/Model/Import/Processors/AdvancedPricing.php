@@ -12,6 +12,8 @@ use Magento\ImportServiceApi\Model\ImportStartResponse;
 use Magento\Catalog\Api\TierPriceStorageInterface;
 use Magento\Framework\Webapi\ServiceInputProcessor;
 use Magento\AsynchronousOperations\Model\MassSchedule;
+use Magento\ImportServiceApi\Api\Data\ImportMappingInterface;
+use Magento\ImportService\Model\Import\Resolver\JsonPathResolver;
 
 class AdvancedPricing implements ImportProcessorInterface
 {
@@ -29,6 +31,11 @@ class AdvancedPricing implements ImportProcessorInterface
     private $priceStorage;
 
     /**
+     * @var JsonPathResolver
+     */
+    private $jsonResolver;
+
+    /**
      * @var ServiceInputProcessor
      */
     private $serviceInputProcessor;
@@ -36,11 +43,13 @@ class AdvancedPricing implements ImportProcessorInterface
     public function __construct(
         TierPriceStorageInterface $priceStorage,
         ServiceInputProcessor $inputProcessor,
-        MassSchedule $massSchedule
+        MassSchedule $massSchedule,
+        JsonPathResolver $jsonPathResolver
     ) {
         $this->priceStorage = $priceStorage;
         $this->serviceInputProcessor = $inputProcessor;
         $this->massSchedule = $massSchedule;
+        $this->jsonResolver = $jsonPathResolver;
     }
 
     /**
@@ -57,27 +66,22 @@ class AdvancedPricing implements ImportProcessorInterface
         $requestItems = [];
         $requestItems['prices'] = [];
         foreach ($mappingItemsList as $importLine) {
-            $requestItem = [];
+            $itemData = [];
             foreach ($importLine as $element){
-                $requestItem[$element->getTargetPath()] = $element->getSourceValue();
+                $itemData = $this->jsonResolver->set($itemData, $element->getTargetPath(), $element->getTargetValue());
             }
-            $requestItems['prices'][] = $requestItem;
+            $requestItems['prices'][] = $itemData;
         }
 
         $inputParams = $this->serviceInputProcessor->process("Magento\Catalog\Api\TierPriceStorageInterface", "update", $requestItems);
-var_dump($inputParams);
-exit;
+        $this->massSchedule->publishMass(
+            self::BULK_API_TOPIC_NAME,
+            [0 => $inputParams],
+            null,
+            0
+        );
 
-//        $serviceMethodName = "update";
-
-
-        var_dump($requestItems);
-        exit;
-
-
-        echo "a";
-        exit;
-
+        return $importResponse;
     }
 
 }

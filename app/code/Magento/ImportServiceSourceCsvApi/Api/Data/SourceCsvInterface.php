@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace Magento\ImportServiceSourceCsvApi\Api\Data;
 
 use Magento\Framework\Api\ExtensibleDataInterface;
+use Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvFormatInterface;
+
 
 /**
  * Interface SourceCsvInterface
@@ -112,14 +114,14 @@ interface SourceCsvInterface extends ExtensibleDataInterface
     /**
      * Retrieve Source Format
      *
-     * @return \Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvFormatInterface|null
+     * @return \Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvFormatInterface
      */
     public function getFormat(): ?SourceCsvFormatInterface;
 
     /**
      * Set Source Format
      *
-     * @param \Magento\ImportServiceSourceCsvApi\Api\Data\SourceCsvFormatInterface $format
+     * @param SourceCsvFormatInterface $format
      *
      * @return $this
      */

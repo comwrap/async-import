@@ -11,6 +11,7 @@ use Magento\ImportServiceApi\Api\SourceBuilderInterface;
 use Magento\ImportServiceApi\Api\Data\ImportConfigInterface;
 use Magento\ImportServiceApi\Model\ImportStartResponse;
 use Magento\ImportService\Model\Import\ImportProcessorsPool;
+use Magento\AsynchronousOperations\Model\MassSchedule;
 
 /**
  * Class Start
@@ -54,13 +55,6 @@ class AmqpProcessor implements ExchangeProcessorInterface
 
         $processor = $this->importProcessorsPool->getProcessor($importConfig);
         $processor->process($mappingItemsList, $importResponse);
-
-//        $this->massSchedule->publishMass(
-//            $topic,
-//            $requestItems,
-//            null,
-//            0
-//        );
 
         /**
          * @TODO implement import to storage. Dummy class for now
