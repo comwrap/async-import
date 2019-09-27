@@ -73,4 +73,18 @@
             <argument name="sourceDataValidator" xsi:type="object">Magento\AsynchronousImportRetrievingSource\Model\Validator\RemoteHttpsValidator</argument>
         </arguments>
     </type>
+    <!-- local retriever data -->
+    <virtualType name="Magento\AsynchronousImportRetrievingSource\Model\Validator\LocalValidator"
+                 type="Magento\AsynchronousImportRetrievingSourceApi\Model\SourceDataValidatorChain">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="source_data" xsi:type="object">Magento\AsynchronousImportRetrievingSource\Model\SourceDataValidator\SourceDataValidator</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\AsynchronousImportRetrievingSource\Model\SourceDataRetrievingStrategy\Local">
+        <arguments>
+            <argument name="sourceDataValidator" xsi:type="object">Magento\AsynchronousImportRetrievingSource\Model\Validator\LocalValidator</argument>
+        </arguments>
+    </type>
 </config>

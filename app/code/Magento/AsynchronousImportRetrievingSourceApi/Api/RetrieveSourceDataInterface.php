@@ -20,7 +20,7 @@ use Magento\AsynchronousImportRetrievingSourceApi\Api\Data\RetrievingSourceDataR
 interface RetrieveSourceDataInterface
 {
     /**
-     * Retrieve source data operation. Uses differect strategies for source data retrieving
+     * Retrieve source data operation. Uses different strategies for source data retrieving
      *
      * @param SourceDataInterface $sourceData
      * @return \Magento\AsynchronousImportRetrievingSourceApi\Api\Data\RetrievingSourceDataResultInterface
