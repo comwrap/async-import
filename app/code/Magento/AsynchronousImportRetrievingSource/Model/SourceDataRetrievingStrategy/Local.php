@@ -26,11 +26,6 @@ use Magento\Framework\Exception\LocalizedException;
 class Local implements RetrieveSourceDataStrategyInterface
 {
     /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
      * @var SourceDataValidatorInterface
      */
     private $sourceDataValidator;
@@ -49,7 +44,8 @@ class Local implements RetrieveSourceDataStrategyInterface
     private $flysystemLocalFactory;
 
     /**
-     * @param Filesystem $fileSystem
+     * @param \League\Flysystem\FilesystemFactory $fileSystemFactory
+     * @param \League\Flysystem\Adapter\LocalFactory $flysystemLocalFactory
      * @param SourceDataValidatorInterface $sourceDataValidator
      * @param RetrievingSourceDataResultInterfaceFactory $retrievingResultFactory
      */
